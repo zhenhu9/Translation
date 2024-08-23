@@ -79,7 +79,7 @@
 		      allexport
 			      Same as -a.														等同 -a。
 		      braceexpand
-			      Same as -B.														等同 -b。
+			      Same as -B.														等同 -B。
 		      emacs   Use  an  emacs-style command line editing inter-
 			      face.  This is enabled by default when the shell
 			      is interactive, unless the shell is started with
@@ -197,7 +197,7 @@
 		      overridden when creating output files by using the redi-
 		      rection operator >| instead of >.
 			  
-			  如果设置，bash 不会使用 >，>＆ 和 <> 重定向运算符覆盖现有文件。 使用重定向运算符 >| 创建输出文件时可能会覆盖，而不是 >。
+			  如果设置，bash 重定向运算符 >，>＆ 和 <> 不会使用覆盖现有文件。 使用重定向运算符 >| 创建输出文件时可能会覆盖，而不是 >。
 			  
 	      -E      If set, any trap on ERR is inherited by shell functions,
 		      command  substitutions,  and commands executed in a sub-
@@ -239,7 +239,7 @@
 		      options are turned off.  If there are no args, the posi-
 		      tional parameters remain unchanged.
 			  
-			  发出选项结束信号，将所有剩余的参数分配给位置参数。 -x 和 -v 选项已关闭。 如果没有 args，则位置参数保持不变。
+			  发出选项结束信号，将所有剩余的参数分配给位置参数。 关闭 -x 和 -v 选项。 如果没有 args，则位置参数保持不变。
 
 	      The options are off by default unless otherwise noted.  Using  +
 	      rather  than  -  causes  these  options  to  be turned off.  The
