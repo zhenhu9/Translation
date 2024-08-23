@@ -12,19 +12,19 @@
 	      $1, $2, ...  $n.	Options,  if  specified,  have	the  following
 	      meanings:
 		  
-		  如果没有选项，每个 shell 变量的名称和值将按格式显示，该格式作为可以重复用作设置或重置当前设置变量。 只读变量无法重置。 在 posix 模式下，仅列出 shell 变量。 输出根据当前区域设置进行排序。 指定选项后，它们会设置或取消设置 shell 属性。 选项处理后剩余的任何参数都被视为位置参数的值，并按顺序分配给 $1，$2，... $n。 选项（如果指定）具有以下含义：
+		  如果没有选项，每个 shell 变量的名称和值将按格式显示，该格式作为可以重复用作设置或重置当前设置变量。 只读变量无法重置。 在 posix 模式下，仅列出 shell 变量。 输出根据当前区域设置进行排序。 指定选项后，它们会设置或取消设置 shell 属性。 选项处理后其余的任何参数都被视为位置参数的值，并按顺序分配给 $1，$2，... $n。 选项（如果指定）具有以下含义：
 		  
 	      -a      Automatically  mark  variables  and  functions which are
 		      modified or created for export  to  the  environment  of
 		      subsequent commands.
 			  
-			  自动标记为了导出到后续命令的环境变量而修改或创建的变量和函数。
+			  自动标记修改或创建的变量和函数导出给后续命令的环境。
 			  
 	      -b      Report  the status of terminated background jobs immedi-
 		      ately, rather than before the next primary prompt.  This
 		      is effective only when job control is enabled.
 			  
-			  立即报告已终止后台作业的状态，而不是在下一个主要提示之前报告。 仅在作业控制启用时，此选项才有效。
+			  立即报告已终止后台作业的状态，而不是在下一个主提示符出现后报告。 仅在作业控制启用时，此选项才有效。
 			  
 	      -e      Exit  immediately	 if a pipeline (which may consist of a
 		      single simple command),  a subshell command enclosed  in
@@ -44,13 +44,13 @@
 		      above), and may cause subshells to exit before executing
 		      all the commands in the subshell.
 			  
-			  如果管道（可能包含单个简单命令），括在括号中的子 shell 命令，或作为括号括起来的命令列表的一部分执行的命令之一（参见上面的 SHELL GRAMMAR）以非 0 值退出时，则立即退出 shell。如果失败的命令是紧跟在 while 或 until 关键字之后的命令列表的一部分；在 if 或 elif 保留字之后的 test 的一部分；在 && 或 ││ 列表中执行的任何命令的一部分，除了最后的 && 或 ││ 之后的命令；管道中的任何命令，但是最后一个；或者命令的返回值用 ! 被反转；则 shell 不会退出。ERR 上的陷阱（如果已设置）将在 shell 退出之前执行。 此选项分别适用于 shell 环境变量和每个子 shell 环境变量（请参阅上面的 COMMAND EXECUTION ENVIRONMENT），并且可能会导致子 shell 在执行子 shell 中的所有命令之前退出。
+			  如果管道（可能包含单个简单命令），括在括号中的子 shell 命令，或作为括号括起来的命令列表的一部分执行的命令之一（参见上面的 SHELL GRAMMAR）以非 0 值退出时，则立即退出 shell。如果失败的命令是紧跟在 while 或 until 关键字之后的命令列表的一部分；在 if 或 elif 保留字之后的 test 的一部分；在 && 或 ││ 列表中执行的任何命令的一部分，除了最后的 && 或 ││ 之后的命令；管道中的任何命令，除了最后一个；或者命令的返回值用 ! 被反转；则 shell 不会退出。ERR 上的陷阱（如果已设置）将在 shell 退出之前执行。 此选项分别适用于 shell 环境变量和每个子 shell 环境变量（请参阅上面的 COMMAND EXECUTION ENVIRONMENT），并且可能会导致子 shell 在执行子 shell 中的所有命令之前退出。
 			  
 	      -f      Disable pathname expansion.										禁用路径名扩展。
 	      -h      Remember	the location of commands as they are looked up
 		      for execution.  This is enabled by default.
 			  
-			  在查找执行命令时，记住命令的位置。 默认情况下启用此选项。
+			  当查找执行命令时，记住命令的位置。 默认情况下启用此选项。
 			  
 	      -k      All arguments in the form of assignment  statements  are
 		      placed  in the environment for a command, not just those
@@ -154,7 +154,7 @@
 			  
 			  如果 -o 未提供选项名称，则打印当前选项的值。 如果 +o 未提供选项名称，则会在标准输出上显示一系列用于重新创建当前选项设置的设置命令。
 			  
-			  -p      Turn  on	privileged  mode.   In this mode, the $ENV and
+	      -p      Turn  on	privileged  mode.   In this mode, the $ENV and
 		      $BASH_ENV files are not processed, shell	functions  are
 		      not  inherited  from the environment, and the SHELLOPTS,
 		      BASHOPTS, CDPATH,	 and  GLOBIGNORE  variables,  if  they
@@ -185,7 +185,7 @@
 		      play  the expanded value of PS4, followed by the command
 		      and its expanded arguments or associated word list.
 			  
-			  扩展每个简单命令后，对于 command，case 命令，select 命令或 arithmetic for command，显示 PS4 的扩展值，然后显示命令及其扩展参数或关联的单词列表。
+			  扩展每个简单命令后，for 命令，case 命令，select 命令或数学运算 for 命令，显示 PS4 的扩展值，然后显示命令及其扩展参数或关联的词列表。
 			  
 	      -B      The shell performs brace expansion (see Brace  Expansion
 		      above).  This is on by default.
