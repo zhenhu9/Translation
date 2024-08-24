@@ -9,8 +9,8 @@
 		  
 		  切换控制可选 shell 行为的变量值。 如果没有选项，或使用 -p 选项，则会显示所有可设置选项的列表，并表明每个选项是否已设置。 -p 选项显示输出，其格式可以作为输入重用。 其它选项具有以下含义：
 		  
-	      -s     Enable (set) each optname.											启用（设置）每个 optname。
-	      -u     Disable (unset) each optname.										禁用（取消设置）每个 optname。
+	      -s     Enable (set) each optname.								启用（设置）每个 optname。
+	      -u     Disable (unset) each optname.							禁用（取消设置）每个 optname。
 	      -q     Suppresses normal output (quiet mode); the return	status
 		     indicates whether the optname is set or unset.  If multi-
 		     ple optname arguments are given with -q, the return  sta-
@@ -99,14 +99,14 @@
 		      with respect to quoted arguments to the conditional com-
 		      mand’s =~ operator.
 			  
-			  如果设置，bash 将其行为更改为版本 3.1 的行为，相对于条件命令的 =~ 运算符的引用参数。
+			  如果设置，bash 将其行为更改为版本 3.1 的行为，关于条件命令的 =~ 运算符的引用参数。
 			  
 	      compat32
 		      If set, bash changes its behavior to that of version 3.2
 		      with respect to locale-specific string  comparison  when
 		      using the conditional command’s < and > operators.
 			  
-			  如果设置，当使用条件命令的 < 和 > 运算符时，bash 会将其行为更改为版本 3.2 的行为，而不是特定于区域设置的字符串比较。
+			  如果设置，当使用条件命令的 < 和 > 运算符时，bash 会将其行为更改为版本 3.2 的行为，关于特定于区域设置的字符串比较。
 			  
 	      compat40
 		      If set, bash changes its behavior to that of version 4.0
@@ -114,7 +114,7 @@
 		      using  the  conditional  command’s < and > operators and
 		      the effect of interrupting a command list.
 			  
-			  如果设置，当使用条件命令的 < 和 > 运算符以及中断命令列表的效果时，bash 会将其行为更改为版本 4.0 的行为，而不是特定于区域设置的字符串比较。
+			  如果设置，当使用条件命令的 < 和 > 运算符以及中断命令列表的效果时，bash 会将其行为更改为版本 4.0 的行为，关于特定于区域设置的字符串比较。
 			  
 	      dirspell
 		      If set, bash attempts spelling correction	 on  directory
@@ -126,7 +126,7 @@
 	      dotglob If set, bash includes filenames beginning with a ‘.’  in
 		      the results of pathname expansion.
 			  
-			  如果设置，bash 包含路径名扩展结果中以 “.” 开头的文件名。
+			  如果设置，bash 在路径名扩展结果中包含以 “.” 开头的文件名。
 			  
 	      execfail
 		      If set, a non-interactive shell will not exit if it can-
@@ -134,7 +134,7 @@
 		      exec  builtin  command.	An  interactive shell does not
 		      exit if exec fails.
 			  
-			  如果设置，如果非交互式 shell 无法执行作为内置命令 exec 的参数而指定的文件，则不会退出。 如果 exec 失败，则不会退出交互式 shell。
+			  如果设置，如果非交互式 shell 无法执行作为内置命令 exec 的参数而指定的文件，则不会退出。 在交互式 shell 中如果 exec 执行失败，则不会退出。
 			  
 	      expand_aliases
 		      If set, aliases are expanded as  described  above	 under
@@ -220,7 +220,7 @@
 		      subdirectories.  If the pattern is followed by a /, only
 		      directories and subdirectories match.
 			  
-			  如果设置，则路径名扩展上下文中使用的模式 ** 将匹配文件以及零个或多个目录和子目录。 如果模式后跟一个 /，则只有目录和子目录匹配。
+			  如果设置，则路径名扩展上下文中使用的模式 ** 将匹配一个以及零个或多个文件、目录和子目录。 如果模式后跟一个 /，则只有目录和子目录匹配。
 			  
 	      gnu_errfmt
 		      If set, shell error messages are written in the standard
