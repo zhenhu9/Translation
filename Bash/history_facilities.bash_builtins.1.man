@@ -40,7 +40,7 @@ HISTORY																					历史记录
        commands  are available in each editing mode that provide access to the
        history list.
 	   
-	   内置命令 fc（参阅下面的 SHELL BUILTIN COMMANDS）可用于列出或编辑和重新执行历史列表的一部分。 内置命令 history 可用于显示或修改历史列表并操纵历史文件。 使用命令行编辑时，在每种编辑模式下都可以使用搜索命令来访问历史列表。
+	   内置命令 fc（参阅下面的 SHELL BUILTIN COMMANDS）可用于列出或编辑和重新执行历史列表的一部分。 内置命令 history 可用于显示或修改历史列表并操纵 history 文件。 使用命令行编辑时，在每种编辑模式下都可以使用搜索命令来访问历史列表。
 
        The shell allows control over which commands are saved on  the  history
        list.  The HISTCONTROL and HISTIGNORE variables may be set to cause the
