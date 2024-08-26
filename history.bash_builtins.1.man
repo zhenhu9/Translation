@@ -1,0 +1,76 @@
+       history [n]
+       history -c
+       history -d offset
+       history -anrw [filename]
+       history -p arg [arg ...]
+       history -s arg [arg ...]
+              With no options, display the command history list with line num-
+              bers.  Lines listed with a * have been modified.  An argument of
+              n  lists only the last n lines.  If the shell variable HISTTIME-
+              FORMAT is set and not null, it is used as a  format  string  for
+              strftime(3)  to display the time stamp associated with each dis-
+              played history entry.  No intervening blank is  printed  between
+              the  formatted  time stamp and the history line.  If filename is
+              supplied, it is used as the name of the history  file;  if  not,
+              the  value  of HISTFILE is used.  Options, if supplied, have the
+              following meanings:
+              -c     Clear the history list by deleting all the entries.
+              -d offset
+                     Delete the history entry at position offset.
+              -a     Append the ‘‘new’’ history lines (history  lines  entered
+                     since  the  beginning of the current bash session) to the
+                     history file.
+              -n     Read the history lines not already read from the  history
+                     file  into  the  current  history  list.  These are lines
+                     appended to the history file since the beginning  of  the
+                     current bash session.
+              -r     Read the contents of the history file and use them as the
+                     current history.
+              -w     Write the current history to the history file,  overwrit-
+                     ing the history file’s contents.
+              -p     Perform  history  substitution  on the following args and
+                     display the result on  the  standard  output.   Does  not
+                     store  the results in the history list.  Each arg must be
+                     quoted to disable normal history expansion.
+              -s     Store the args in the history list  as  a  single  entry.
+                     The  last  command  in the history list is removed before
+                     the args are added.
+
+              If the HISTTIMEFORMAT variable is set, the time  stamp  informa-
+              tion  associated  with each history entry is written to the his-
+              tory file, marked with the history comment character.  When  the
+              history  file  is read, lines beginning with the history comment
+              character followed immediately by a  digit  are  interpreted  as
+              timestamps for the previous history line.  The return value is 0
+              unless an invalid option is encountered, an error  occurs  while
+              reading  or  writing the history file, an invalid offset is sup-
+              plied as an argument to -d, or the history expansion supplied as
+              an argument to -p fails.
+
+
+       history [n]
+       history -c
+       history -d offset
+       history -anrw [filename]
+       history -p arg [arg ...]
+       history -s arg [arg ...]
+当无选项时，显示具有行号的命令历史列表。列出 * 的行已经被修改。参数 n 只列出最后的 n 行。如果设置了 shell 变量 HISTTIMEFORMAT 并且不为 null，它作为 strftime (3) 的格式字符串，用来显示每个历史条目的时间戳。 格式化的时间戳与历史命令行之间不会打印空白。如果提供文件名称，它将作为 history 的文件名称；如果未提供，则使用 HISTFILE的值。选项，如果提供，具有以下意思：
+
+-c     通过删除所有的条目清除 history 列表。
+-d offset    删除位于 offset 位置的 history 条目。
+
+-a  增补“新”的 history 行（加入自从当前 bash 会话开始的 history 行）到 history 文件。
+-n
+读取还未从 history 文件读取历史行到当前历史行。这些行自从当前 bash 会话开始时被增补到历史文件中。
+
+-r    读取历史文件的内容并且用它们作为当前历史。
+
+-w    写入当前历史到历史文件，覆盖历史文件的内容。
+
+-p
+对其后的参数执行历史替换并且显示结果到标准输出。不保存结果到历史列表。每个参数都必须用引号括起来以关闭普通历史扩展。
+
+-s
+保存参数为单个条目到历史列表。在参数被添加之前，历史列表中的最后一个命名会被移除。
+
+如果设置了 HISTTIMEFORMAT 变量，关联每个历史条目的时间戳会被写入到历史文件，标上历史注释字符。当读取历史文件时，历史注释字符后紧随的一个数字会被解析为前一个历史行的时间戳。返回值为0，除非碰上无效选项，当读取或写入历史文件时发生错误，提供无效的 offset 参数给 -d，或提供给 -p 选项的历史扩展参数失败。
