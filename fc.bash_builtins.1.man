@@ -1,0 +1,45 @@
+
+       fc [-e ename] [-lnr] [first] [last]
+       fc -s [pat=rep] [cmd]
+              Fix  Command.  In the first form, a range of commands from first
+              to last is selected from the history list.  First and  last  may
+              be  specified  as a string (to locate the last command beginning
+              with that string) or as a number  (an  index  into  the  history
+              list, where a negative number is used as an offset from the cur-
+              rent command number).  If last is not specified it is set to the
+              current  command  for  listing (so that ‘‘fc -l -10’’ prints the
+              last 10 commands) and to first otherwise.  If first is not spec-
+              ified  it is set to the previous command for editing and -16 for
+              listing.
+			  
+			  修复命令。 在第一种形式中，从历史列表中选择从 first 到 last 的一系列命令。 可以将 first 和 last 指定为字符串（以定位以该字符串开头的最后一个命令）或指定为数字（历史列表中的索引，其中负数用作当前命令编号的偏移量）。 如果未指定 last，则将其设置为当前命令以用于列表命令（因此 ''fc -l -10'' 打印最后 10 个命令），否则设置为 first。 如果未指定 first，则将其设置为上一个命令以用于编辑，将 -16 用于列表。
+
+              The -n option suppresses the command numbers when listing.   The
+              -r  option reverses the order of the commands.  If the -l option
+              is given, the commands are listed on  standard  output.   Other-
+              wise,  the editor given by ename is invoked on a file containing
+              those commands.  If ename is not given, the value of the  FCEDIT
+              variable  is used, and the value of EDITOR if FCEDIT is not set.
+              If neither variable is set, vi is used.  When  editing  is  com-
+              plete, the edited commands are echoed and executed.
+			  
+			  -n 选项在列出时禁止命令编号。 -r 选项反转命令的顺序。 如果给出 -l 选项，则命令将列在标准输出中。 否则，将在包含这些命令的文件上调用 ename 给出的编辑器。 如果未给出 ename，则使用 FCEDIT 变量的值，如果未设置 FCEDIT，则使用 EDITOR 的值。 如果两个变量都未设置，则使用 vi。 编辑完成后，将回显并执行编辑的命令。
+
+              In  the  second form, command is re-executed after each instance
+              of pat is replaced by rep.  A useful alias to use with  this  is
+              ‘‘r="fc  -s"’’,  so  that  typing ‘‘r cc’’ runs the last command
+              beginning with ‘‘cc’’ and typing ‘‘r’’ re-executes the last com-
+              mand.
+			  
+			  在第二种形式中，在每个 pat 实例被 rep 替换之后重新执行命令。 与此一起使用的有用别名是 ''r =“fc -s”''，因此键入 ''r cc'' 运行以 ''cc' 开头的最后一个命令并输入 ''r'' 重新执行最后一个命令。
+
+              If  the  first  form  is  used,  the return value is 0 unless an
+              invalid option is encountered or first or last  specify  history
+              lines  out  of  range.  If the -e option is supplied, the return
+              value is the value of the last command executed or failure if an
+              error occurs with the temporary file of commands.  If the second
+              form is used, the return status is that of the  command  re-exe-
+              cuted,  unless  cmd  does  not  specify a valid history line, in
+              which case fc returns failure.
+			  
+			  如果使用第一种形式，则返回值为 0，除非遇到无效选项或 first 或 last 指定历史记录行超出范围。 如果提供了 -e 选项，则返回值是执行的最后一个命令的值，如果命令的临时文件发生错误，则返回失败。 如果使用第二种形式，则返回状态是重新执行的命令的状态，除非 cmd 未指定有效的历史记录行，在这种情况下，fc 将返回失败。
