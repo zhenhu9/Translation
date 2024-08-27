@@ -29,14 +29,14 @@ HISTORY EXPANSION										历史纪录扩展
        default.  Only backslash (\) and single quotes can  quote  the  history
        expansion character.
 	   
-	   在读取完整行之后，在 shell 将其分解为单词之前，立即执行历史记录扩展。 它分两部分进行。 首先是确定在替换期间使用历史列表中的哪一行。 然后是选择该行的部分以包含在当前行中。 从历史记录中选择的行是事件，并且该行的部分是单词。 各种修饰符可用于操作所选单词。 该行以与读取输入时相同的方式被分成单词，因此被引号括起的几个由元字符分隔的单词被认为是一个单词。 历史扩展是由历史扩展字符的出现引入的，默认情况下 !。 只有反斜杠（\）和单引号才能引用历史记录扩展字符。
+	   在读取完整行之后，在 shell 将其分解为词元之前，立即执行历史记录扩展。 它分两部分进行。 首先是确定在替换时使用历史列表中的哪一行。 然后是选择该行的部分以包含在当前行中。 从历史记录中选择的行是事件，并且该行中采取行动的部分是词。 各种修饰符可用于操作所选词。 该行以与读取输入时相同的方式被分成词，因此被引号括起的几个由元字符分隔的单词被认为是一个词。 历史扩展是由历史扩展字符的出现引入的，默认情况下 !。 只有反斜杠（\）和单引号才能引用历史记录扩展字符。
 
        Several  characters inhibit history expansion if found immediately fol-
        lowing the history expansion character, even if it is unquoted:  space,
        tab,  newline,  carriage return, and =.  If the extglob shell option is
        enabled, ( will also inhibit expansion.
 	   
-	   如果在历史扩展字符之后立即找到几个字符，则会禁止历史扩展，即使它没有引用：空格，制表符，换行符，回车符和 =。 如果启用了 shell 选项 extglob ，( 也将禁止扩展。
+	   如果在历史扩展字符之后立即找到几个字符，则会禁止历史扩展，即使它没有被引号括起：空格，制表符，换行符，回车符和 =。 如果启用了 shell 选项 extglob ，( 也将禁止扩展。
 
        Several shell options settable with the shopt builtin may  be  used  to
        tailor  the  behavior  of  history  expansion.  If the histverify shell
