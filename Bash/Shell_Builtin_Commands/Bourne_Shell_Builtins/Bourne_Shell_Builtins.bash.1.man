@@ -1,0 +1,5 @@
+The following shell builtin commands are inherited from the Bourne
+Shell.  These commands are implemented as specified by the POSIX
+standard.
+
+以下 shell 内置命令从 Bourne Shell 继承而来。这些命令由 POSIX 标准指定实现。
