@@ -1,0 +1,128 @@
+   Pathname Expansion
+   路径名称扩展
+
+       After  word  splitting,  unless  the -f option has been set, bash scans
+       each word for the characters *, ?, and [.  If one of  these  characters
+       appears,  then  the word is regarded as a pattern, and replaced with an
+       alphabetically sorted list of file names matching the pattern.   If  no
+       matching  file  names  are  found, and the shell option nullglob is not
+       enabled, the word is left unchanged.  If the nullglob  option  is  set,
+       and  no  matches are found, the word is removed.  If the failglob shell
+       option is set, and no matches are found, an error  message  is  printed
+       and  the  command  is  not executed.  If the shell option nocaseglob is
+       enabled, the match is performed without regard to the  case  of  alpha-
+       betic  characters.   When a pattern is used for pathname expansion, the
+       character ‘‘.’’  at the start of a  name  or  immediately  following  a
+       slash  must  be  matched explicitly, unless the shell option dotglob is
+       set.  When matching a pathname, the  slash  character  must  always  be
+       matched  explicitly.   In  other  cases,  the  ‘‘.’’   character is not
+       treated specially.  See the description  of  shopt  below  under  SHELL
+       BUILTIN  COMMANDS  for a description of the nocaseglob, nullglob, fail-
+       glob, and dotglob shell options.
+
+
+	单词分拆后，除非设置了 -f 选项，否则 bash 会扫描每个单词中的字符 *，? 和 [。  如果出现其中一个字符，则该单词被视为模式，并替换为与该模式匹配的按字母顺序排列的文件名列表。 如果找不到匹配的文件名，并且未启用 shell 选项 nullglob，则该单词保持不变。如果设置了 nullglob 选项，并且未找到匹配项，则删除该单词。如果设置了 shell 选项  failglob，但未找到匹配项，则会打印一条错误消息并且不执行该命令。如果启用了 shell 选项 nocaseglob，则执行匹配而不考虑字母字符大小写的情况。当模式用于路径名扩展时，除非设置了 shell 选项 dotglob，否则必须明确匹配字符 “.” 开头的或紧跟斜杠在后面的名称。匹配路径名时，必须始终明确匹配斜杠字符。在其它情况下，''.'' 字符不会被特别处理。有关 shell 选项 nocaseglob，nullglob，failglob 和 dotglob 的说明，请参阅 SHELL BUILTIN COMMANDS 下面的 shopt 说明。
+
+       The GLOBIGNORE shell variable may be used to restrict the set  of  file
+       names  matching  a  pattern.   If GLOBIGNORE is set, each matching file
+       name that also matches one of the patterns  in  GLOBIGNORE  is  removed
+       from the list of matches.  The file names ‘‘.’’  and ‘‘..’’  are always
+       ignored when GLOBIGNORE is set and not null.  However, setting  GLOBIG-
+       NORE  to  a non-null value has the effect of enabling the dotglob shell
+       option, so all other file names beginning with a ‘‘.’’  will match.  To
+       get  the  old  behavior  of ignoring file names beginning with a ‘‘.’’,
+       make ‘‘.*’’  one of the patterns in GLOBIGNORE.  The dotglob option  is
+       disabled when GLOBIGNORE is unset.
+
+	shell 变量 GLOBIGNORE 可用于限制与模式匹配的文件名称设置。 如果设置了 GLOBIGNORE，则与 GLOBIGNORE 中的某个模式匹配的每个匹配文件名称，将从匹配列表中删除。 设置 GLOBIGNORE 时，文件名 ''.'' 和 ''..'' 将始终被忽略，而不是 null。 但是，将 GLOBIGNORE 设置为非空值，会启用 shell 选项 dotglob，因此所有其它以 “.” 开头的文件名都将匹配。 为了获得忽略以 ''.'' 开头的文件名的旧行为，请将 ''.*'' 作为 GLOBIGNORE 中的一种模式。 重置 GLOBIGNORE 时，将禁用 dotglob 选项。
+
+       Pattern Matching
+	模式匹配
+
+       Any character that appears in a pattern, other than the special pattern
+       characters described below, matches itself.  The NUL character may  not
+       occur  in  a pattern.  A backslash escapes the following character; the
+       escaping backslash is discarded when  matching.   The  special  pattern
+       characters must be quoted if they are to be matched literally.
+
+	除了下面描述的特殊模式字符之外，模式中出现的任何字符都与其自身匹配。 NUL 字符可能不会出现在模式中。 反斜杠会转义以下字符；匹配时丢弃转义反斜杠字符。 如果要按字面匹配特殊模式字符，则必须用括号括起。
+
+       The special pattern characters have the following meanings:
+	特殊模式字符具有以下含义：
+
+       *      Matches  any  string, including the null string.  When the glob-
+              star shell option is enabled, and * is used in a pathname expan-
+              sion  context,  two  adjacent  *s  used as a single pattern will
+              match all files and zero or more directories and subdirectories.
+              If  followed by a /, two adjacent *s will match only directories
+              and subdirectories.
+
+	*	  匹配任何字符串，包括空字符串。 启用 shell 选项 globstar ，并在路径名扩展上下文中使用 * 时，用作单个模式的两个相邻 *s 将匹配所有文件以及零个或多个目录和子目录。 如果后跟一个 /，则两个相邻的 *s 将仅匹配目录和子目录。
+
+       ?      Matches any single character.
+	?	匹配任何单个字符。
+
+       [...]  Matches any one of the enclosed characters.  A pair  of  charac-
+              ters separated by a hyphen denotes a range expression; any char-
+              acter that sorts between those two characters, inclusive,  using
+              the  current  locale’s  collating sequence and character set, is
+              matched.  If the first character following the [ is a !  or a  ^
+              then  any  character not enclosed is matched.  The sorting order
+              of characters in range expressions is determined by the  current
+              locale  and  the value of the LC_COLLATE shell variable, if set.
+              A - may be matched by including it as the first or last  charac-
+              ter in the set.  A ] may be matched by including it as the first
+              character in the set.
+	[...]	匹配任何一个括起的字符。 用连字符分隔的一对字符表示范围表达式； 使用当前区域设置的整理顺序和字符集，在这两个字符之间进行排序的任何字符（这两个字符包含在内）都是匹配的。 如果 [ 后面的第一个字符是 ! 或者 ^， 则匹配任何未包含的字符。 范围表达式中字符的排序顺序由当前语言环境和 shell 变量 LC_COLLATE 的值（如果已设置）决定。 可以通过将 - 包括在集合中，作为第一个或最后一个字符来匹配。 可以通过将 ] 包括在集合中，作为第一个字符来匹配。
+
+              Within [ and ], character classes can  be  specified  using  the
+              syntax  [:class:],  where  class is one of the following classes
+              defined in the POSIX standard:
+
+		在 [ 和 ] 中，可以使用语法 [:class:] 指定字符类，其中 class 是 POSIX 标准中定义的以下类之一：
+
+              alnum alpha ascii blank cntrl  digit  graph  lower  print  punct
+              space upper word xdigit
+
+              A character class matches any character belonging to that class.
+              The word character class matches letters, digits, and the  char-
+              acter _.
+
+		字符类匹配属于该类的任何字符。 word 字符类匹配字母，数字和字符 _。
+
+              Within  [ and ], an equivalence class can be specified using the
+              syntax [=c=], which matches all characters with the same  colla-
+              tion  weight (as defined by the current locale) as the character
+              c.
+
+		在 [ 和 ] 中，可以使用语法 [=c=] 指定等价类，该语法匹配具有相同排序权重（由当前区域设置定义）的所有字符，正如字符 c。
+
+              Within [ and ], the syntax [.symbol.] matches the collating sym-
+              bol symbol.
+
+		在 [ 和 ] 中，语法 [.symbol.] 匹配整理符号 symbol。
+
+       Several  extended  pattern  matching  operators are recognized.  In the
+       following description, a pattern-list is a list of one or more patterns
+       separated  by  a |.  Composite patterns may be formed using one or more
+       of the following sub-patterns:
+
+	被识别的几个扩展模式匹配运算符。 在以下描述中，pattern-list 是由 | 分隔的一个或多个模式的列表。 可以使用以下子模式中的一个或多个来形成复合模式：
+
+              ?(pattern-list)
+                     Matches zero or one occurrence of the given patterns				匹配给定模式的零次或一次匹配项。
+              *(pattern-list)
+                     Matches zero or more occurrences of the given patterns				匹配给定模式的零次或多次匹配项。
+              +(pattern-list)
+                     Matches one or more occurrences of the given patterns				匹配给定模式的一次或多次匹配项。
+              @(pattern-list)
+                     Matches one of the given patterns							匹配给定模式之一。
+
+       If the extglob shell option is enabled using the shopt builtin, follow-
+       ing pattern matching operator is recognized as well:
+
+	   如果使用内置命令 shopt 启用了 shell 选项 extglob，则还会识别以下模式匹配运算符：
+
+              !(pattern-list)
+                     Matches anything except one of the given patterns					匹配除了给定模式之外的任何内容。
+
