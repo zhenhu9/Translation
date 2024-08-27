@@ -1,0 +1,21 @@
+'. (a period)'
+          . FILENAME [ARGUMENTS]
+
+     Read and execute commands from the FILENAME argument in the current
+     shell context.  If FILENAME does not contain a slash, the 'PATH'
+     variable is used to find FILENAME, but FILENAME does not need to be
+     executable.  When Bash is not in POSIX mode, it searches the
+     current directory if FILENAME is not found in '$PATH'.  If any
+     ARGUMENTS are supplied, they become the positional parameters when
+     FILENAME is executed.  Otherwise the positional parameters are
+     unchanged.  If the '-T' option is enabled, '.' inherits any trap on
+     'DEBUG'; if it is not, any 'DEBUG' trap string is saved and
+     restored around the call to '.', and '.' unsets the 'DEBUG' trap
+     while it executes.  If '-T' is not set, and the sourced file
+     changes the 'DEBUG' trap, the new value is retained when '.'
+     completes.  The return status is the exit status of the last
+     command executed, or zero if no commands are executed.  If FILENAME
+     is not found, or cannot be read, the return status is non-zero.
+     This builtin is equivalent to 'source'.
+
+     在当前 shell 环境读取并执行 FILENAME 参数。如果 FILENAME 未包含任何斜杠， ’PATH‘ 变量被用来查找 FILENAME，但 FILENAME 没有必要是可执行的。当 Bash 不是 POSIX 模式，如果 FILENAME 没有在 ’$PATH‘ 找到，则搜索当前目录。如果提供任何参数，当执行 FILENAME 时，则为位置参数。除非位置参数不可改变。如果开启 ’-T‘ 选项，’.‘ 继承任何对 ’DEBUG‘ 的陷阱；如果未开启，则保存任何 ‘DEBUG’ 陷阱并且在回调 ’.‘，并且 ’.‘ 在其执行时重置 ‘DEBUG’ 陷阱。如果 ‘-T’ 未设置， 被引进的文件改变 ‘DEBUG’ 陷阱，当 ‘.’ 完成时，将返回新值。返回状态为最后一个命令的推出状态，或 0 如果没有执行命令。如果 FILENAME 未找到，或无法读取，返回状态为非 0。该内置命令等同 ‘source’。
