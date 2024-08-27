@@ -5,14 +5,14 @@ HISTORY EXPANSION										历史纪录扩展
        shells, and can be disabled using the +H option to the set builtin com-
        mand (see SHELL BUILTIN COMMANDS below).  Non-interactive shells do not
        perform history expansion by default.
-	   
+
 	   shell 支持历史记录扩展功能，类似于 csh 中的历史记录扩展。 本节介绍可用的语法功能。 对于交互式 shell，此功能默认启用，可以使用内置命令 set 的 +H 选项禁用此功能（请参阅下面的 SHELL BUILTIN COMMANDS）。 默认情况下，非交互式 shell 不会执行历史记录扩展。
 
        History expansions introduce words from the history list into the input
        stream,  making  it  easy to repeat commands, insert the arguments to a
        previous command into the current input line, or fix errors in previous
        commands quickly.
-	   
+
 	   历史记录扩展将历史列表中的单词引入输入流，从而可以轻松地重复命令，将前一个命令的参数插入当前输入行，或者快速修复先前命令中的错误。
 
        History  expansion  is  performed  immediately after a complete line is
@@ -28,14 +28,14 @@ HISTORY EXPANSION										历史纪录扩展
        the  appearance  of  the  history  expansion  character,  which is ! by
        default.  Only backslash (\) and single quotes can  quote  the  history
        expansion character.
-	   
+
 	   在读取完整行之后，在 shell 将其分解为词元之前，立即执行历史记录扩展。 它分两部分进行。 首先是确定在替换时使用历史列表中的哪一行。 然后是选择该行的部分以包含在当前行中。 从历史记录中选择的行是事件，并且该行中采取行动的部分是词。 各种修饰符可用于操作所选词。 该行以与读取输入时相同的方式被分成词，因此被引号括起的几个由元字符分隔的单词被认为是一个词。 历史扩展是由历史扩展字符的出现引入的，默认情况下 !。 只有反斜杠（\）和单引号才能引用历史记录扩展字符。
 
        Several  characters inhibit history expansion if found immediately fol-
        lowing the history expansion character, even if it is unquoted:  space,
        tab,  newline,  carriage return, and =.  If the extglob shell option is
        enabled, ( will also inhibit expansion.
-	   
+
 	   如果在历史扩展字符之后立即找到几个字符，则会禁止历史扩展，即使它没有被引号括起：空格，制表符，换行符，回车符和 =。 如果启用了 shell 选项 extglob ，( 也将禁止扩展。
 
        Several shell options settable with the shopt builtin may  be  used  to
@@ -51,30 +51,30 @@ HISTORY EXPANSION										历史纪录扩展
        option to the history builtin may be used to add commands to the end of
        the  history  list  without  actually  executing them, so that they are
        available for subsequent recall.
-	   
+
 	   可以使用内置命令 shopt 可设置的几个 shell 选项来定制历史扩展的行为。 如果启用了 shell 选项 histverify（请参阅下面内置命令 shopt 的说明），并且正在使用 readline，则历史记录替换不会立即传递给 shell 解析器。 而是将展开的行重新加载到 readline 编辑缓冲区中，以进行进一步修改。 如果正在使用 readline，并且启用了 shell 选项 histreedit，则会将失败的历史记录替换重新加载到 readline 编辑缓冲区中，以进行更正。 内置命令 history 的 -p 选项可用于查看历史扩展在使用之前将执行的操作。 内置命令 history 的 -s 选项，可用于将命令添加到历史列表的末尾，而不实际执行它们，以便它们可用于后续调用。
 
        The shell allows control of the various characters used by the  history
        expansion mechanism (see the description of histchars above under Shell
        Variables).  The shell uses the history comment character to mark  his-
        tory timestamps when writing the history file.
-	   
+
 	   shell 允许控制历史扩展机制使用的各种字符（参阅 Shell Variables 下面的 histchars 描述）。 shell 在编写历史文件时，使用历史注释字符标记历史时间戳。
 
-   Event Designators																	事件指示符
+   Event Designators										事件指示符
        An  event designator is a reference to a command line entry in the his-
        tory list.
-	   
+
 	   事件指示符是对历史列表中的命令行条目的引用。
 
        !      Start a history substitution, except when followed by  a  blank,
               newline,  carriage return, = or ( (when the extglob shell option
               is enabled using the shopt builtin).
-			  
-			  启动历史记录替换，除非后跟空格，换行符，回车符，= 或 (（当使用内置命令 shopt 启用 shell 选项 extglob 时）。
-			  
-       !n     Refer to command line n.													指的是命令行 n。
-       !-n    Refer to the current command line minus n.								指的是当前命令行减 n。
+
+		  启动历史记录替换，除非后跟空格，换行符，回车符，= 或 (（当使用内置命令 shopt 启用 shell 选项 extglob 时）。
+
+       !n     Refer to command line n.									指的是命令行 n。
+       !-n    Refer to the current command line minus n.						指的是当前命令行减 n。
        !!     Refer to the previous command.  This is a synonym for ‘!-1’.				指的是前一个命令。这等同于 ‘!-1’。
        !string
               Refer to the most recent command starting with string.					指的是以 string 开头的最近的命令。
@@ -82,14 +82,90 @@ HISTORY EXPANSION										历史纪录扩展
               Refer to the most recent command containing string.  The  trail-
               ing ? may be omitted if string is followed immediately by a new-
               line.
-			  
-			  指的是包含 string 的最近的命令。 如果 string 紧跟换行符，则可以省略尾部 ?。
-			  
+
+		 指的是包含 string 的最近的命令。如果 string 紧跟换行符，则可以省略尾部 ?。
+
        ^string1^string2^
               Quick substitution.  Repeat the last command, replacing  string1
               with string2.  Equivalent to ‘‘!!:s/string1/string2/’’ (see Mod-
               ifiers below).
+
+		 快速替换。 重复上一个命令，将 string1 替换为 string2。 相当于 ‘‘!!:s/string1/string2/’’（参阅下面的 Modifiers）。
+
+       !#     The entire command line typed so far.  							到目前为止输入的整个命令行。
+
+   Word Designators
+		词指示符
+       Word designators are used to select desired words from the event.  A  :
+       separates  the event specification from the word designator.  It may be
+       omitted if the word designator begins with a ^, $, *, -, or  %.   Words
+       are  numbered from the beginning of the line, with the first word being
+       denoted by 0 (zero).  Words are inserted into the  current  line  sepa-
+       rated by single spaces.
+
+	   Word 指示符用于从事件中选择所需的单词。 : 将事件规范与单词指示符分开。 如果单词指示符以 ^，$，*， - 或 % 开头，则可以省略它。 单词从行的开头编号，第一个单词用 0（零）表示。 将单词插入由单个空格分隔的当前行。
+
+       0 (zero)
+              The zeroth word.  For the shell, this is the command word.				第 0 个字。 对于 shell，这是命令字。
+       n      The nth word.										第 n 个字。
+       ^      The first argument.  That is, word 1.							第一个参数。 也就是单词 1。
+       $      The last argument.									最后一个参数。
+       %      The word matched by the most recent ‘?string?’ search.					这个词与最近的 '?string?' 搜索相匹配。
+       x-y    A range of words; ‘-y’ abbreviates ‘0-y’.							词的范围； '0-y' 的缩写 '-y'。
+       *      All  of  the words but the zeroth.  This is a synonym for ‘1-$’.
+              It is not an error to use * if there is just  one  word  in  the
+              event; the empty string is returned in that case.
+
+		所有的词，除了第零个。 这等同 '1-$'。 如果事件中只有一个单词，则使用 * 不是错误的； 在这种情况下，返回空字符串。
+
+       x*     Abbreviates x-$.										x-$ 的缩写。
+       x-     Abbreviates x-$ like x*, but omits the last word.						像 x* ，x-$ 的缩写，但是忽略最后一个词。
+
+       If  a  word  designator is supplied without an event specification, the
+       previous command is used as the event.
+
+	   如果在没有事件规范的情况下提供字指示符，则将上一个命令作为事件。
+
+   Modifiers
+		修饰符
+       After the optional word designator, there may appear a sequence of  one
+       or more of the following modifiers, each preceded by a ‘:’.
+
+	   在可选的单词指示符之后，可能会出现一个或多个以下修饰符的序列，每个修饰符前面都有一个 ':'。
+
+       h      Remove a trailing file name component, leaving only the head.				删除尾部文件名组成部分，只留下头部。
+       t      Remove all leading file name components, leaving the tail.				删除所有前导文件名组成部分，留下尾部。
+       r      Remove a trailing suffix of the form .xxx, leaving the basename.				删除 .xxx 格式的尾随后缀，保留基本名称。
+       e      Remove all but the trailing suffix.							删除除尾随后缀之外的所有内容。
+       p      Print the new command but do not execute it.						打印新命令但不执行它。
+       q      Quote the substituted words, escaping further substitutions.				引用替换的单词，转义进一步的替换。
+       x      Quote the substituted words as with q, but break into  words  at
+              blanks and newlines.
+
+		引用替换的单词与 q 一样，但在空白和换行符处分成单词。
 			  
-			  快速替换。 重复上一个命令，将 string1 替换为 string2。 相当于 ‘‘!!:s/string1/string2/’’（参阅下面的 Modifiers）。
+       s/old/new/
+              Substitute  new  for  the  first  occurrence of old in the event
+              line.  Any delimiter can be used  in  place  of  /.   The  final
+              delimiter  is  optional if it is the last character of the event
+              line.  The delimiter may be quoted in old and new with a  single
+              backslash.   If & appears in new, it is replaced by old.  A sin-
+              gle backslash will quote the &.  If old is null, it  is  set  to
+              the  last  old substituted, or, if no previous history substitu-
+              tions took place, the last string in a !?string[?]  search.
+
+		 在事件行中替换 new 为第一次出现的 old。 可以使用任何分隔符代替 /。 如果最终分隔符是事件行的最后一个字符，则它是可选的。 可以使用单个反斜杠在 old 和 new 中引用分隔符。 如果 & 出现在 new 中，它将被 old 的替换。 单个反斜杠将引用 &。 如果 old 为 null，则将其设置为最后一个 old 的替换，或者，如果没有发生先前的历史记录替换，则为 !?string[?] 搜索中的最后一个字符串。
 			  
-       !#     The entire command line typed so far.  									到目前为止输入的整个命令行。
+       &      Repeat the previous substitution.								重复上一次替换。
+       g      Cause changes to be applied over the entire event line.  This is
+              used  in  conjunction  with ‘:s’ (e.g., ‘:gs/old/new/’) or ‘:&’.
+              If used with ‘:s’, any delimiter can be used in place of /,  and
+              the  final  delimiter is optional if it is the last character of
+              the event line.  An a may be used as a synonym for g.
+
+		 导致更改应用于整个事件行。 这与 ':s'（例如 ':gs/old/new/'）或 ':&' 一起使用。 如果与 ':s' 一起使用，则可以使用任何分隔符代替 /，如果它是事件行的最后一个字符，则最终分隔符是可选的。 a 可以用作 g 的同义词。
+
+       G      Apply the following ‘s’ modifier once to each word in the  event
+              line.
+
+		  将以下 's' 修饰符应用于事件行中的每个单词。
