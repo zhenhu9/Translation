@@ -1,0 +1,45 @@
+4 Shell Builtin Commands
+************************
+
+Builtin commands are contained within the shell itself.  When the name
+of a builtin command is used as the first word of a simple command
+(*note Simple Commands::), the shell executes the command directly,
+without invoking another program.  Builtin commands are necessary to
+implement functionality impossible or inconvenient to obtain with
+separate utilities.
+
+   This section briefly describes the builtins which Bash inherits from
+the Bourne Shell, as well as the builtin commands which are unique to or
+have been extended in Bash.
+
+   Several builtin commands are described in other chapters: builtin
+commands which provide the Bash interface to the job control facilities
+(*note Job Control Builtins::), the directory stack (*note Directory
+Stack Builtins::), the command history (*note Bash History Builtins::),
+and the programmable completion facilities (*note Programmable
+Completion Builtins::).
+
+   Many of the builtins have been extended by POSIX or Bash.
+
+   Unless otherwise noted, each builtin command documented as accepting
+options preceded by '-' accepts '--' to signify the end of the options.
+The ':', 'true', 'false', and 'test'/'[' builtins do not accept options
+and do not treat '--' specially.  The 'exit', 'logout', 'return',
+'break', 'continue', 'let', and 'shift' builtins accept and process
+arguments beginning with '-' without requiring '--'.  Other builtins
+that accept arguments but are not specified as accepting options
+interpret arguments beginning with '-' as invalid options and require
+'--' to prevent this interpretation.
+
+4 Shell 内置命令
+************************
+
+内置命令包含在 shell 本身内。 当内置命令的名称作为一个简单命令的地一个词（查看简单命令），shell 直接执行该命令而不用调用其它程序。内置命令在实现不可能或不方便获得单独的实用工具时非常有必要。
+
+    本章节简述了从 Bourne Shell 继承的内置命令，它们要么是独特的要么是一在 Bash 中扩展。
+
+    一些内置命令在其它章节中介绍：内置命令提供了对作业控制设施（查看作业控制内置命令::），目录栈（查看目录栈内置命令::），命令历史（查看 Bash 历史内置命令::），以及可编程补全设施（查看可编程补全内置命令::）。
+
+    许多命令已经被 POSIX 或 Bash 扩展。
+
+    除非另有提及，每个内置命令都被记录为接受具有前置 ‘-’ 的选项，接受 ‘--’ 选项表示最后的选项。‘:’、‘true’、‘false’ 以及 ‘test [’ 内置命令不接受并且不特别对待 ’--‘。’exit‘、’logout‘、’break‘、’continue‘、’let‘、 以及 ’shift‘ 内置命令接受并处理以 ’-‘ 开头的选项，而不需要 ’--‘ 选项。接受参数但未特别指出视以 ’-‘ 开头的选项为无效选项的其它内置命令需要 ’--‘ 选项来禁止此解析。
