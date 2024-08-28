@@ -1,0 +1,97 @@
+QUOTING		引用
+       Quoting is used to remove the special meaning of certain characters  or
+       words  to  the shell.  Quoting can be used to disable special treatment
+       for special characters, to prevent reserved words from being recognized
+       as such, and to prevent parameter expansion.
+
+	引用用于移除 shell 中某些字符或词的特殊含义。 引用可用于禁用特殊字符的特殊处理，以防止保留字被识别，并防止参数扩展。
+
+       Each  of  the metacharacters listed above under DEFINITIONS has special
+       meaning to the shell and must be quoted if it is to represent itself.
+
+	上面在 DEFINITIONS 下列出的每个元字符对 shell 具有特殊含义，如果要表示自身，则必须将其括起来。
+
+       When the command history expansion facilities are being used (see  HIS-
+       TORY EXPANSION below), the history expansion character, usually !, must
+       be quoted to prevent history expansion.
+
+	使用命令历史记录扩展功能时（请参阅下面的 HISTORY EXPANSION），必须括起历史记录扩展字符（通常为 !）以防止历史记录扩展。
+
+       There are  three  quoting  mechanisms:  the  escape  character,  single
+       quotes, and double quotes.
+
+	有三种引用机制：转义字符，单引号和双引号。
+
+       A  non-quoted  backslash (\) is the escape character.  It preserves the
+       literal value of the next character that follows, with the exception of
+       <newline>.   If  a  \<newline>  pair  appears, and the backslash is not
+       itself quoted, the \<newline> is treated as a line  continuation  (that
+       is, it is removed from the input stream and effectively ignored).
+
+	未用引号括起的反斜杠（\）是转义字符。 它保留了其后跟随的下一个字符的字面值，但 <newline> 除外。 如果出现 \<newline> 对，并且反斜杠本身不被引号括起，则将 \<newline> 视为行延续（即，它将从输入流中删除并被有效忽略）。
+
+       Enclosing  characters  in  single quotes preserves the literal value of
+       each character within the quotes.  A single quote may not occur between
+       single quotes, even when preceded by a backslash.
+
+	用单引号括起字符可以保留引号中每个字符的字面值。 单引号之间可能不会出现单个单引号，即使前置反斜杠也是如此。
+
+       Enclosing  characters  in  double quotes preserves the literal value of
+       all characters within the quotes, with the exception of $, `,  \,  and,
+       when  history  expansion  is enabled, !.  The characters $ and ` retain
+       their special meaning within double quotes.  The backslash retains  its
+       special  meaning only when followed by one of the following characters:
+       $, `, ", \, or <newline>.  A double quote may be quoted  within  double
+       quotes by preceding it with a backslash.  If enabled, history expansion
+       will be performed unless an !  appearing in double  quotes  is  escaped
+       using a backslash.  The backslash preceding the !  is not removed.
+
+	用双引号括起字符可以保留引号内所有字符的字面值，但 $，`，\ 除外，并且，当启用历史记录扩展时，!。 字符 $ 和 ` 在双引号中保留其特殊含义。 反斜杠只有在跟随以下字符之一时才保留其特殊含义：$，`，“，\ 或 <newline>。双引号可以在双引号之间被引用，在其前面加一个反斜杠。如果启用历史扩展， 除非使用反斜杠转义出现在双引号中的 !，否则将执行历史扩展。 前置 ! 的反斜杠不会被移除。
+
+       The  special  parameters  *  and  @ have special meaning when in double
+       quotes (see PARAMETERS below).
+
+	在双引号中，特殊参数 * 和 @ 具有特殊含义（参阅下面的 PARAMETERS）。
+
+       Words of the form $'string' are treated specially.  The word expands to
+       string,  with backslash-escaped characters replaced as specified by the
+       ANSI C standard.  Backslash escape sequences, if present,  are  decoded
+       as follows:
+
+	$'string' 形式的词是专门处理的。 词扩展为字符串，替换为 ANSI C 标准指定的反斜杠转义字符。 反斜杠转义序列（如果存在）按如下方式解码：
+	   
+              \a     alert (bell)		警报（铃）
+              \b     backspace			回退
+              \e
+              \E     an escape character	转义字符
+              \f     form feed			换页
+              \n     new line			换行
+              \r     carriage return		回车
+              \t     horizontal tab		水平制表符
+              \v     vertical tab		垂直制表符
+              \\     backslash			反斜杠
+              \'     single quote		单引号
+              \"     double quote		双引号
+              \nnn   the  eight-bit  character  whose value is the octal value
+                     nnn (one to three digits)
+
+		八位字符，其值为八进制值 nnn（一到三位数字）
+
+              \xHH   the eight-bit character whose value  is  the  hexadecimal
+                     value HH (one or two hex digits)
+
+		八位字符，其值为十六进制值 HH（一个或两个十六进制数字）
+
+              \cx    a control-x character	一个 control-x 字符
+
+       The  expanded  result  is  single-quoted, as if the dollar sign had not
+       been present.
+
+	扩展结果是单引号括起的，好像美元符号不存在一样。
+
+       A double-quoted string preceded by a dollar sign ($"string") will cause
+       the  string  to  be translated according to the current locale.  If the
+       current locale is C or POSIX, the  dollar  sign  is  ignored.   If  the
+       string is translated and replaced, the replacement is double-quoted.
+
+	前置美元符号双引号括起的字符串（$“string”），将导致字符串根据当前语言环境进行转换。 如果当前语言环境设置为 C 或 POSIX，则忽略美元符号。 如果转换并替换字符串，则替换被双引号括起。
