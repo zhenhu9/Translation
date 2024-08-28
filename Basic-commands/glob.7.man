@@ -1,0 +1,169 @@
+GLOB(7)				 Linux Programmer's Manual			   GLOB(7)
+
+NAME
+       glob - globbing pathnames	匹配路径名
+
+DESCRIPTION
+       Long ago, in UNIX V6, there was a program /etc/glob that would expand wildcard pat‐
+       terns.  Soon afterward this became a shell built-in.
+
+	很久以前，在 UNIX V6 版中，有一个程序 /etc/glob 可以扩展通配符模式。不久以后该程序就变成 shell 内置命令。
+
+       These days there is also a library routine glob(3) that will perform this  function
+       for a user program.
+
+	如今库例行程序 glob(3) 会为用户程序执行该功能。
+
+       The rules are as follows (POSIX.2, 3.13).
+	规则遵循 (POSIX.2, 3.13)。
+
+   Wildcard matching		通配符匹配
+       A  string  is  a	 wildcard pattern if it contains one of the characters '?', '*' or
+       '['.  Globbing is the operation that expands a wildcard pattern into  the  list	of
+       pathnames matching the pattern.	Matching is defined by:
+
+	如果一个字符串包含任一字符 ‘?’，‘*’ 或 ‘[’ ，其为一个通配符模式。
+
+       A '?' (not between brackets) matches any single character.
+
+	不在括号内的 ‘?' 匹配任何单一字符。
+
+       A '*' (not between brackets) matches any string, including the empty string.
+
+	不在括号内的 ’*‘ 匹配任何字符串，包含空字符。
+
+       Character classes	字符类
+
+       An expression "[...]" where the first character after the leading '[' is not an '!'
+       matches a single character, namely any of the characters enclosed by the	 brackets.
+       The  string  enclosed by the brackets cannot be empty; therefore ']' can be allowed
+       between the brackets, provided that it is  the  first  character.   (Thus,  "[][!]"
+       matches the three characters '[', ']' and '!'.)
+
+	在前置 ’[‘ 后不是 ’!‘ 字符的表达式 ’[...]‘ 匹配一个字符，也就是说括号内的任何一个字符。由括号括起的字符串不能为空；因此 ’]‘ 被允许放在括号中，作为提供的第一个字符。 （因此，”[][!]“ 可以匹配三个字符 ’[‘，’]‘ 和 ’!‘。）
+       Ranges
+
+       There  is  one  special convention: two characters separated by '-' denote a range.
+       (Thus, "[A-Fa-f0-9]" is equivalent to "[ABCDEFabcdef0123456789]".)  One may include
+       '-'  in	its  literal  meaning by making it the first or last character between the
+       brackets.  (Thus, "[]-]" matches just the two characters ']' and '-',  and  "[--0]"
+       matches the three characters '-', '.', '0', since '/' cannot be matched.)
+
+	一个特殊的惯例： 两个由 ‘-’ 分隔的字符表示范围。（因此，”[A-Fa-f0-9]“ 等同于”[ABCDEFabcdef0123456789]“。）通过将 ’-‘ 放在括号中地一个或最后一个位置表示其字面意思。（因此，”[]-]“ 仅匹配两个字符 ’]’ 和 ‘-’，并且 ”[--0]“ 匹配三个字符 ‘-’，‘.’，‘0’，因为不能匹配 ‘/’。
+
+       Complementation		补全
+
+       An expression "[!...]" matches a single character, namely any character that is not
+       matched by the expression obtained by removing  the  first  '!'	from  it.   (Thus,
+       "[!]a-]" matches any single character except ']', 'a' and '-'.)
+
+	表达式 “[!...]” 匹配单一字符，也就是说通过一处地一个字符 ‘！’，该表达式匹配任意一个字符。（因此，“[!]a-]” 匹配任意一个字符，除了 ‘]’，‘a’ 和 ‘-’。）
+
+       One can remove the special meaning of '?', '*' and '[' by preceding them by a back‐
+       slash, or, in case this is part of a shell command line, enclosing them in  quotes.
+       Between brackets these characters stand for themselves.	Thus, "[[?*\]" matches the
+       four characters '[', '?', '*' and '\'.
+
+	通过前置反斜杠可以移除 ‘？’，‘×’ 和 ‘[’ 的特殊作用，或者，用引号将它们括起作为 shell 命令的一部分。
+
+   Pathnames		路径名
+       Globbing is applied on each of the components of a pathname separately.	A '/' in a
+       pathname cannot be matched by a '?' or '*' wildcard, or by a range like "[.-0]".	 A
+       range containing an explicit '/' character is syntactically incorrect.  (POSIX  re‐
+       quires that syntactically incorrect patterns are left unchanged.)
+
+	匹配分别应用与路径名的每个部分。路径名中的 ‘/’ 无法通过 ‘？’ 或 '*' 通配符匹配，或通过像 “[.-0]” 的范围匹配。在范围内直接包含一个 ‘/’ 字符是语法错误。(POSIX 要求语法错误的模式不变。）
+
+       If a filename starts with a '.', this character must be matched explicitly.  (Thus,
+       rm * will not remove .profile, and tar c * will not archive all your files; tar c .
+       is better.
+
+	如果一个文件以 ‘.’ 开头，该字符必须明确匹配。因此，rm * 不会删除 .profile，并且 tar c * 不会归档你的所有文件；tar c . 会是更好的方式.）
+
+   Empty lists		空列表
+       The  nice  and simple rule given above: "expand a wildcard pattern into the list of
+       matching pathnames" was the original UNIX definition.  It allowed one to have  pat‐
+       terns that expand into an empty list, as in
+
+	以上给出的好而简单的规则是：“将通配符扩展为匹配的文件名列表” 是最初的 UNIX 定义。其允许一个模式扩展为一个空列表，正如：
+
+	   xv -wait 0 *.gif *.jpg
+
+       where  perhaps  no  *.gif  files	 are present (and this is not an error).  However,
+       POSIX requires that a wildcard pattern is left unchanged when it	 is  syntactically
+       incorrect, or the list of matching pathnames is empty.  With bash one can force the
+       classical behavior using this command:
+
+	此处可能不存在 ×.gif 文件（并且这不是一个错误）。然而，POSIX 要求当语法错误时，保持不变，或者匹配的文件名列表为空。Bash 可以使用一下命令强制实行旧的行为：
+	   shopt -s nullglob
+
+       (Similar problems occur elsewhere.  For example, where old scripts have
+	（类似的问题也出现在它处。例如，以前的脚本有
+	   rm `find . -name "*~"`
+
+       new scripts require
+
+	新脚本要求
+
+	   rm -f nosuchfile `find . -name "*~"`
+
+       to avoid error messages from rm called with an empty argument list.)
+
+	以避免来自 rm 空参数列表调用的错误信息。）
+
+NOTES
+   Regular expressions
+       Note that wildcard patterns are not regular expressions, although they  are  a  bit
+       similar.	  First	 of all, they match filenames, rather than text, and secondly, the
+       conventions are not the same: for example, in a regular expression '*'  means  zero
+       or more copies of the preceding thing.
+
+       Now  that  regular expressions have bracket expressions where the negation is indi‐
+       cated by a '^', POSIX has declared the effect of a wildcard pattern "[^...]" to	be
+       undefined.
+
+   Character classes and internationalization
+       Of  course  ranges were originally meant to be ASCII ranges, so that "[ -%]" stands
+       for "[ !"#$%]" and "[a-z]" stands for "any lowercase letter".  Some UNIX	 implemen‐
+       tations	generalized this so that a range X-Y stands for the set of characters with
+       code between the codes for X and for Y.	However, this requires the  user  to  know
+       the character coding in use on the local system, and moreover, is not convenient if
+       the collating sequence for the local alphabet differs  from  the	 ordering  of  the
+       character  codes.  Therefore, POSIX extended the bracket notation greatly, both for
+       wildcard patterns and for regular expressions.  In the above we saw three types	of
+       items  that  can	 occur	in a bracket expression: namely (i) the negation, (ii) ex‐
+       plicit single characters, and (iii) ranges.  POSIX specifies ranges in an  interna‐
+       tionally more useful way and adds three more types:
+
+       (iii)  Ranges  X-Y comprise all characters that fall between X and Y (inclusive) in
+       the current collating sequence as defined by the LC_COLLATE category in the current
+       locale.
+
+       (iv) Named character classes, like
+
+       [:alnum:]  [:alpha:]  [:blank:]	[:cntrl:]
+       [:digit:]  [:graph:]  [:lower:]	[:print:]
+       [:punct:]  [:space:]  [:upper:]	[:xdigit:]
+
+       so  that one can say "[[:lower:]]" instead of "[a-z]", and have things work in Den‐
+       mark, too, where there are three letters past 'z' in the alphabet.  These character
+       classes are defined by the LC_CTYPE category in the current locale.
+
+       (v)  Collating  symbols,	 like  "[.ch.]" or "[.a-acute.]", where the string between
+       "[." and ".]" is a collating element defined for the  current  locale.	Note  that
+       this may be a multicharacter element.
+
+       (vi) Equivalence class expressions, like "[=a=]", where the string between "[=" and
+       "=]" is any collating element from its equivalence class, as defined for	 the  cur‐
+       rent  locale.  For example, "[[=a=]]" might be equivalent to "[aáaäâ]", that is, to
+       "[a[.a-acute.][.a-grave.][.a-umlaut.][.a-circumflex.]]".
+
+SEE ALSO
+       sh(1), fnmatch(3), glob(3), locale(7), regex(7)
+
+COLOPHON
+       This page is part of release 5.10 of the Linux man-pages project.  A description of
+       the project, information about reporting bugs, and the latest version of this page,
+       can be found at https://www.kernel.org/doc/man-pages/.
+
+Linux					2020-08-13				   GLOB(7)
