@@ -139,13 +139,13 @@ NOTES
        plicit single characters, and (iii) ranges.  POSIX specifies ranges in an  interna‐
        tionally more useful way and adds three more types:
 
-	当然范围匹配原本只正在 ASCII 范围内，所以 “[ -%]” 表示 “[ !"#$%]”，并且 “[a-z]” 表示 “任何系写字母”。 一些 UNIX 实现生成这些字母，所以范围 X-Y 表示 X 和 Y 代码之间的字符集。 然而，这要求用户了解在本地系统的字符集，并且此外，如果本地字符整理顺序与字符代码不同而会带来不便。 因此， POSIX 在通配符和正则表达式都极大地扩展了方括号表示法。
+	当然范围匹配原本只正在 ASCII 范围内，所以 “[ -%]” 表示 “[ !"#$%]”，并且 “[a-z]” 表示 “任何小写字母”。 一些 UNIX 实现生成这些字母，所以范围 X-Y 表示 X 和 Y 代码之间的编码。 然而，这要求用户了解在本地系统的字符编码，并且此外，如果本地字母表校对序列与字符编码不同而会带来不便。 因此， POSIX 在通配符和正则表达式都极大地扩展了方括号表示法。
 
        (iii)  Ranges  X-Y comprise all characters that fall between X and Y (inclusive) in
        the current collating sequence as defined by the LC_COLLATE category in the current
        locale.
 
-	（iii）范围 X-Y 包括了所有 X 与 Y 之间的当前整理顺序的字符，该顺序有本地的 LC_COLLATE 类定义。
+	（iii）范围 X-Y 包括了所有 X 与 Y 之间的当前校对序列的字符，该序列由当前 locale 的 LC_COLLATE 分类定义。
 
        (iv) Named character classes, like
 
@@ -159,20 +159,20 @@ NOTES
        mark, too, where there are three letters past 'z' in the alphabet.  These character
        classes are defined by the LC_CTYPE category in the current locale.
 
-	所以比如说 “[[:lower:]]“ 而不是 ”[a-z]“，丹麦语也有类似的，其有三个字符在子母表 ‘z’ 之后。 这些字符类由当前 locale 的 LC_CTYPE 类定义。
+	所以比如说 “[[:lower:]]“ 而不是 ”[a-z]“，丹麦语也有类似情况，其有三个字符在子母表 ‘z’ 之后。 这些字符类由当前 locale 的 LC_CTYPE 分类定义。
 
        (v)  Collating  symbols,	 like  "[.ch.]" or "[.a-acute.]", where the string between
        "[." and ".]" is a collating element defined for the  current  locale.	Note  that
        this may be a multicharacter element.
 
-	（v） 整理符号， 比如 ”[.ch.]“ 或 ”[.a-acute.]“， ”[.“ 和 ”.]“ 之间的字符串是为当前 locale 定义的整理元素。
+	（v） 整理符号， 比如 ”[.ch.]“ 或 ”[.a-acute.]“， ”[.“ 和 ”.]“ 之间的字符串是为当前 locale 定义的校对元素。注意其可能是多字符元素。
 
        (vi) Equivalence class expressions, like "[=a=]", where the string between "[=" and
        "=]" is any collating element from its equivalence class, as defined for	 the  cur‐
        rent  locale.  For example, "[[=a=]]" might be equivalent to "[aáaäâ]", that is, to
        "[a[.a-acute.][.a-grave.][.a-umlaut.][.a-circumflex.]]".
 
-	（vi）等类表达式，比如 ”[=a=]“，”[=“ 和 ”=]“ 之间的字符串是其想等类的任何整理元素，正如给当前 locale 定义的。比如， ”[[=a=]]“ 可能等同 ”[aáaäâ]"，也就是，等同于“[a[.a-acute.][.a-grave.][.a-umlaut.][.a-circumflex.]]”。
+	（vi）等类表达式，比如 ”[=a=]“，”[=“ 和 ”=]“ 之间的字符串是其等类的任何校对元素，正如当前 locale 定义的。比如， ”[[=a=]]“ 可能等同 ”[aáaäâ]"，也就是，等同于“[a[.a-acute.][.a-grave.][.a-umlaut.][.a-circumflex.]]”。
 
 SEE ALSO
        sh(1), fnmatch(3), glob(3), locale(7), regex(7)
