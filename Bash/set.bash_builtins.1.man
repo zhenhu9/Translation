@@ -11,21 +11,21 @@
 	      ues for the positional parameters and are assigned, in order, to
 	      $1, $2, ...  $n.	Options,  if  specified,  have	the  following
 	      meanings:
-		  
-		  如果没有选项，每个 shell 变量的名称和值将按格式显示，该格式作为可以重复用作设置或重置当前设置变量。 只读变量无法重置。 在 posix 模式下，仅列出 shell 变量。 输出根据当前区域设置进行排序。 指定选项后，它们会设置或取消设置 shell 属性。 选项处理后其余的任何参数都被视为位置参数的值，并按顺序分配给 $1，$2，... $n。 选项（如果指定）具有以下含义：
-		  
+
+		如果没有选项，每个 shell 变量的名称和值将按格式显示，该格式作为可以重复用作设置或重置当前设置变量。 只读变量无法重置。 在 posix 模式下，仅列出 shell 变量。 输出根据当前区域设置进行排序。 指定选项后，它们会设置或取消设置 shell 属性。 选项处理后其余的任何参数都被视为位置参数的值，并按顺序分配给 $1，$2，... $n。 选项（如果指定）具有以下含义：
+
 	      -a      Automatically  mark  variables  and  functions which are
 		      modified or created for export  to  the  environment  of
 		      subsequent commands.
-			  
-			  自动标记修改或创建的变量和函数导出给后续命令的环境。
-			  
+
+			自动标记修改或创建的变量和函数导出给后续命令的环境。
+
 	      -b      Report  the status of terminated background jobs immedi-
 		      ately, rather than before the next primary prompt.  This
 		      is effective only when job control is enabled.
-			  
-			  立即报告已终止后台作业的状态，而不是在下一个主提示符出现后报告。 仅在作业控制启用时，此选项才有效。
-			  
+
+			立即报告已终止后台作业的状态，而不是在下一个主提示符出现后报告。 仅在作业控制启用时，此选项才有效。
+
 	      -e      Exit  immediately	 if a pipeline (which may consist of a
 		      single simple command),  a subshell command enclosed  in
 		      parentheses,  or one of the commands executed as part of
@@ -43,117 +43,119 @@
 		      ronment  separately  (see	 COMMAND EXECUTION ENVIRONMENT
 		      above), and may cause subshells to exit before executing
 		      all the commands in the subshell.
+
+			如果管道（可能包含单个简单命令），括在括号中的子 shell 命令，或作为括号括起来的命令列表的一部分执行的命令之一（参见上面的 SHELL GRAMMAR）以非 0 值退出时，则立即退出 shell。如果失败的命令是紧跟在 while 或 until 关键字之后的命令列表的一部分；在 if 或 elif 保留字之后的 test 的一部分；在 && 或 ││ 列表中执行的任何命令的一部分，除了最后的 && 或 ││ 之后的命令；管道中的任何命令，除了最后一个；或者命令的返回值用 ! 被反转；则 shell 不会退出。ERR 上的陷阱（如果已设置）将在 shell 退出之前执行。 此选项分别适用于 shell 环境变量和每个子 shell 环境变量（请参阅上面的 COMMAND EXECUTION ENVIRONMENT），并且可能会导致子 shell 在执行子 shell 中的所有命令之前退出。
 			  
-			  如果管道（可能包含单个简单命令），括在括号中的子 shell 命令，或作为括号括起来的命令列表的一部分执行的命令之一（参见上面的 SHELL GRAMMAR）以非 0 值退出时，则立即退出 shell。如果失败的命令是紧跟在 while 或 until 关键字之后的命令列表的一部分；在 if 或 elif 保留字之后的 test 的一部分；在 && 或 ││ 列表中执行的任何命令的一部分，除了最后的 && 或 ││ 之后的命令；管道中的任何命令，除了最后一个；或者命令的返回值用 ! 被反转；则 shell 不会退出。ERR 上的陷阱（如果已设置）将在 shell 退出之前执行。 此选项分别适用于 shell 环境变量和每个子 shell 环境变量（请参阅上面的 COMMAND EXECUTION ENVIRONMENT），并且可能会导致子 shell 在执行子 shell 中的所有命令之前退出。
-			  
-	      -f      Disable pathname expansion.										禁用路径名扩展。
+	      -f      Disable pathname expansion.
+			禁用路径名扩展。
 	      -h      Remember	the location of commands as they are looked up
 		      for execution.  This is enabled by default.
-			  
-			  当查找执行命令时，记住命令的位置。 默认情况下启用此选项。
-			  
+
+			当查找执行命令时，记住命令的位置。 默认情况下启用此选项。
+
 	      -k      All arguments in the form of assignment  statements  are
 		      placed  in the environment for a command, not just those
 		      that precede the command name.
-			  
-			  命令的赋值语句形式的所有参数都放在词命令的环境变量中，而不仅仅是命令名称之前的那些参数。
-			  
+
+			命令的赋值语句形式的所有参数都放在词命令的环境变量中，而不仅仅是命令名称之前的那些参数。
+
 	      -m      Monitor mode.  Job control is enabled.  This  option  is
 		      on  by  default  for  interactive shells on systems that
 		      support it (see JOB  CONTROL  above).   Background  pro-
 		      cesses  run  in a separate process group and a line con-
 		      taining their exit status is printed upon their  comple-
 		      tion.
-			  
-			  监控模式。 作业控制已启用。 默认情况下，对于支持它的系统上的交互式 shell，此选项处于启用状态（请参阅上面的 JOB CONTROL）。 后台进程在单独的进程组中运行，并且在完成时打印包含其退出状态的行。
-			  
+
+			监控模式。 作业控制已启用。 默认情况下，对于支持它的系统上的交互式 shell，此选项处于启用状态（请参阅上面的 JOB CONTROL）。 后台进程在单独的进程组中运行，并且在完成时打印包含其退出状态的行。
+
 	      -n      Read commands but do not execute them.  This may be used
 		      to check a shell script  for  syntax  errors.   This  is
 		      ignored by interactive shells.
-			  
-			  读取命令但不执行它们。 这可用于检查 shell 脚本是否存在语法错误。 交互式 shell 会忽略它。
-			  
+
+			读取命令但不执行它们。 这可用于检查 shell 脚本是否存在语法错误。 交互式 shell 会忽略它。
+
 	      -o option-name
-		      The option-name can be one of the following:							选项名称可以是以下之一：
-			  
+		      The option-name can be one of the following:
+			选项名称可以是以下之一：
+
 		      allexport
-			      Same as -a.														等同 -a。
+			      Same as -a.	等同 -a。
 		      braceexpand
-			      Same as -B.														等同 -B。
+			      Same as -B.	等同 -B。
 		      emacs   Use  an  emacs-style command line editing inter-
 			      face.  This is enabled by default when the shell
 			      is interactive, unless the shell is started with
 			      the --noediting option.  This also  affects  the
 			      editing interface used for read -e.
-				  
-				  使用 emacs 样式的命令行编辑界面。 除非使用 --noediting 选项启动 shell，否则在 shell 处于交互状态时默认启用此选项。 这也会影响用于读取 -e 的编辑界面。
-				  
-		      errexit Same as -e.													等同 -e。
+
+				使用 emacs 样式的命令行编辑接口。 除非使用 --noediting 选项启动 shell，否则在 shell 处于交互状态时默认启用此选项。 这也会影响用于读取 -e 的编辑界面。
+
+		      errexit Same as -e.	等同 -e。
 		      errtrace
-			      Same as -E.														等同 -E。
+			      Same as -E.	等同 -E。
 		      functrace	
-			      Same as -T.														等同 -T。
+			      Same as -T.	等同 -T。
 		      hashall Same as -h.
 		      histexpand
-			      Same as -H.														等同 -H。
+			      Same as -H.	等同 -H。
 		      history Enable command history, as described above under
 			      HISTORY.	This option is on by default in inter-
 			      active shells.
-				  
-				  启用命令历史记录，如上面 HISTORY 中所述。 默认情况下，此选项在交互式 shell 中处于启用。
-				  
+
+				启用命令历史记录，如上面 HISTORY 中所述。 默认情况下，此选项在交互式 shell 中处于启用。
+
 		      ignoreeof
 			      The   effect   is	  as   if  the	shell  command
 			      ‘‘IGNOREEOF=10’’ had been	 executed  (see	 Shell
 			      Variables above).
+
+				效果就好像执行了shell 命令 ''IGNOREEOF=10''（参见上面的 Shell 变量）。
 				  
-				  效果就好像执行了shell 命令 ''IGNOREEOF=10''（参见上面的 Shell 变量）。
-				  
-		      keyword Same as -k.													等同 -k。
-		      monitor Same as -m.													等同 -m。
+		      keyword Same as -k.	等同 -k。
+		      monitor Same as -m.	等同 -m。
 		      noclobber
-			      Same as -C.														等同 -C。
-		      noexec  Same as -n.
-		      noglob  Same as -f.													等同 -f。
-		      nolog   Currently ignored.											当前忽略。
-		      notify  Same as -b.													等同 -b。
-		      nounset Same as -u.													等同 -u。
-		      onecmd  Same as -t.													等同 -t。
+			      Same as -C.	等同 -C。
+		      noexec  Same as -n.	等同 -n。
+		      noglob  Same as -f.	等同 -f。
+		      nolog   Currently ignored.	当前忽略。
+		      notify  Same as -b.		等同 -b。
+		      nounset Same as -u.		等同 -u。
+		      onecmd  Same as -t.		等同 -t。
 		      physical
-			      Same as -P.														等同 -P。
+			      Same as -P.		等同 -P。
 		      pipefail
 			      If  set,	the  return value of a pipeline is the
 			      value of the last (rightmost)  command  to  exit
 			      with  a non-zero status, or zero if all commands
 			      in the pipeline exit successfully.  This	option
 			      is disabled by default.
-				  
-				  如果设置，则管道的返回值是以非零状态退出的最后一个（最右边）命令的值，如果管道中的所有命令都成功退出，则返回零。 默认情况下禁用此选项。
-				  
+
+				如果设置，则管道的返回值是以非零状态退出的最后一个（最右边）命令的值，如果管道中的所有命令都成功退出，则返回零。 默认情况下禁用此选项。
+
 		      posix   Change  the  behavior  of bash where the default
 			      operation differs from  the  POSIX  standard  to
 			      match the standard (posix mode).
-				  
-				  更改 bash 的行为，其中默认操作与 POSIX 标准不同，以匹配标准（posix 模式）。
-				  
+
+				更改 bash 的行为，其中默认操作与 POSIX 标准不同，以匹配标准（posix 模式）。
+
 		      privileged
-			      Same as -p.														等同 -p。
-		      verbose Same as -v.													等同 -v。
+			      Same as -p.	等同 -p。
+		      verbose Same as -v.	等同 -v。
 		      vi      Use  a  vi-style command line editing interface.
 			      This also affects the editing interface used for
 			      read -e.
-				  
-				  使用 vi 样式的命令行编辑界面。 这也会影响用于读取 -e 的编辑界面。
-				  
-		      xtrace  Same as -x.													等同 -x。
+
+				使用 vi 样式的命令行编辑界面。 这也会影响用于读取 -e 的编辑界面。
+
+		      xtrace  Same as -x.	等同 -x。
 		      If -o is supplied with no option-name, the values of the
 		      current options are printed.  If +o is supplied with  no
 		      option-name,  a  series  of set commands to recreate the
 		      current option settings is  displayed  on	 the  standard
 		      output.
-			  
-			  如果 -o 未提供选项名称，则打印当前选项的值。 如果 +o 未提供选项名称，则会在标准输出上显示一系列用于重新创建当前选项设置的设置命令。
-			  
+
+			如果 -o 未提供选项名称，则打印当前选项的值。 如果 +o 未提供选项名称，则会在标准输出上显示一系列用于重新创建当前选项设置的设置命令。
+
 	      -p      Turn  on	privileged  mode.   In this mode, the $ENV and
 		      $BASH_ENV files are not processed, shell	functions  are
 		      not  inherited  from the environment, and the SHELLOPTS,
@@ -166,80 +168,82 @@
 		      plied at startup, the effective user id  is  not	reset.
 		      Turning  this  option  off causes the effective user and
 		      group ids to be set to the real user and group ids.
-			  
-			  打开特权模式。 在此模式下，不处理 $ENV 和 $BASH_ENV 文件，不从环境变量中继承 shell 函数，并忽略 SHELLOPTS，BASHOPTS，CDPATH 和 GLOBIGNORE 变量（如果它们出现在环境中）。 如果以有效用户（群组）id 不等于真实用户（群组）id 启动 shell，并且未提供 -p 选项，则执行这些操作，并将有效用户 ID 设置为真实用户 ID。 如果在启动时提供 -p 选项，则不会重置有效用户 id。 关闭此选项会导致有效用户和群组 ID 设置为真实用户和群组 ID。
-			  
-	      -t      Exit after reading and executing one command.						读取和执行一个命令后退出 shell。
+
+			打开特权模式。 在此模式下，不处理 $ENV 和 $BASH_ENV 文件，不从环境变量中继承 shell 函数，并忽略 SHELLOPTS，BASHOPTS，CDPATH 和 GLOBIGNORE 变量（如果它们出现在环境中）。 如果以有效用户（群组）id 不等于真实用户（群组）id 启动 shell，并且未提供 -p 选项，则执行这些操作，并将有效用户 ID 设置为真实用户 ID。 如果在启动时提供 -p 选项，则不会重置有效用户 id。 关闭此选项会导致有效用户和群组 ID 设置为真实用户和群组 ID。
+
+	      -t      Exit after reading and executing one command.
+			读取和执行一个命令后退出 shell。
 	      -u      Treat unset variables and parameters other than the spe-
 		      cial  parameters "@" and "*" as an error when performing
 		      parameter expansion.  If expansion is  attempted	on  an
 		      unset  variable  or parameter, the shell prints an error
 		      message, and, if not interactive, exits with a  non-zero
 		      status.
-			  
-			  执行参数扩展时，将特殊参数 “@” 和 “*” 以外的未设置变量和参数视为错误。 如果尝试对未设置的变量或参数进行扩展，则 shell 会输出错误消息，如果不是交互式，则会以非零状态退出。
-			  
-	      -v      Print shell input lines as they are read.							在读取时打印 shell 输入行。
+
+			执行参数扩展时，将特殊参数 “@” 和 “*” 以外的未设置变量和参数视为错误。 如果尝试对未设置的变量或参数进行扩展，则 shell 会输出错误消息，如果不是交互式，则会以非零状态退出。
+
+	      -v      Print shell input lines as they are read.
+			在读取时打印 shell 输入行。
 	      -x      After  expanding	each simple command, for command, case
 		      command, select command, or arithmetic for command, dis-
 		      play  the expanded value of PS4, followed by the command
 		      and its expanded arguments or associated word list.
-			  
-			  扩展每个简单命令后，for 命令，case 命令，select 命令或数学运算 for 命令，显示 PS4 的扩展值，然后显示命令及其扩展参数或关联的词列表。
-			  
+
+			扩展每个简单命令后，for 命令，case 命令，select 命令或数学运算 for 命令，显示 PS4 的扩展值，然后显示命令及其扩展参数或关联的词列表。
+
 	      -B      The shell performs brace expansion (see Brace  Expansion
 		      above).  This is on by default.
-			  
-			  shell 执行大括号扩展（参见上面的 Brace Expansion）。 默认情况下处于启用状态。
-			  
+
+			shell 执行大括号扩展（参见上面的 Brace Expansion）。 默认情况下处于启用状态。
+
 	      -C      If  set,	bash  does not overwrite an existing file with
 		      the >, >&, and <> redirection operators.	 This  may  be
 		      overridden when creating output files by using the redi-
 		      rection operator >| instead of >.
-			  
-			  如果设置，bash 重定向运算符 >，>＆ 和 <> 不会使用覆盖现有文件。 使用重定向运算符 >| 创建输出文件时可能会覆盖，而不是 >。
-			  
+
+			如果设置，bash 重定向运算符 >，>＆ 和 <> 不会使用覆盖现有文件。 使用重定向运算符 >| 创建输出文件时可能会覆盖，而不是 >。
+
 	      -E      If set, any trap on ERR is inherited by shell functions,
 		      command  substitutions,  and commands executed in a sub-
 		      shell environment.  The ERR trap is normally not	inher-
 		      ited in such cases.
-			  
-			  如果设置，则 ERR 上的任何陷阱都由 shell 函数，命令替换和子 shell 环境中执行的命令继承。 在这种情况下，ERR 陷阱通常不会被继承。
-			  
+
+			如果设置，则 ERR 上的任何陷阱都由 shell 函数，命令替换和子 shell 环境中执行的命令继承。 在这种情况下，ERR 陷阱通常不会被继承。
+
 	      -H      Enable !	style history substitution.  This option is on
 		      by default when the shell is interactive.
-			  
-			  启用 ! 风格历史命令替换。 当 shell 是交互式时，默认情况下此选项处于启用状态。
-			  
+
+			启用 ! 风格历史命令替换。 当 shell 是交互式时，默认情况下此选项处于启用状态。
+
 	      -P      If set, the shell does not follow	 symbolic  links  when
 		      executing	 commands  such	 as cd that change the current
 		      working  directory.   It	uses  the  physical  directory
 		      structure instead.  By default, bash follows the logical
 		      chain of	directories  when  performing  commands	 which
 		      change the current directory.
-			  
-			  如果设置，则在执行更改当前工作目录的 cd 等命令时，shell 不会遵循符号链接。 它使用物理目录结构。 默认情况下，bash 在执行更改当前目录的命令时遵循目录的逻辑链。
-			  
+
+			如果设置，则在执行更改当前工作目录的 cd 等命令时，shell 不会遵循符号链接。 它使用物理目录结构。 默认情况下，bash 在执行更改当前目录的命令时遵循目录的逻辑链。
+
 	      -T      If  set,	any traps on DEBUG and RETURN are inherited by
 		      shell functions,	command	 substitutions,	 and  commands
 		      executed	in  a  subshell	 environment.	The  DEBUG and
 		      RETURN traps are normally not inherited in such cases.
-			  
-			  如果设置，则 DEBUG 和 RETURN 上的任何陷阱都由 shell 函数，命令替换和子 shell 环境中执行的命令继承。 在这种情况下，DEBUG 和 RETURN 陷阱通常不会被继承。
-			  
+
+			如果设置，则 DEBUG 和 RETURN 上的任何陷阱都由 shell 函数，命令替换和子 shell 环境中执行的命令继承。 在这种情况下，DEBUG 和 RETURN 陷阱通常不会被继承。
+
 	      --      If no arguments follow this option, then the  positional
 		      parameters are unset.  Otherwise, the positional parame-
 		      ters are set to the args, even if	 some  of  them	 begin
 		      with a -.
-			  
-			  如果此选项后面没有参数，则取消设置位置参数。 否则，位置参数被设置为 args，即使它们中的一些以 - 开头。
-			  
+
+			如果此选项后面没有参数，则取消设置位置参数。 否则，位置参数被设置为 args，即使它们中的一些以 - 开头。
+
 	      -	      Signal  the  end of options, cause all remaining args to
 		      be assigned to the positional parameters.	 The -x and -v
 		      options are turned off.  If there are no args, the posi-
 		      tional parameters remain unchanged.
-			  
-			  发出选项结束信号，将所有剩余的参数分配给位置参数。 关闭 -x 和 -v 选项。 如果没有 args，则位置参数保持不变。
+
+			发出选项结束信号，将所有剩余的参数分配给位置参数。 关闭 -x 和 -v 选项。 如果没有 args，则位置参数保持不变。
 
 	      The options are off by default unless otherwise noted.  Using  +
 	      rather  than  -  causes  these  options  to  be turned off.  The
@@ -247,7 +251,5 @@
 	      the  shell.  The current set of options may be found in $-.  The
 	      return status is always true unless an invalid option is encoun-
 	      tered.
-		  
-		  除非另有说明，否则默认情况下关闭选项。 使用 + 而不是 - 会导致关闭这些选项。 这些选项也可以指定为 shell 调用的参数。 当前的选项集可以在 $- 中找到。 除非遇到无效选项，否则返回状态始终为 true。
-		  
-		  
+
+		除非另有说明，否则默认情况下关闭选项。 使用 + 而不是 - 会导致关闭这些选项。 这些选项也可以指定为 shell 调用的参数。 当前的选项集可以在 $- 中找到。 除非遇到无效选项，否则返回状态始终为 true。
