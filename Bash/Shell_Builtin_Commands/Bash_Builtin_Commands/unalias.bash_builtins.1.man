@@ -1,0 +1,3 @@
+       unalias [-a] [name ...]
+              Remove each name from the list of aliases. If -a is supplied, all aliases are removed.  The return value is true unless a supplied name is not defined alias.
+		从 aliasi 定义列表中移除每一个 name。如果提供 -a 选项，则移除所有的 alias 定义。返回值为真，除非提供名称是 Alias 未定义的。
