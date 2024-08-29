@@ -1,0 +1,38 @@
+   Tilde Expansion		波浪号扩展
+       If a word begins with an unquoted tilde character  (‘~’),  all  of  the
+       characters  preceding  the  first unquoted slash (or all characters, if
+       there is no unquoted slash) are considered a tilde-prefix.  If none  of
+       the  characters  in  the tilde-prefix are quoted, the characters in the
+       tilde-prefix following the tilde are treated as a possible login  name.
+       If  this  login name is the null string, the tilde is replaced with the
+       value of the shell parameter HOME.  If HOME is unset, the  home  direc-
+       tory  of  the  user executing the shell is substituted instead.  Other-
+       wise, the tilde-prefix is replaced with the home  directory  associated
+       with the specified login name.
+
+	如果词元以不带引号的波浪号（'~'）开头，则第一个未加引号的斜杠之前的所有字符（或所有字符，如果没有未加引号的斜杠）都被视为波浪号前缀。 如果没有引用波浪号前缀中的任何字符，则波浪号前缀中在波浪号后的字符将被视为可能的登录名。 如果此登录名是空字符串，则将波浪号替换为 shell 参数 HOME 的值。 如果未设置 HOME，则替换为执行 shell 的用户的主目录。 否则，波浪号前缀将替换为与指定登录名关联的主目录。
+
+       If  the  tilde-prefix  is  a  ‘~+’, the value of the shell variable PWD
+       replaces the tilde-prefix.  If the tilde-prefix is a ‘~-’, the value of
+       the  shell variable OLDPWD, if it is set, is substituted.  If the char-
+       acters following the tilde in the tilde-prefix consist of a  number  N,
+       optionally  prefixed  by  a  ‘+’ or a ‘-’, the tilde-prefix is replaced
+       with the corresponding element from the directory stack, as it would be
+       displayed by the dirs builtin invoked with the tilde-prefix as an argu-
+       ment.  If the characters following the tilde in the  tilde-prefix  con-
+       sist of a number without a leading ‘+’ or ‘-’, ‘+’ is assumed.
+
+	如果波浪号前缀是 '~+'，则波浪号前缀将被替换为 shell 变量 PWD 的值。 如果波浪号前缀是 '~-'，则将被替换为 shell 变量 OLDPWD 的值（如果已设置）。 如果波浪号后面的字符在波浪号前缀中包含数字 N，可选地以 “+” 或 “-” 为前缀，则波浪号前缀将替换为目录堆栈中的相应元素，因为它将通过使用波浪号前缀作为参数调用的内置命令 dirs 来显示。 如果波浪号后面的字符波浪号前缀中由不带前导 '+' 或 '-' 的数字组成，则假定为 '+'。
+
+       If the login name is invalid, or the tilde expansion fails, the word is
+       unchanged.
+
+	如果登录名无效，或者波浪号扩展失败，则该词不变。
+
+       Each variable assignment is checked for unquoted tilde-prefixes immedi-
+       ately following a : or the first =.  In these cases, tilde expansion is
+       also performed.  Consequently, one may use file names  with  tildes  in
+       assignments  to  PATH,  MAILPATH, and CDPATH, and the shell assigns the
+       expanded value.
+
+	为紧跟在 ：或第一个 = 之后的未加引号的波浪号前缀，检查每个变量赋值。 在这些情况下，仍执行波浪号扩展。 因此，可以在 PATH，MAILPATH 和 CDPATH 的赋值中使用带有波浪号的文件名，并且 shell 会分配扩展值。
