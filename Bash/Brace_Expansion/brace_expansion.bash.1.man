@@ -1,0 +1,69 @@
+   Brace Expansion		大括号扩展
+       Brace expansion is a mechanism by which arbitrary strings may be gener-
+       ated.  This mechanism is similar to pathname expansion, but  the  file-
+       names generated need not exist.  Patterns to be brace expanded take the
+       form of an optional preamble, followed by either a series of comma-sep-
+       arated  strings or a sequence expression between a pair of braces, fol-
+       lowed by an optional postscript.  The  preamble  is  prefixed  to  each
+       string contained within the braces, and the postscript is then appended
+       to each resulting string, expanding left to right.
+
+	大括号扩展是一种可以生成任意字符串的机制。 此机制类似于路径名扩展，但生成的文件名不需要存在。 大括号扩展的模式采用可选前导码的形式，后跟一对大括号，之间要么是一系列逗号分隔的字符串，要么是序列表达式，后跟可选的后导码。前导码前缀大括号内包含的每个字符串，然后将后导码附加到每个结果字符串，从左向右扩展。
+
+       Brace expansions may be nested.  The results of  each  expanded  string
+       are  not  sorted;  left  to  right  order  is  preserved.  For example,
+       a{d,c,b}e expands into ‘ade ace abe’.
+
+	大括号扩展可以嵌套。 每个扩展字符串的结果都没有排序；保持从左到右的顺序。 例如，a{d,c,b}e 扩展为 'ade ace abe'。
+
+       A sequence expression takes the form {x..y[..incr]}, where x and y  are
+       either  integers or single characters, and incr, an optional increment,
+       is an integer.  When integers are supplied, the expression  expands  to
+       each  number between x and y, inclusive.  Supplied integers may be pre-
+       fixed with 0 to force each term to have the same width.  When either  x
+       or  y  begins  with  a  zero, the shell attempts to force all generated
+       terms to contain the same number of digits, zero-padding  where  neces-
+       sary.   When  characters  are  supplied, the expression expands to each
+       character lexicographically between x and y, inclusive.  Note that both
+       x  and  y must be of the same type.  When the increment is supplied, it
+       is used as the difference between each term.  The default increment  is
+       1 or -1 as appropriate.
+
+	序列表达式采用 {x..y[..incr]} 的形式，其中 x 和 y 要么是整数，要么是单个字符，incr 是可选的增量，是整数。 提供整数时，表达式会扩展为 x 和 y 之间的每个数字（包括 x 和 y）。 提供的整数可以以 0 为前缀，以强制每个项具有相同的宽度。 当 x 或 y 以零开头时，shell 会尝试强制所有生成的项包含相同数量的数字，必要时填充零。 提供字符时，表达式在 x 和 y 之间按字典顺序扩展为每个字符（包括 x 和 y）。 请注意，x 和 y 必须属于同一类型。 当提供增量时，它被用作每个项之间的差异。 根据需要，默认增量为 1 或 -1。
+
+       Brace expansion is performed before any other expansions, and any char-
+       acters special to other expansions are preserved in the result.  It  is
+       strictly  textual.  Bash does not apply any syntactic interpretation to
+       the context of the expansion or the text between the braces.
+
+	大括号扩展在任何其它扩展之前执行，并且在结果中保留特定于其它扩展的任何字符。 完全是按原文的。 Bash 不对扩展的上下文或大括号之间的文本进行任何语法解析。
+
+       A correctly-formed brace expansion must contain  unquoted  opening  and
+       closing  braces,  and  at  least one unquoted comma or a valid sequence
+       expression.  Any incorrectly formed brace expansion is left  unchanged.
+       A { or , may be quoted with a backslash to prevent its being considered
+       part of a brace expression.  To avoid conflicts with  parameter  expan-
+       sion, the string ${ is not considered eligible for brace expansion.
+
+	正确形式的大括号扩展必须包含不带引号的左大括号和右大括号，以及至少一个不带引号的逗号或有效的序列表达式。 任何不正确形式的大括号扩展都保持不变。 { 或者 , 可以用反斜杠引用，以防止其被视为大括号表达式的一部分。 为避免与参数扩展冲突，字符串 ${ 不被视为合格的大括号扩展。
+
+       This construct is typically used as shorthand when the common prefix of
+       the strings to be generated is longer than in the above example:
+
+	当要生成的字符串的公共前缀比上例中的更长时，此结构通常被用作简略表达式：
+
+              mkdir /usr/local/src/bash/{old,new,dist,bugs}
+       or
+              chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}}
+
+       Brace expansion introduces a  slight  incompatibility  with  historical
+       versions  of sh.  sh does not treat opening or closing braces specially
+       when they appear as part of a word, and preserves them in  the  output.
+       Bash  removes  braces  from  words as a consequence of brace expansion.
+       For example, a word entered to sh as file{1,2} appears  identically  in
+       the  output.  The same word is output as file1 file2 after expansion by
+       bash.  If strict compatibility with sh is desired, start bash with  the
+       +B option or disable brace expansion with the +B option to the set com-
+       mand (see SHELL BUILTIN COMMANDS below).
+
+	大括号扩展引入了与 sh 的历史版本的轻微不兼容。 当它们作为单词的一部分出现时，sh 不会特别处理左或右大括号，并将它们保留在输出中。 由于大括号扩展，Bash 从单词中删除大括号。 例如，输入到 sh 的单词 file{1,2}，与输出相同。 在 bash 扩展后，同样的词输出为 file1 file2。 如果需要与 sh 严格兼容，请使用 +B 选项启动 bash 或使用 set 命令的 +B 选项禁用大括号扩展（请参阅下面的 SHELL BUILTIN COMMANDS）。
