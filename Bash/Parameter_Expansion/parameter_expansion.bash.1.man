@@ -5,22 +5,22 @@
        variable  to be expanded from characters immediately following it which
        could be interpreted as part of the name.
 
-	'$' 字符引入了参数扩展，命令替换或算术扩展。 要扩展的参数名称或符号可以用大括号括起来，大括号是可选的，但用于保护变量被紧跟在其后面的字符扩展，，这些字符可能被解释为名称的一部分。
+	'$' 字符引出了参数扩展，命令替换或算术扩展。 要扩展的参数名称或符号可以用大括号括起来，大括号是可选的，但用于保护变量。使紧跟在其后面的字符免于可能被解释为名称的一部分。
 
        When braces are used, the matching ending brace is the  first  ‘}’  not
        escaped  by  a  backslash  or within a quoted string, and not within an
        embedded  arithmetic  expansion,  command  substitution,  or  parameter
        expansion.
-	   
-	   使用大括号时，匹配的结束大括号是第一个未被反斜杠或带引号的字符串中转义的，而不是在嵌入式算术扩展，命令替换或参数扩展中的 '}'。
+
+	使用大括号时，匹配的右大括号是第一个未被反斜杠转义的或在带引号的字符串中的，而不是在内嵌的算术扩展中，命令替换或参数扩展中的 '}'。
 
        ${parameter}
               The  value of parameter is substituted.  The braces are required
               when parameter is a positional  parameter  with  more  than  one
               digit, or when parameter is followed by a character which is not
               to be interpreted as part of its name.
-			  
-			  参数的值被替换。 当参数是具有多个数字的位置参数时，或者当参数后跟一个不被解释为其名称的一部分的字符时，需要括号。
+
+		参数的值被替换。 当参数是具有多个数字的位置参数时，或者当参数后跟一个不是要解释为其名称的一部分的字符时，需要括号。
 
        If the first character of parameter is  an  exclamation  point  (!),  a
        level  of  variable  indirection is introduced.  Bash uses the value of
@@ -31,50 +31,50 @@
        sions of ${!prefix*} and ${!name[@]} described below.  The  exclamation
        point  must  immediately  follow  the  left brace in order to introduce
        indirection.
-	   
-	   如果参数的第一个字符是感叹号（!），则引入变量间接的级别。 Bash 使用从参数的其余部分形成的变量的值作为变量的名称； 然后展开此变量，并将该值用于替换的其余部分，而不是参数本身的值。 这被称为间接扩展。 例外情况是下面描述的 ${!prefix*} 和 ${!name[@]} 的扩展。 感叹号必须紧跟左大括号，以引入间接。
+
+	如果参数的第一个字符是感叹号（!），则引出变量间接层。 Bash 使用从参数的其余部分形成的变量的值作为变量的名称； 然后展开此变量，并将该值用于替换的其余部分，而不是参数本身的值。 这被称为间接扩展。 例外情况是下面描述的 ${!prefix*} 和 ${!name[@]} 的扩展。 感叹号必须紧跟左大括号，以引出间接扩展。
 
        In each of the cases below, word is subject to tilde expansion, parame-
        ter expansion, command substitution, and arithmetic expansion.
-	   
-	   在下面的每种情况中，单词都受波浪号扩展，参数扩展，命令替换和算术扩展的影响。
+
+	在下面的每种情况中，词都受波浪号扩展，参数扩展，命令替换和算术扩展的影响。
 
        When  not  performing  substring  expansion, using the forms documented
        below, bash tests for a parameter that is unset or null.  Omitting  the
        colon results in a test only for a parameter that is unset.
-	   
-	   当不执行子字符串扩展时，使用下面记录的形式，bash 测试未设置或为 null 的参数。 省略冒号只会导致对未设置的参数进行测试。
+
+	当不执行子字符串扩展时，使用下面描述的形式，bash 会测试未设置或为 null 的参数。 省略冒号只会导致对未设置的参数进行测试。
 
        ${parameter:-word}
               Use  Default  Values.  If parameter is unset or null, the expan-
               sion of word is substituted.  Otherwise, the value of  parameter
               is substituted.
-			  
-			  使用默认值。 如果参数未设置或为 null，则替换 word 的扩展。 否则，参数的值将被替换。
-			  
+
+		使用默认值。 如果参数未设置或为 null，则替换为 word 的扩展。 否则，参数的值将被替换。
+
        ${parameter:=word}
               Assign  Default  Values.   If  parameter  is  unset or null, the
               expansion of word is assigned to parameter.  The value of param-
               eter  is  then  substituted.   Positional parameters and special
               parameters may not be assigned to in this way.
-			  
-			  分配默认值。 如果参数未设置或为 null，则将 word 的扩展分配给参数。 然后替换参数的值。 不能以这种方式分配位置参数和特殊参数。
-			  
+
+		分配默认值。 如果参数未设置或为 null，则将 word 的扩展分配给参数。 然后替换参数的值。 不能以这种方式复制给位置参数和特殊参数。
+
        ${parameter:?word}
               Display Error if Null or Unset.  If parameter is null or  unset,
               the  expansion  of  word (or a message to that effect if word is
               not present) is written to the standard error and the shell,  if
               it is not interactive, exits.  Otherwise, the value of parameter
               is substituted.
-			  
-			  如果为空或未设置则显示错误。 如果参数为 null 或未设置，则 word 的扩展（或者如果 word 不存在，则为该效果的消息）将写入标准错误，并且如果 shell 不是交互式，则退出。 否则，参数的值将被替换。
-			  
+
+		如果为空或未设置则显示错误。 如果参数为 null 或未设置，则 word 的扩展（或者如果 word 不存在，则为该效果的消息）将写入标准错误，并且如果 shell 不是交互式，则退出。 否则，参数的值将被替换。
+
        ${parameter:+word}
               Use Alternate Value.  If parameter is null or unset, nothing  is
               substituted, otherwise the expansion of word is substituted.
-			  
-			  使用替代值。 如果参数为 null 或未设置，则不替换任何内容，否则将替换 word 的扩展。
-			  
+
+		使用替代值。 如果参数为 null 或未设置，则不替换，否则将替换 word 的扩展。
+
        ${parameter:offset}
        ${parameter:offset:length}
               Substring  Expansion.   Expands  to  up  to length characters of
@@ -97,8 +97,8 @@
               zero-based unless the positional parameters are used,  in  which
               case  the  indexing starts at 1 by default.  If offset is 0, and
               the positional parameters are used, $0 is prefixed to the  list.
-			  
-			  子字符串扩展。从 offset 指定的字符开始扩展为参数的最大长度字符。如果省略 length，则展开从 offset 指定的字符开始的参数的子字符串。 length 和 offset 是算术表达式（参见下面的 ARITHMETIC EVALUATION）。长度必须计算为大于或等于零的数字。如果 offset 的计算结果小于零，则该值将用作距参数值末尾的偏移量。如果参数为 @，则结果是从 offset 开始的长度位置参数。如果 parameter 是 @ 或 * 下标的索引数组名，则结果是以 $ {parameter [offset]} 开头的数组的长度成员。相对于大于指定数组的最大索引的偏移量取负偏移量。应用于关联数组的子串扩展会产生未定义的结果。请注意，负偏移量必须与冒号分隔至少一个空格，以避免与以下内容混淆： - 扩展。除非使用位置参数，否则子串索引从零开始，在这种情况下，索引默认从 1 开始。如果 offset 为 0，并且使用位置参数，则会在列表中添加 $0 作为前缀。
+
+		子字符串扩展。从扩展为 offset 指定开始长度为 length 字符的 parameter。如果省略 length，则扩展为指定 offset 字符开始的 parameter 的子字符串。 length 和 offset 是算术表达式（参见下面的 ARITHMETIC EVALUATION）。长度必须计算为大于或等于零的数字。如果 offset 的计算结果小于零，则该值将用作从 parameter 末尾开始的偏移量。如果 parameter 为 @，则结果是从 offset 开始的长度位置参数。如果 parameter 是 @ 或 * 下标的索引数组名，则结果是以 $ {parameter [offset]} 开头的数组的长度成员。相对于大于指定数组的最大索引的偏移量取负偏移量。应用于关联数组的子串扩展会产生未定义的结果。请注意，负偏移量必须与冒号分隔至少一个空格，以避免与 :- 扩展混淆。子串索引从零开始，除非使用位置参数，在这种情况下，索引默认从 1 开始。如果 offset 为 0，并且使用位置参数，则 $0 前置列表。
 
        ${!prefix*}
        ${!prefix@}
@@ -107,8 +107,8 @@
               IFS  special variable.  When @ is used and the expansion appears
               within double quotes, each variable name expands to  a  separate
               word.
-			  
-			  名称匹配前缀。 扩展为名称以 prefix 开头的变量的名称，由 IFS 特殊变量的第一个字符分隔。 使用 @ 并且扩展名出现在双引号内时，每个变量名称都会扩展为单独的单词。
+
+		名称匹配前缀。 扩展为名称以 prefix 开头的变量的名称，由 IFS 特殊变量的第一个字符分隔。 使用 @ 并且扩展名出现在双引号内时，每个变量名称都会扩展为单独的单词。
 
        ${!name[@]}
        ${!name[*]}
@@ -117,8 +117,8 @@
               not  an  array,  expands to 0 if name is set and null otherwise.
               When @ is used and the expansion appears within  double  quotes,
               each key expands to a separate word.
-			  
-			  数组键列表。 如果 name 是数组变量，则展开到名称中指定的数组索引（键）列表。 如果 name 不是数组，则在设置 name 时扩展为 0，否则为 null。 当使用 @ 并且扩展名出现在双引号内时，每个键都会扩展为单独的单词。
+
+		数组键列表。 如果 name 是数组变量，则展开到名称中指定的数组索引（键）列表。 如果 name 不是数组，则在设置 name 时扩展为 0，否则为 null。 当使用 @ 并且扩展名出现在双引号内时，每个键都会扩展为单独的单词。
 
        ${#parameter}
               Parameter  length.   The  length  in  characters of the value of
@@ -126,8 +126,8 @@
               substituted  is the number of positional parameters.  If parame-
               ter is an array name subscripted by * or @,  the  value  substi-
               tuted is the number of elements in the array.
-			  
-			  参数长度。 参数值的字符长度被替换。 如果参数是 * 或 @，则替换的值是位置参数的数量。 如果 parameter 是由 * 或 @ 下标的数组名称，则替换的值是数组中元素的数量。
+
+		parameter 长度。 参数值的字符长度被替换。 如果 parameter 是 * 或 @，则替换的值是位置 parameter 的数量。 如果 parameter 是由 * 或 @ 下标的数组名称，则替换的值是数组中元素的数量。
 
        ${parameter#word}
        ${parameter##word}
@@ -142,8 +142,8 @@
               eter  is  an array variable subscripted with @ or *, the pattern
               removal operation is applied to each  member  of  the  array  in
               turn, and the expansion is the resultant list.
-			  
-			  删除匹配的前缀模式。 这个 word 被扩展以产生一个模式，就像路径名扩展一样。 如果模式匹配参数值的开头，那么扩展的结果是具有最短匹配模式（''#'' 情况）或最长匹配模式（''##'' 情况）删除。 如果参数是 @ 或 *，则模式删除操作依次应用于每个位置参数，并且扩展是结果列表。 如果参数是使用 @ 或 * 下标的数组变量，则模式删除操作依次应用于数组的每个成员，并且扩展是结果列表。
+
+		移除匹配的前缀模式。 这个 word 被扩展以产生一个模式，就像路径名扩展一样。 如果模式匹配参数值的开头，那么扩展的结果是具有最短匹配模式（''#'' 情况）或最长匹配模式（''##'' 情况）删除。 如果参数是 @ 或 *，则模式删除操作依次应用于每个位置参数，并且扩展是结果列表。 如果参数是使用 @ 或 * 下标的数组变量，则模式删除操作依次应用于数组的每个成员，并且扩展是结果列表。
 
        ${parameter%word}
        ${parameter%%word}
@@ -158,6 +158,8 @@
               list.   If  parameter is an array variable subscripted with @ or
               *, the pattern removal operation is applied to  each  member  of
               the array in turn, and the expansion is the resultant list.
+
+		移除匹配的后缀模式。word 扩展后会生成一个模式，就像路径名扩展。如果模式匹配 parameter 扩展值的尾部，则扩展结果是删除最短匹配模式（‘%’ 情况）或最长匹配模式（‘%%’ 情况）的参数值。如果 parameter 为 ‘@’ 或 ‘*’，则依次对每个位置参数执行模式删除操作，扩展结果为列表。如果参数是下标为 “@” 或 “*” 的数组变量，则模式删除操作将依次应用于数组中的每个成员，扩展后就是结果列表。
 
        ${parameter/pattern/string}
               Pattern substitution.  The pattern is expanded to produce a pat-
@@ -175,6 +177,8 @@
               an  array  variable  subscripted  with  @ or *, the substitution
               operation is applied to each member of the array  in  turn,  and
               the expansion is the resultant list.
+
+		模式替换。 与路径名扩展一样，扩展 pattern 以生成模式。 对 parameter 进行扩展，并用 string 替换与 parameter 值相匹配的最长 pattern。 如果 pattern 以 / 开头，则模式的所有匹配值都会被字符串替换。  通常只替换第一个匹配项。 如果 pattern 以 # 开头，则必须与 parameter 扩展值的开头匹配。 如果 pattern 以 % 开头，则必须在 parameter 扩展值的末尾匹配。如果字符串为空，则删除与模式匹配的内容，pattern 后面的 / 可以省略。 如果 parameter 为 @ 或 *，替换操作将依次应用于每个位置参数，扩展后的值即为结果列表。 如果 parameter 是下标为 @ 或 * 的数组变量，替换操作将应用于数组变量中的每个成员。操作将依次应用于数组中的每个成员，扩展结果为结果列表。
 
        ${parameter^pattern}
        ${parameter^^pattern}
@@ -195,3 +199,5 @@
               with  @ or *, the case modification operation is applied to each
               member of the array in turn, and the expansion is the  resultant
               list.
+
+		修改大小写。  该扩展修改 parameter 中字母字符的大小写。 与路径名扩展一样，pattern 也会被扩展为一个模式。 ^ 操作符将匹配 pattern 的小写字母转换为大写字母； , 操作符将匹配的大写字母转换为小写字母。 ^^ 和 ,, 扩展会转换扩展值中的每个匹配字符；^ 和 , 扩展只匹配和转换扩展值中的第一个字符。 如果省略 pattern，则将其视为 ?，匹配每个字符。 如果 parameter 为 @ 或 *，大小写修改操作将依次应用于每个位置参数。依次对每个位置参数进行大小写修改操作，扩展后的结果是结果列表。 如果参数是一个数组变量，下标为的数组变量，大小写修改操作将依次应用于数组中的每个成员，依次执行大小写修改操作，扩展后的结果是列表。
