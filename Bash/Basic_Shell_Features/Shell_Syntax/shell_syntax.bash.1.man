@@ -1,0 +1,20 @@
+3.1 Shell Syntax
+
+3.1 Shell 语法
+
+When the shell reads input, it proceeds through a sequence of operations. If the input indicates the beginning of a comment, the shell ignores the comment symbol (‘#’), and the rest of that line.
+
+shell 读取输入时，会进行一系列操作。如果输入表示注释的开始，shell 会忽略注释符号（’#‘）和该行的其余部分。
+
+Otherwise, roughly speaking, the shell reads its input and divides the input into words and operators, employing the quoting rules to select which meanings to assign various words and characters.
+
+否则，粗略地说，shell 会读取其输入，并将输入分为词和运算符，利用引号规则来选择赋予不同词和字符的含义。
+
+The shell then parses these tokens into commands and other constructs, removes the special meaning of certain words or characters, expands others, redirects input and output as needed, executes the specified command, waits for the command’s exit status, and makes that exit status available for further inspection or processing.
+
+shell 会将这些词元解析为命令和其它结构体，移除某些词或字符的特殊含义，扩展其它词或字符，根据需要重定向输入和输出，执行指定的命令，等待命令的退出状态，并将退出状态提供给进一步检查或处理。
+
+    Shell Operation
+    Quoting
+    Comments
+
