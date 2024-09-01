@@ -1,0 +1,163 @@
+Definitions		定义
+
+These definitions are used throughout the remainder of this manual.
+
+这些定义将在本手册的其余部分使用。
+
+POSIX
+
+    A family of open system standards based on Unix. Bash is primarily concerned with the Shell and Utilities portion of the POSIX 1003.1 standard.
+
+POSIX
+
+    基于 Unix 的开放系统标准家族。Bash 主要是关于 Shell 和 实用工具部分的 POSIX 1003.1 标准。
+
+blank
+    A space or tab character.
+
+空白
+    空格或制表符字符。
+
+builtin
+
+    A command that is implemented internally by the shell itself, rather than by an executable program somewhere in the file system.
+
+内置命令
+
+    Shell 内部实现的命令，而不是文件系统某处的可执行程序。
+
+control operator
+
+    A token that performs a control function. It is a newline or one of the following: ‘||’, ‘&&’, ‘&’, ‘;’, ‘;;’, ‘;&’, ‘;;&’, ‘|’, ‘|&’, ‘(’, or ‘)’.
+
+控制字符
+
+    执行控制功能的词元。一个换行或以下字符：‘||’，‘&&’，‘&’，‘;’，‘;;’，‘'&’，‘;;&’，‘|’，‘|&’，‘（’，或 ‘）’。
+
+exit status
+
+    The value returned by a command to its caller. The value is restricted to eight bits, so the maximum value is 255.
+
+退出状态
+
+    命令返回调用者的值。该值限制为八比特位，所以最大值为 255。 
+
+field
+
+    A unit of text that is the result of one of the shell expansions. After expansion, when executing a command, the resulting fields are used as the command name and arguments.
+
+字段
+
+    Shell 扩展结果的一个单元文本。扩展以后，执行命令时，结果字段作为命令名和参数。
+    
+filename
+
+    A string of characters used to identify a file.
+
+文件名
+
+    用于识别文件的字符串字符。
+
+job
+
+    A set of processes comprising a pipeline, and any processes descended from it, that are all in the same process group.
+
+作业
+
+    包含管道和源自其的任何进程，都在一个进程组，一组进程。
+
+job control
+
+    A mechanism by which users can selectively stop (suspend) and restart (resume) execution of processes.
+
+作业控制
+
+    一个用户可以选择性停止（暂停）和重新开始（继续）执行进程的机制。
+
+metacharacter
+
+    A character that, when unquoted, separates words. A metacharacter is a space, tab, newline, or one of the following characters: ‘|’, ‘&’, ‘;’, ‘(’, ‘)’, ‘<’, or ‘>’.
+
+元字符
+
+    分隔词的字符（未用引号括起）。元字符是空格，制表符，换行，或以下字符之一：’|‘，’&‘，’;‘，’(‘，’)‘，’<‘，或 ‘>’。
+
+name
+
+    A word consisting solely of letters, numbers, and underscores, and beginning with a letter or underscore. Names are used as shell variable and function names. Also referred to as an identifier.
+
+名称
+
+    仅包含字母，数字和下划线，并且以字母或下划线开始的词。名称可用作 shell 变量和函数名称。也称作标识符。
+
+operator
+
+    A control operator or a redirection operator. See Redirections, for a list of redirection operators. Operators contain at least one unquoted metacharacter.
+
+运算符
+
+    控制或重定向运算符。 请查看重定向，以获取重定向运算符列表。运算符包含至少一个未括起的元字符。
+
+process group
+
+    A collection of related processes each having the same process group ID.
+
+进程组
+
+    一组具有相同进程组的相关进程。
+
+process group ID
+
+    A unique identifier that represents a process group during its lifetime.
+
+进程组识别数字
+
+    代表一个进程组在其生命周期的唯一标识符。
+
+reserved word
+
+    A word that has a special meaning to the shell. Most reserved words introduce shell flow control constructs, such as for and while.
+
+保留字
+
+    对 shell 具有特殊含义的词元。大多数词引入了流控制结构，比如 for 和 while。
+
+return status
+
+    A synonym for exit status.
+
+返回状态
+
+    等同退出状态。
+
+signal
+
+    A mechanism by which a process may be notified by the kernel of an event occurring in the system.
+
+信号
+
+    一种系统中发生内核事件通知进程的机制。
+
+special builtin
+
+    A shell builtin command that has been classified as special by the POSIX standard.
+
+特殊内置命令
+
+    被 POSIX 标准分类为特殊 shell 内置命令。
+
+token
+
+    A sequence of characters considered a single unit by the shell. It is either a word or an operator.
+
+词元
+
+    字符序列被 shell 认为是独立单元。要么是一个次，要么是运算符。
+
+word
+
+    A sequence of characters treated as a unit by the shell. Words may not include unquoted metacharacters. 
+
+词
+
+    字符串序列被 shell 视为单元。词可能包括没有用括号括起的元字符。
