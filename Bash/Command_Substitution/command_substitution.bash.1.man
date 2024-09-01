@@ -1,0 +1,35 @@
+   Command Substitution		命令替换
+       Command substitution allows the output of a command to replace the com-
+       mand name.  There are two forms:
+
+	命令替换允许命令的输出来替换命令名称。 有两种形式：
+
+              $(command)
+       or
+              `command`
+
+       Bash performs the expansion by executing command and replacing the com-
+       mand  substitution  with  the  standard output of the command, with any
+       trailing newlines deleted.  Embedded newlines are not deleted, but they
+       may  be  removed during word splitting.  The command substitution $(cat
+       file) can be replaced by the equivalent but faster $(< file).
+
+	Bash 通过执行 command，并用命令的标准输出替换命令替换来执行扩展，删除任何尾随换行符。 嵌入的换行不会被删除，但在词拆分时可能会被删除。 命令替换 $(cat file) 可以用等效但更快的 $(< file) 替换。
+
+       When the old-style backquote form of substitution  is  used,  backslash
+       retains  its  literal  meaning except when followed by $, `, or \.  The
+       first backquote not preceded by a backslash terminates the command sub-
+       stitution.   When using the $(command) form, all characters between the
+       parentheses make up the command; none are treated specially.
+
+	当使用旧式反引号形式的替换时，反斜杠保留其字面含义，除非后跟 $，` 或 \。 第一个不带反斜杠的反引号会终止命令替换。 使用 $(command) 格式时，括号之间的所有字符组成命令； 无特别对待。
+
+       Command substitutions may be nested.  To nest when using the backquoted
+       form, escape the inner backquotes with backslashes.
+
+	命令替换可以嵌套。 使用反引号形式进行嵌套时，请使用反斜杠转义内部反引号。
+
+       If  the  substitution  appears within double quotes, word splitting and
+       pathname expansion are not performed on the results.
+
+	如果替换出现在双引号内，则不会对结果执行单词拆分和路径名扩展。
