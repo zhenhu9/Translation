@@ -1,0 +1,34 @@
+   Word Splitting		单词分拆
+       The  shell  scans the results of parameter expansion, command substitu-
+       tion, and arithmetic expansion that did not occur within double  quotes
+       for word splitting.
+
+	shell 扫描参数扩展，命令替换和算术扩展的未出现在双引号内的结果，以用于词分拆。
+
+       The  shell  treats each character of IFS as a delimiter, and splits the
+       results of the other expansions into words on these characters.  If IFS
+       is  unset,  or its value is exactly <space><tab><newline>, the default,
+       then sequences of <space>, <tab>, and <newline> at  the  beginning  and
+       end  of  the  results  of  the previous expansions are ignored, and any
+       sequence of IFS characters not  at  the  beginning  or  end  serves  to
+       delimit  words.   If  IFS  has  a  value  other  than the default, then
+       sequences of the whitespace characters space and tab are ignored at the
+       beginning  and  end of the word, as long as the whitespace character is
+       in the value of IFS (an IFS whitespace character).   Any  character  in
+       IFS  that is not IFS whitespace, along with any adjacent IFS whitespace
+       characters, delimits a field.  A sequence of IFS whitespace  characters
+       is  also  treated as a delimiter.  If the value of IFS is null, no word
+       splitting occurs.
+
+	shell 将 IFS 的每个字符视为分隔符，并用这些字符将其它扩展的结果拆分为词。 如果未设置 IFS，或者其值正好是 <space><tab><newline>，则为默认值，然后是先前扩展结果的开头和结尾的 <space>，<tab> 和 <newline> 的序列被忽略，并且任何不在开头或结尾的 IFS 字符序列都用于分隔单词。 如果 IFS 具有默认值以外的值，则只要空白字符的值为 IFS（IFS 空白字符），就会在单词的开头和结尾忽略空白字符空格和制表符的序列。 IFS 中任何不是 IFS 空格的字符，以及任何相邻的 IFS 空白字符，都会分隔字段。 IFS 空白字符序列也被视为分隔符。 如果 IFS 的值为 null，则不会发生单词拆分。
+
+       Explicit null arguments ("" or '')  are  retained.   Unquoted  implicit
+       null arguments, resulting from the expansion of parameters that have no
+       values, are removed.  If a parameter with no value is  expanded  within
+       double quotes, a null argument results and is retained.
+
+	保留显式 null 参数（"" or ''）。 没有值的参数的扩展而产生的不带引号的隐式空参数，将被删除。 如果在双引号内扩展没有值的参数，则会生成并保留 null 参数。
+
+       Note that if no expansion occurs, no splitting is performed.
+
+	请注意，如果未发生扩展，则不执行拆分。
