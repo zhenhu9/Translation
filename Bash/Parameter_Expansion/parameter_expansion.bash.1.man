@@ -50,7 +50,7 @@
               sion of word is substituted.  Otherwise, the value of  parameter
               is substituted.
 
-		使用默认值。 如果参数未设置或为 null，则替换为 word 的扩展。 否则，参数的值将被替换。
+		使用默认值。 如果参数未设置或为 null，则替换为 word 的扩展。 否则，parameter 的值将被替换。
 
        ${parameter:=word}
               Assign  Default  Values.   If  parameter  is  unset or null, the
@@ -73,7 +73,7 @@
               Use Alternate Value.  If parameter is null or unset, nothing  is
               substituted, otherwise the expansion of word is substituted.
 
-		使用替代值。 如果参数为 null 或未设置，则不替换，否则将替换 word 的扩展。
+		使用替代值。 如果参数为 null 或未设置，则不替换，否则将替换为 word 的扩展。
 
        ${parameter:offset}
        ${parameter:offset:length}
