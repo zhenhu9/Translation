@@ -1,0 +1,6 @@
+   Quote Removal		移除引用
+       After the preceding expansions, all unquoted occurrences of the charac-
+       ters \, ', and " that did not result from one of the  above  expansions
+       are removed.
+
+	在前面的扩展之后，未由上述扩展之一产生的所有未用引号括起的字符 \，' 和 “ ，将被删除。
