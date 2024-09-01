@@ -1,0 +1,20 @@
+3 Basic Shell Features
+
+3 Shell 的基本特性
+
+Bash is an acronym for ‘Bourne-Again SHell’. The Bourne shell is the traditional Unix shell originally written by Stephen Bourne. All of the Bourne shell builtin commands are available in Bash, The rules for evaluation and quoting are taken from the POSIX specification for the ‘standard’ Unix shell.
+
+Bash 是 ”Bourne-Again SHell“ 的缩写。Bourne shell 是传统的 Unix shell，最初由 Stephen Bourne 编写。所有 Bourne shell 的内置命令都可以在 Bash 中使用，其计算和引用规则来自 POSIX 规范中的 ”标准“ Unix shell。
+
+This chapter briefly summarizes the shell’s ‘building blocks’: commands, control structures, shell functions, shell parameters, shell expansions, redirections, which are a way to direct input and output from and to named files, and how the shell executes commands.
+
+本章简要总结了 shell 的 "构件"：命令、控制结构、shell 函数、shell 参数、shell 扩展、重定向（一种将输入和输出引导到命名文件的方法）以及 shell 如何执行命令。
+
+    Shell Syntax
+    Shell Commands
+    Shell Functions
+    Shell Parameters
+    Shell Expansions
+    Redirections
+    Executing Commands
+    Shell Scripts
