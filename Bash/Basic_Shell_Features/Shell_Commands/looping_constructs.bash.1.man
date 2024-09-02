@@ -1,0 +1,65 @@
+3.2.5.1 Looping Constructs
+
+3.2.5.1 循环结构
+
+Bash supports the following looping constructs.
+
+Bash 支持以下循环结构。
+
+Note that wherever a ‘;’ appears in the description of a command’s syntax, it may be replaced with one or more newlines.
+
+请注意，在命令语法说明中出现 ”;“ 时，可以用一个或多个换行符代替。
+
+until
+
+    The syntax of the until command is:
+
+    until 命令的语法是：
+
+    until test-commands; do consequent-commands; done
+
+    Execute consequent-commands as long as test-commands has an exit status which is not zero. The return status is the exit status of the last command executed in consequent-commands, or zero if none was executed.
+
+    只要 test-commands 的退出状态不为零，就执行后续命令。返回状态是后续命令中执行的最后一条命令的退出状态，如果没有执行任何命令，则返回状态为零。
+
+while
+
+    The syntax of the while command is:
+
+    while 命令的语法是：
+
+    while test-commands; do consequent-commands; done
+
+    Execute consequent-commands as long as test-commands has an exit status of zero. The return status is the exit status of the last command executed in consequent-commands, or zero if none was executed.
+
+    只要 test-commands 的退出状态为零，就执行后续命令。返回状态是后续命令中执行的最后一条命令的退出状态，如果没有执行任何命令，则返回状态为零。
+
+for
+
+    The syntax of the for command is:
+
+    for 命令的语法是：
+
+    for name [ [in [words …] ] ; ] do commands; done
+
+    Expand words (see Shell Expansions), and execute commands once for each member in the resultant list, with name bound to the current member. If ‘in words’ is not present, the for command executes the commands once for each positional parameter that is set, as if ‘in "$@"’ had been specified (see Special Parameters).
+
+    扩展词（参阅 Shell 扩展），并对结果列表中的每个成员执行一次命令，名称绑定到当前成员。如果不存在 ”in words“，则 for 命令会为每个已设置的位置参数执行一次命令，就像指定了 ”in "$@"“一样（请参阅特殊参数）。
+
+    The return status is the exit status of the last command that executes. If there are no items in the expansion of words, no commands are executed, and the return status is zero.
+
+    返回状态是执行的最后一条命令的退出状态。如果字扩展中没有条目，则不执行任何命令，返回状态为零。
+
+    An alternate form of the for command is also supported:
+
+    同样支持 for 命令的另一种形式：
+
+    for (( expr1 ; expr2 ; expr3 )) ; do commands ; done
+
+    First, the arithmetic expression expr1 is evaluated according to the rules described below (see Shell Arithmetic). The arithmetic expression expr2 is then evaluated repeatedly until it evaluates to zero. Each time expr2 evaluates to a non-zero value, commands are executed and the arithmetic expression expr3 is evaluated. If any expression is omitted, it behaves as if it evaluates to 1. The return value is the exit status of the last command in commands that is executed, or false if any of the expressions is invalid.
+
+    首先，根据下面描述的规则对算术表达式 expr1 进行求值（参阅 Shell 算术）。然后反复求值算术表达式 expr2，直到其值为零。每次 expr2 的值为非零时，都会执行命令并对算术表达式 expr3 进行求值。如果省略了任何表达式，则将其视为求值为 1。返回值是执行命令中最后一条命令的退出状态，如果任何表达式无效，则返回 false。
+
+The break and continue builtins (see Bourne Shell Builtins) may be used to control loop execution.
+
+break 和 continue 内置函数（参阅 Bourne Shell 内置函数）可用于控制循环的执行。
