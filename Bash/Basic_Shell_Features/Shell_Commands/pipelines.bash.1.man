@@ -1,0 +1,41 @@
+3.2.3 Pipelines
+
+3.2.3 管道
+
+A pipeline is a sequence of one or more commands separated by one of the control operators ‘|’ or ‘|&’.
+
+管道是由一个或多个命令组成的序列，中间用控制运算符"|"或"|&"分隔。
+
+The format for a pipeline is
+
+管道的格式是
+
+[time [-p]] [!] command1 [ | or |& command2 ] …
+
+The output of each command in the pipeline is connected via a pipe to the input of the next command. That is, each command reads the previous command’s output. This connection is performed before any redirections specified by command1.
+
+管道中每条命令的输出都通过管道连接到下一条命令的输入。也就是说，每条命令都会读取前一条命令的输出。这种连接会在 command1 指定的任何重定向之前执行。
+
+If ‘|&’ is used, command1’s standard error, in addition to its standard output, is connected to command2’s standard input through the pipe; it is shorthand for 2>&1 |. This implicit redirection of the standard error to the standard output is performed after any redirections specified by command1.
+
+如果使用 “|&”，命令 1 的标准错误和标准输出将通过管道连接到命令 2 的标准输入；这是 2>&1 | 的缩写。这种将标准错误重定向到标准输出的隐式重定向在命令 1 指定的任何重定向之后执行。
+
+The reserved word time causes timing statistics to be printed for the pipeline once it finishes. The statistics currently consist of elapsed (wall-clock) time and user and system time consumed by the command’s execution. The -p option changes the output format to that specified by POSIX. When the shell is in POSIX mode (see Bash POSIX Mode), it does not recognize time as a reserved word if the next token begins with a ‘-’. The TIMEFORMAT variable may be set to a format string that specifies how the timing information should be displayed. See Bash Variables, for a description of the available formats. The use of time as a reserved word permits the timing of shell builtins, shell functions, and pipelines. An external time command cannot time these easily.
+
+保留字 time 会在管道结束后打印计时统计数据。目前，统计信息包括已用（挂钟）时间以及命令执行过程中消耗的用户和系统时间。选项 -p 将输出格式改为 POSIX 指定的格式。当 shell 处于 POSIX 模式（参见 Bash POSIX 模式）时，如果下一个标记以"-"开头，则不会将时间视为保留字。TIMEFORMAT 变量可以设置为一个格式字符串，指定计时信息的显示方式。有关可用格式的说明，请参阅 Bash 变量。time 作为保留字的使用可以对 shell 内置程序、shell 函数和管道进行计时。外部时间命令不能轻易地为这些程序计时。
+
+When the shell is in POSIX mode (see Bash POSIX Mode), time may be followed by a newline. In this case, the shell displays the total user and system time consumed by the shell and its children. The TIMEFORMAT variable may be used to specify the format of the time information.
+
+当 shell 处于 POSIX 模式（请参阅 Bash POSIX 模式）时，时间后面可能会有一个换行符。在这种情况下，shell 会显示 shell 及其子进程消耗的全部用户和系统时间。TIMEFORMAT 变量可用于指定时间信息的格式。
+
+If the pipeline is not executed asynchronously (see Lists of Commands), the shell waits for all commands in the pipeline to complete.
+
+如果管道不是异步执行的（参阅命令列表），shell 会等待管道中的所有命令都执行完毕。
+
+Each command in a multi-command pipeline, where pipes are created, is executed in its own subshell, which is a separate process (see Command Execution Environment). If the lastpipe option is enabled using the shopt builtin (see The Shopt Builtin), the last element of a pipeline may be run by the shell process when job control is not active.
+
+在创建管道的多命令管道中，每条命令都在自己的子 shell 中执行，子 shell 是一个单独的进程（请参阅命令执行环境）。如果使用 shopt 内置程序启用了 lastpipe 选项（请参阅 Shopt 内置程序），当作业控制未激活时，管道的最后一个元素可由 shell 进程运行。
+
+The exit status of a pipeline is the exit status of the last command in the pipeline, unless the pipefail option is enabled (see The Set Builtin). If pipefail is enabled, the pipeline’s return status is the value of the last (rightmost) command to exit with a non-zero status, or zero if all commands exit successfully. If the reserved word ‘!’ precedes the pipeline, the exit status is the logical negation of the exit status as described above. The shell waits for all commands in the pipeline to terminate before returning a value.
+
+管道的退出状态是管道中最后一条命令的退出状态，除非启用了 pipefail 选项（参阅 Set Builtin）。如果启用了 pipefail 选项，管道的返回状态就是以非零状态退出的最后一条（最右边的）命令的值；如果所有命令都成功退出，则返回状态为零。如果管道前有保留字"！"，则退出状态是上述退出状态的逻辑否定。shell 会等待管道中的所有命令都结束后才返回值。
