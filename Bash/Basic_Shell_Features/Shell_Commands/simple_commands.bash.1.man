@@ -1,0 +1,11 @@
+3.2.2 Simple Commands
+
+A simple command is the kind of command encountered most often. It’s just a sequence of words separated by blanks, terminated by one of the shell’s control operators (see Definitions). The first word generally specifies a command to be executed, with the rest of the words being that command’s arguments.
+
+The return status (see Exit Status) of a simple command is its exit status as provided by the POSIX 1003.1 waitpid function, or 128+n if the command was terminated by signal n.
+
+3.2.2 简单命令
+
+简单命令是最常见的命令类型。它只是一连串以空格分隔的词，以 shell 的一种控制运算符结束（见定义）。第一个单词通常指定要执行的命令，其余单词则是该命令的参数。
+
+简单命令的返回状态（参见 "退出状态"）是 POSIX 1003.1 的 waitpid 函数提供的退出状态，如果命令被信号 n 终止，则返回状态为 128+n。
