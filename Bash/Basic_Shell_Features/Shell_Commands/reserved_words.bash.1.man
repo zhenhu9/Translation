@@ -1,0 +1,20 @@
+3.2.1 Reserved Words
+
+3.2.1 保留字
+
+Reserved words are words that have special meaning to the shell. They are used to begin and end the shell’s compound commands.
+
+保留字是对 shell 有特殊意义的字。它们用于开始和结束 shell 的复合命令。
+
+The following words are recognized as reserved when unquoted and the first word of a command (see below for exceptions):
+
+以下字在不加引号的情况下和命令的第一个单词被视为保留字（例外情况见下文）：
+
+if	then	elif	else	fi	time
+for	in	until	while	do	done
+case	esac	coproc	select	function
+{	}	[[	]]	!
+
+in is recognized as a reserved word if it is the third word of a case or select command. in and do are recognized as reserved words if they are the third word in a for command.
+
+如果 in 是 case 或 select 命令的第三个单词，则它被视为保留字；如果 in 和 do 是 for 命令的第三个单词，则它们被视为保留字。
