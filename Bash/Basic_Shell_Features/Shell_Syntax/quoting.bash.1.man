@@ -1,10 +1,13 @@
-QUOTING		引用
+3.1.2 QUOTING
+
+3.1.2 引用
+
        Quoting is used to remove the special meaning of certain characters  or
        words  to  the shell.  Quoting can be used to disable special treatment
        for special characters, to prevent reserved words from being recognized
        as such, and to prevent parameter expansion.
 
-	引用用于移除 shell 中某些字符或词的特殊含义。 引用可用于禁用特殊字符的特殊处理，以防止保留字被识别，并防止参数扩展。
+	引用用于移除 shell 的某些字符或词的特殊含义。 引用可用于禁用特殊字符的特殊处理，以防止保留字被识别，并防止参数扩展。
 
        Each  of  the metacharacters listed above under DEFINITIONS has special
        meaning to the shell and must be quoted if it is to represent itself.
@@ -22,6 +25,10 @@ QUOTING		引用
 
 	有三种引用机制：转义字符，单引号和双引号。
 
+3.1.2.1 Escape Character
+
+3.1.2.1 转义字符
+
        A  non-quoted  backslash (\) is the escape character.  It preserves the
        literal value of the next character that follows, with the exception of
        <newline>.   If  a  \<newline>  pair  appears, and the backslash is not
@@ -30,11 +37,19 @@ QUOTING		引用
 
 	未用引号括起的反斜杠（\）是转义字符。 它保留了其后跟随的下一个字符的字面值，但 <newline> 除外。 如果出现 \<newline> 对，并且反斜杠本身不被引号括起，则将 \<newline> 视为行延续（即，它将从输入流中删除并被有效忽略）。
 
+3.1.2.2 Single Quotes
+
+3.1.2.2 单引号
+
        Enclosing  characters  in  single quotes preserves the literal value of
        each character within the quotes.  A single quote may not occur between
        single quotes, even when preceded by a backslash.
 
 	用单引号括起字符可以保留引号中每个字符的字面值。 单引号之间可能不会出现单个单引号，即使前置反斜杠也是如此。
+
+3.1.2.3 Double Quotes
+
+3.1.2.3 双引号
 
        Enclosing  characters  in  double quotes preserves the literal value of
        all characters within the quotes, with the exception of $, `,  \,  and,
@@ -53,13 +68,12 @@ QUOTING		引用
 
 	在双引号中，特殊参数 * 和 @ 具有特殊含义（参阅下面的 PARAMETERS）。
 
-       Words of the form $'string' are treated specially.  The word expands to
-       string,  with backslash-escaped characters replaced as specified by the
-       ANSI C standard.  Backslash escape sequences, if present,  are  decoded
-       as follows:
+3.1.2.4 ANSI-C Quoting
 
-	$'string' 形式的词是专门处理的。 词扩展为字符串，替换为 ANSI C 标准指定的反斜杠转义字符。 反斜杠转义序列（如果存在）按如下方式解码：
-	   
+       Character sequences of the form $'string' are treated as a special kind of single quotes. The sequence expands to string, with backslash-escaped characters in string replaced as specified by the ANSI C standard. Backslash escape sequences, if present, are decoded as follows:
+
+	$'string' 形式的字符序列被视为一种特殊的单引号。该序列会扩展为字符串，并按照 ANSI C 标准的规定替换字符串中的反斜线转义字符。反斜线转义序列（如果存在）的解码如下：
+
               \a     alert (bell)		警报（铃）
               \b     backspace			回退
               \e
@@ -82,6 +96,14 @@ QUOTING		引用
 
 		八位字符，其值为十六进制值 HH（一个或两个十六进制数字）
 
+              \uHHHH    the Unicode (ISO/IEC 10646) character whose value is the hexadecimal value HHHH (one to four hex digits)
+
+		统一码（ISO/IEC 10646）字符，其值为十六进制值 HHHHH（一至四位十六进制数字）
+
+              \UHHHHHHHH    the Unicode (ISO/IEC 10646) character whose value is the hexadecimal value HHHHHHHH (one to eight hex digits)
+
+		统一码（ISO/IEC 10646）字符，其值为十六进制值 HHHHHHH（一至八位十六进制数字）
+
               \cx    a control-x character	一个 control-x 字符
 
        The  expanded  result  is  single-quoted, as if the dollar sign had not
@@ -95,3 +117,15 @@ QUOTING		引用
        string is translated and replaced, the replacement is double-quoted.
 
 	前置美元符号双引号括起的字符串（$“string”），将导致字符串根据当前语言环境进行转换。 如果当前语言环境设置为 C 或 POSIX，则忽略美元符号。 如果转换并替换字符串，则替换被双引号括起。
+
+3.1.2.5 Locale-Specific Translation
+
+Prefixing a double-quoted string with a dollar sign (‘$’), such as $"hello, world", will cause the string to be translated according to the current locale. The gettext infrastructure performs the lookup and translation, using the LC_MESSAGES, TEXTDOMAINDIR, and TEXTDOMAIN shell variables, as explained below. See the gettext documentation for additional details not covered here. If the current locale is C or POSIX, if there are no translations available, of if the string is not translated, the dollar sign is ignored. Since this is a form of double quoting, the string remains double-quoted by default, whether or not it is translated and replaced. If the noexpand_translation option is enabled using the shopt builtin (see The Shopt Builtin), translated strings are single-quoted instead of double-quoted.
+
+The rest of this section is a brief overview of how you use gettext to create translations for strings in a shell script named scriptname. There are more details in the gettext documentation.
+
+3.1.2.5 特定于本地的翻译
+
+在双引号字符串前加上美元符号（'$'），例如 $"hello，world"，会导致该字符串根据当前本地语言环境进行转换。如下所述，gettext 基础架构会使用 LC_MESSAGES、TEXTDOMAINDIR 和 TEXTDOMAIN shell 变量执行查找和转换。有关此处未涉及的其他细节，请参阅 gettext 文档。如果当前语言是 C 或 POSIX，如果没有可用的转换，或者如果字符串没有转换，美元符号将被忽略。由于这是一种双引号形式，因此无论字符串是否被转换和替换，默认情况下默认保留双引号。如果使用 shopt 内置函数启用了 noexpand_translation 选项（请参阅 Shopt 内置函数），则转换后的字符串将使用单引号，而不是双引号。
+
+本节其余部分将简要介绍如何使用 gettext 为名为 scriptname 的 shell 脚本中的字符串创建转换。更多详情请参见 gettext 文档。
