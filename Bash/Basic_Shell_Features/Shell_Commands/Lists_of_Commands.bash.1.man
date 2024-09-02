@@ -1,0 +1,51 @@
+3.2.4 Lists of Commands
+
+3.2.4 命令列表
+
+A list is a sequence of one or more pipelines separated by one of the operators ‘;’, ‘&’, ‘&&’, or ‘||’, and optionally terminated by one of ‘;’, ‘&’, or a newline.
+
+列表是一个或多个管道的序列，由 “;”、“&”、“&&” 或 “||” 操作符之一分隔，并可选择以 “;”、“&” 或换行符之一结束。
+
+Of these list operators, ‘&&’ and ‘||’ have equal precedence, followed by ‘;’ and ‘&’, which have equal precedence.
+
+在这些列表操作符中，”&&“ 和 ”||“ 具有相同的优先级，其次是 ”;“ 和 ”&“，它们具有相同的优先级。
+
+A sequence of one or more newlines may appear in a list to delimit commands, equivalent to a semicolon.
+
+列表中可能会出现一个或多个换行符来分隔命令，相当于分号。
+
+If a command is terminated by the control operator ‘&’, the shell executes the command asynchronously in a subshell. This is known as executing the command in the background, and these are referred to as asynchronous commands. The shell does not wait for the command to finish, and the return status is 0 (true). When job control is not active (see Job Control), the standard input for asynchronous commands, in the absence of any explicit redirections, is redirected from /dev/null.
+
+如果命令以控制运算符 ”&“ 结束，则 shell 会在子 shell 中异步执行命令。这被称为在后台执行命令，也被称为异步命令。shell 不会等待命令执行完毕，返回状态为 0（true）。当作业控制未激活时（请参阅作业控制），异步命令的标准输入在没有任何显式重定向的情况下，将从 /dev/null 重定向。
+
+Commands separated by a ‘;’ are executed sequentially; the shell waits for each command to terminate in turn. The return status is the exit status of the last command executed.
+
+以 ”;“ 分隔的命令按顺序执行；shell 会等待每条命令依次结束。返回状态是最后一条命令的退出状态。
+
+AND and OR lists are sequences of one or more pipelines separated by the control operators ‘&&’ and ‘||’, respectively. AND and OR lists are executed with left associativity.
+
+AND 和 OR 列表是一个或多个管道的序列，分别用控制运算符 ”&&“ 和 ”||“ 分隔。AND 和 OR 列表以左关联方式执行。
+
+An AND list has the form
+
+AND 列表的形式是
+
+    command1 && command2
+
+command2 is executed if, and only if, command1 returns an exit status of zero (success).
+
+仅当 command1 返回的退出状态为 0（成功）时，command2 才会被执行。
+
+An OR list has the form
+
+OR 列表的形式是
+
+    command1 || command2
+
+command2 is executed if, and only if, command1 returns a non-zero exit status.
+
+只有 command1 返回的退出状态为非零，command2 才会被执行。
+
+The return status of AND and OR lists is the exit status of the last command executed in the list.
+
+AND 和 OR 列表的返回状态是列表中最后执行的命令的退出状态。
