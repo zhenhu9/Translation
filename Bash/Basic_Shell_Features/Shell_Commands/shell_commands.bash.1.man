@@ -1,0 +1,19 @@
+3.2 Shell Commands
+
+3.2 Shell 命令
+
+A simple shell command such as echo a b c consists of the command itself followed by arguments, separated by spaces.
+
+More complex shell commands are composed of simple commands arranged together in a variety of ways: in a pipeline in which the output of one command becomes the input of a second, in a loop or conditional construct, or in some other grouping.
+
+一个简单的 shell 命令（如 echo a b c）由命令本身和参数组成，之间用空格隔开。
+
+更复杂的 shell 命令是由简单命令以各种方式排列在一起组成的：在管道中，一条命令的输出变成第二条命令的输入；在循环或条件结构中；或以其他方式组合在一起。
+
+    Reserved Words
+    Simple Commands
+    Pipelines
+    Lists of Commands
+    Compound Commands
+    Coprocesses
+    GNU Parallel
