@@ -1,0 +1,19 @@
+3.2.5 Compound Commands
+
+3.2.5 复合命令
+
+Compound commands are the shell programming language constructs. Each construct begins with a reserved word or control operator and is terminated by a corresponding reserved word or operator. Any redirections (see Redirections) associated with a compound command apply to all commands within that compound command unless explicitly overridden.
+
+复合命令是 shell 编程语言的结构体。每个构造以一个保留字或控制运算符开始，并以相应的保留字或运算符结束。与复合命令相关的任何重定向（请参阅重定向）都适用于该复合命令中的所有命令，除非明确覆盖。
+
+In most cases a list of commands in a compound command’s description may be separated from the rest of the command by one or more newlines, and may be followed by a newline in place of a semicolon.
+
+在大多数情况下，复合命令说明中的命令列表可以用一个或多个换行符与命令的其余部分隔开，也可以用换行符代替分号。
+
+Bash provides looping constructs, conditional commands, and mechanisms to group commands and execute them as a unit.
+
+Bash 提供了循环结构、条件命令以及将命令分组并作为一个单元执行的机制。
+
+    Looping Constructs
+    Conditional Constructs
+    Grouping Commands
