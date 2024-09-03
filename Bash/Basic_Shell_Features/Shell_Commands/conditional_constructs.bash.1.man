@@ -1,0 +1,243 @@
+3.2.5.2 Conditional Constructs
+
+3.2.5.2 条件结构
+
+if
+
+    The syntax of the if command is:
+
+    if 命令的语法是：
+
+    if test-commands; then
+      consequent-commands;
+    [elif more-test-commands; then
+      more-consequents;]
+    [else alternate-consequents;]
+    fi
+
+    The test-commands list is executed, and if its return status is zero, the consequent-commands list is executed. If test-commands returns a non-zero status, each elif list is executed in turn, and if its exit status is zero, the corresponding more-consequents is executed and the command completes. If ‘else alternate-consequents’ is present, and the final command in the final if or elif clause has a non-zero exit status, then alternate-consequents is executed. The return status is the exit status of the last command executed, or zero if no condition tested true.
+
+    如果 test-commands 命令列表执行的返回状态为零，则执行后续命令列表。如果 test-commands 返回非零状态，则依次执行每个 elif 列表，如果其退出状态为零，则执行相应的 more-consequents，命令执行完毕。如果存在 ”else alternate-consequents“，且最后 if 或 elif 子句中的最后一条命令的退出状态非零，则执行 alternate-consequents。返回状态是最后执行的命令的退出状态，如果没有条件测试为真，则返回状态为零。
+
+case
+
+    The syntax of the case command is:
+
+    case 命令的语法是：
+
+    case word in
+        [ [(] pattern [| pattern]…) command-list ;;]…
+    esac
+
+    case will selectively execute the command-list corresponding to the first pattern that matches word. The match is performed according to the rules described below in Pattern Matching. If the nocasematch shell option (see the description of shopt in The Shopt Builtin) is enabled, the match is performed without regard to the case of alphabetic characters. The ‘|’ is used to separate multiple patterns, and the ‘)’ operator terminates a pattern list. A list of patterns and an associated command-list is known as a clause.
+
+    case 将选择性地执行与第一个匹配词的模式相对应的命令列表。匹配将根据下文 Pattern Matching 中描述的规则进行。如果启用了 nocasematch shell 选项（参阅 The Shopt Builtin 中 shopt 的描述），则在执行匹配时不会考虑字母字符的大小写。‘|’ 用于分隔多个模式，’)‘ 操作符用于结束模式列表。模式列表和相关命令列表称为子句。
+
+    Each clause must be terminated with ‘;;’, ‘;&’, or ‘;;&’. The word undergoes tilde expansion, parameter expansion, command substitution, arithmetic expansion, and quote removal (see Shell Parameter Expansion) before matching is attempted. Each pattern undergoes tilde expansion, parameter expansion, command substitution, arithmetic expansion, process substitution, and quote removal.
+
+    每个分句必须以“;;”、“;&” 或 “;;&” 结束。在尝试匹配之前，词要经过转折号扩展、参数扩展、命令替换、算术扩展和引号移除（请参阅 “Shell 参数扩展”）。每个模式都要经过转折号扩展、参数扩展、命令替换、算术扩展、进程替换和移除引号。
+
+    There may be an arbitrary number of case clauses, each terminated by a ‘;;’, ‘;&’, or ‘;;&’. The first pattern that matches determines the command-list that is executed. It’s a common idiom to use ‘*’ as the final pattern to define the default case, since that pattern will always match.
+
+    可以有任意数量的 case 子句，每个子句都以 “;;”、“;&” 或 “;;&” 结束。第一个匹配的模式决定执行的命令列表。使用 ’*‘ 作为定义默认 case 的最后一个模式是一种常见的习惯做法，因为该模式总是匹配的。
+
+    Here is an example using case in a script that could be used to describe one interesting feature of an animal:
+
+    下面是一个在脚本中使用 case 的示例，可以用来描述动物的一个有趣特征：
+
+    echo -n "Enter the name of an animal: "
+    read ANIMAL
+    echo -n "The $ANIMAL has "
+    case $ANIMAL in
+      horse | dog | cat) echo -n "four";;
+      man | kangaroo ) echo -n "two";;
+      *) echo -n "an unknown number of";;
+    esac
+    echo " legs."
+
+    If the ‘;;’ operator is used, no subsequent matches are attempted after the first pattern match. Using ‘;&’ in place of ‘;;’ causes execution to continue with the command-list associated with the next clause, if any. Using ‘;;&’ in place of ‘;;’ causes the shell to test the patterns in the next clause, if any, and execute any associated command-list on a successful match, continuing the case statement execution as if the pattern list had not matched.
+
+    如果使用 ”;;“ 操作符，则在第一个模式匹配后不会再尝试后续匹配。使用 “;&”代替 ’;;‘ 会导致执行与下一子句相关的命令列表（如果有）。使用 ’;;&‘ 代替 ’;;‘ 会导致 shell 测试下一个子句中的模式（如果有），并在成功匹配后执行任何相关的命令列表，继续执行 case 语句，就像模式列表没有匹配一样。
+
+    The return status is zero if no pattern is matched. Otherwise, the return status is the exit status of the command-list executed.
+
+    如果没有匹配到模式，则返回状态为零。否则，返回状态就是所执行命令列表的退出状态。
+
+select
+
+    The select construct allows the easy generation of menus. It has almost the same syntax as the for command:
+
+    select 结构可以轻松生成菜单。它的语法与 for 命令几乎相同：
+
+    select name [in words …]; do commands; done
+
+    The list of words following in is expanded, generating a list of items, and the set of expanded words is printed on the standard error output stream, each preceded by a number. If the ‘in words’ is omitted, the positional parameters are printed, as if ‘in "$@"’ had been specified. select then displays the PS3 prompt and reads a line from the standard input. If the line consists of a number corresponding to one of the displayed words, then the value of name is set to that word. If the line is empty, the words and prompt are displayed again. If EOF is read, the select command completes and returns 1. Any other value read causes name to be set to null. The line read is saved in the variable REPLY.
+
+    in 后面的词列表将被扩展，生成一个项目列表，展开后的词集将打印在标准错误输出流中，每个单词前都有一个数字。如果省略了 ‘in words’，则会打印位置参数，就像指定了 ’in "$@"‘ 一样。然后，select 会显示 PS3 提示，并从标准输入中读取一行。如果该行包含的数字与显示的单词之一相对应，那么 name 的值将被设置为该单词。如果该行为空，则再次显示字词和提示。如果读取到 EOF，则选择命令完成并返回 1。读取任何其他值都会导致 name 设置为空。读取的行会保存在变量 REPLY 中。
+
+    The commands are executed after each selection until a break command is executed, at which point the select command completes.
+
+    每次选择后都会执行命令，直到执行 break 命令，此时 select 命令完成。
+
+    Here is an example that allows the user to pick a filename from the current directory, and displays the name and index of the file selected.
+
+    下面的示例允许用户从当前目录中选择文件名，并显示所选文件的名称和索引。
+
+    select fname in *;
+    do
+    	echo you picked $fname \($REPLY\)
+    	break;
+    done
+
+((…))
+
+    (( expression ))
+
+    The arithmetic expression is evaluated according to the rules described below (see Shell Arithmetic). The expression undergoes the same expansions as if it were within double quotes, but double quote characters in expression are not treated specially are removed. If the value of the expression is non-zero, the return status is 0; otherwise the return status is 1.
+
+    算术表达式的运算规则如下（参见 Shell Arithmetic）。表达式的扩展与在双引号内的表达式相同，但表达式中的双引号字符不会被特殊处理，而是会被删除。如果表达式的值非零，则返回状态为 0；否则返回状态为 1。
+
+[[…]]
+
+    [[ expression ]]
+
+    Return a status of 0 or 1 depending on the evaluation of the conditional expression expression. Expressions are composed of the primaries described below in Bash Conditional Expressions. The words between the [[ and ]] do not undergo word splitting and filename expansion. The shell performs tilde expansion, parameter and variable expansion, arithmetic expansion, command substitution, process substitution, and quote removal on those words (the expansions that would occur if the words were enclosed in double quotes). Conditional operators such as ‘-f’ must be unquoted to be recognized as primaries.
+
+    根据条件表达式 expression 的运算结果，返回状态 0 或 1。表达式由下面的 Bash Conditional Expressions 中描述的主词组成。[[ 和 ]] 之间的词不进行分词和文件名扩展。shell 会对这些词执行 tilde 扩展、参数和变量扩展、算术扩展、命令替换、进程替换和移除引号（如果这些词用双引号括起来会发生的扩充）。条件运算符（如 “-f”）必须不加引号，才能被识别为主运算符。
+
+    When used with [[, the ‘<’ and ‘>’ operators sort lexicographically using the current locale.
+
+    与 [[ 一起使用时，’<‘ 和 ’>‘ 运算符将使用当前当前语言环境的发词典排序。
+
+    When the ‘==’ and ‘!=’ operators are used, the string to the right of the operator is considered a pattern and matched according to the rules described below in Pattern Matching, as if the extglob shell option were enabled. The ‘=’ operator is identical to ‘==’. If the nocasematch shell option (see the description of shopt in The Shopt Builtin) is enabled, the match is performed without regard to the case of alphabetic characters. The return value is 0 if the string matches (‘==’) or does not match (‘!=’) the pattern, and 1 otherwise.
+
+    使用 ’==‘ 和 ’！=‘ 运算符时，运算符右侧的字符串将被视为模式，并按照下文 Pattern Matching 中描述的规则进行匹配，就像启用了 extglob shell 选项一样。’=‘ 操作符与 ’==‘ 相同。如果启用了 nocasematch shell 选项（参阅 The Shopt Builtin 中 shopt 的描述），匹配时将不考虑字母字符的大小写。如果字符串与模式匹配（’==‘）或不匹配（’!=‘），返回值为 0，否则为 1。
+
+    If you quote any part of the pattern, using any of the shell’s quoting mechanisms, the quoted portion is matched literally. This means every character in the quoted portion matches itself, instead of having any special pattern matching meaning.
+
+    如果使用 shell 的任何引号机制对模式的任何部分进行括起，则括起的部分将按字面意思进行匹配。这意味着被引述部分的每个字符都仅匹配自身，而不是具有任何特殊的模式匹配含义。
+
+    An additional binary operator, ‘=~’, is available, with the same precedence as ‘==’ and ‘!=’. When you use ‘=~’, the string to the right of the operator is considered a POSIX extended regular expression pattern and matched accordingly (using the POSIX regcomp and regexec interfaces usually described in regex(3)). The return value is 0 if the string matches the pattern, and 1 if it does not. If the regular expression is syntactically incorrect, the conditional expression returns 2. If the nocasematch shell option (see the description of shopt in The Shopt Builtin) is enabled, the match is performed without regard to the case of alphabetic characters.
+
+    另外还有一个二进制操作符 ’=~‘，其优先级与 ’==‘ 和 ’!=‘ 相同。使用 ’=~‘ 时，操作符右边的字符串被视为 POSIX 扩展正则表达式模式，并进行相应匹配（使用 POSIX regcomp 和 regexec 接口，通常在 regex(3) 中描述）。如果字符串与模式匹配，返回值为 0；如果不匹配，返回值为 1。如果正则表达式语法错误，条件表达式将返回 2。如果启用了 nocasematch shell 选项（参见 The Shopt Builtin 中 shopt 的描述），则执行匹配时不会考虑字母字符的大小写。
+
+    You can quote any part of the pattern to force the quoted portion to be matched literally instead of as a regular expression (see above). If the pattern is stored in a shell variable, quoting the variable expansion forces the entire pattern to be matched literally.
+
+    你可以为模式的任何部分加引号，以强制按字面意思而不是正则表达式（见上文）来匹配被引号的部分。如果模式存储在 shell 变量中，则引用变量扩展会强制按字面意思匹配整个模式。
+
+    The pattern will match if it matches any part of the string. If you want to force the pattern to match the entire string, anchor the pattern using the ‘^’ and ‘$’ regular expression operators.
+
+    如果该模式与字符串的任何部分匹配，它就会匹配。如果要强制模式匹配整个字符串，可使用 '^' 和 '$' 正则表达式操作符锚定模式。
+
+    For example, the following will match a line (stored in the shell variable line) if there is a sequence of characters anywhere in the value consisting of any number, including zero, of characters in the space character class, immediately followed by zero or one instances of ‘a’, then a ‘b’:
+
+    例如，如果某一行（存储在 shell 变量 line 中）的字符值中的任意位置有一个字符序列，该字符序列由空格字符类中的任意数目（包括零）字符组成，紧接着是零个或一个 "a"，然后是一个 "b"，则下面的代码将匹配该行（存储在 shell 变量 line 中）：
+
+    [[ $line =~ [[:space:]]*(a)?b ]]
+
+    That means values for line like ‘aab’, ‘ aaaaaab’, ‘xaby’, and ‘ ab’ will all match, as will a line containing a ‘b’ anywhere in its value.
+
+这意味着 ’aab‘、’aaaaaab‘、’xaby‘ 和 ’ ab‘ 等行值都会匹配，而在行值中任何地方包含 ’b‘ 的行值也会匹配。
+
+    If you want to match a character that’s special to the regular expression grammar (‘^$|[]()\.*+?’), it has to be quoted to remove its special meaning. This means that in the pattern ‘xxx.txt’, the ‘.’ matches any character in the string (its usual regular expression meaning), but in the pattern ‘"xxx.txt"’, it can only match a literal ‘.’.
+
+    如果要匹配正则表达式语法中的特殊字符 ('^$|[]()\.*+?')，则必须加引号以消除其特殊含义。这意味着，在模式 ’xxx.txt‘ 中，’.‘ 可以匹配字符串中的任何字符（通常的正则表达式含义），但在模式 ’"xxx.txt"‘ 中，它只能匹配字面意义上的 ’.‘。
+
+    Likewise, if you want to include a character in your pattern that has a special meaning to the regular expression grammar, you must make sure it’s not quoted. If you want to anchor a pattern at the beginning or end of the string, for instance, you cannot quote the ‘^’ or ‘$’ characters using any form of shell quoting.
+
+    同样，如果你想在模式中包含一个对正则表达式语法有特殊意义的字符，你必须确保它不被加引号。例如，如果要在字符串的开头或结尾锚定一个模式，就不能使用任何形式的 shell 引号为 ’^‘ 或 ’$‘ 字符加引号。
+
+    If you want to match ‘initial string’ at the start of a line, the following will work:
+
+    如果要匹配一行开头的 ’initial string‘，可以使用下面的方法：
+
+    [[ $line =~ ^"initial string" ]]
+
+    but this will not:
+
+    但是这个不起作用：
+
+    [[ $line =~ "^initial string" ]]
+
+    because in the second example the ‘^’ is quoted and doesn’t have its usual special meaning.
+
+    因为在第二个例子中的 ’^‘ 被括起而不具有通常的特殊含义。
+
+    It is sometimes difficult to specify a regular expression properly without using quotes, or to keep track of the quoting used by regular expressions while paying attention to shell quoting and the shell’s quote removal. Storing the regular expression in a shell variable is often a useful way to avoid problems with quoting characters that are special to the shell. For example, the following is equivalent to the pattern used above:
+
+    有时很难在不使用引号的情况下正确指定正则表达式，或者很难在注意 shell 引号和 shell 删除引号的同时跟踪正则表达式使用的引号。将正则表达式存储在 shell 变量中通常是一种有用的方法，可以避免 shell 特殊引号字符带来的问题。例如，下面的正则表达式等同于上面使用的模式： 
+
+    pattern='[[:space:]]*(a)?b'
+    [[ $line =~ $pattern ]]
+
+    Shell programmers should take special care with backslashes, since backslashes are used by both the shell and regular expressions to remove the special meaning from the following character. This means that after the shell’s word expansions complete (see Shell Expansions), any backslashes remaining in parts of the pattern that were originally not quoted can remove the special meaning of pattern characters. If any part of the pattern is quoted, the shell does its best to ensure that the regular expression treats those remaining backslashes as literal, if they appeared in a quoted portion.
+
+    shell 程序员应特别注意使用反斜线，因为 shell 和正则表达式都会使用反斜线来消除后面字符的特殊含义。这意味着在 shell 的扩词完成后（请参阅 Shell Expansions），模式中原先未加引号的部分中残留的任何反斜线都会消除模式字符的特殊含义。如果模式的任何部分加了引号，那么 shell 会尽力确保正则表达式将剩余的反斜线视为字面意义，如果它们出现在引号部分的话。
+
+    The following two sets of commands are not equivalent:
+
+    pattern='\.'
+
+    [[ . =~ $pattern ]]
+    [[ . =~ \. ]]
+
+    [[ . =~ "$pattern" ]]
+    [[ . =~ '\.' ]]
+
+    The first two matches will succeed, but the second two will not, because in the second two the backslash will be part of the pattern to be matched. In the first two examples, the pattern passed to the regular expression parser is ‘\.’. The backslash removes the special meaning from ‘.’, so the literal ‘.’ matches. In the second two examples, the pattern passed to the regular expression parser has the backslash quoted (e.g., ‘\\\.’), which will not match the string, since it does not contain a backslash. If the string in the first examples were anything other than ‘.’, say ‘a’, the pattern would not match, because the quoted ‘.’ in the pattern loses its special meaning of matching any single character.
+
+    前两个匹配会成功，但后两个不会，因为在后两个匹配中，反斜杠是要匹配的模式的一部分。在前两个示例中，传递给正则表达式解析器的模式是 ’\.‘。反斜线去除了 ‘.’ 的特殊含义，因此匹配的是字面意义上的 ‘.’。在后两个示例中，传递给正则表达式分析程序的模式带有反斜杠引号（例如 ‘\\\.’），这将无法匹配字符串，因为它不包含反斜杠。如果第一个示例中的字符串是 ‘.’ 以外的字符，例如 ‘a’，那么正则表达式也不会匹配，因为正则表达式中带引号的 ‘.’ 失去了匹配任何单字符的特殊含义。
+
+    Bracket expressions in regular expressions can be sources of errors as well, since characters that are normally special in regular expressions lose their special meanings between brackets. However, you can use bracket expressions to match special pattern characters without quoting them, so they are sometimes useful for this purpose.
+
+    正则表达式中的括号表达式也可能导致错误，因为在正则表达式中通常比较特殊的字符在括号中失去了其特殊含义。不过，您可以使用括号表达式来匹配特殊模式字符，而无需给它们加引号，因此有时括号表达式在这方面很有用。
+
+    Though it might seem like a strange way to write it, the following pattern will match a ‘.’ in the string:
+
+    虽然写法可能有些奇怪，但以下模式将匹配字符串中的 ‘.’：
+
+    [[ . =~ [.] ]]
+
+    The shell performs any word expansions before passing the pattern to the regular expression functions, so you can assume that the shell’s quoting takes precedence. As noted above, the regular expression parser will interpret any unquoted backslashes remaining in the pattern after shell expansion according to its own rules. The intention is to avoid making shell programmers quote things twice as much as possible, so shell quoting should be sufficient to quote special pattern characters where that’s necessary.
+
+    在将模式传递给正则表达式函数之前，shell 会执行任何词扩展，因此可以认为 shell 的引用优先。如上所述，正则表达式解析器会根据自己的规则解释 shell 扩展后模式中剩余的未引号反斜线。这样做的目的是尽可能避免让 shell 程序员重复引述，因此 shell 引用应足以在必要时括起特殊的模式字符。
+
+    The array variable BASH_REMATCH records which parts of the string matched the pattern. The element of BASH_REMATCH with index 0 contains the portion of the string matching the entire regular expression. Substrings matched by parenthesized subexpressions within the regular expression are saved in the remaining BASH_REMATCH indices. The element of BASH_REMATCH with index n is the portion of the string matching the nth parenthesized subexpression.
+
+    数组变量 BASH_REMATCH 记录了字符串中与正则表达式匹配的部分。索引为 0 的 BASH_REMATCH 元素包含与整个正则表达式匹配的字符串部分。由正则表达式中的括号子表达式匹配的子字符串保存在其余的 BASH_REMATCH 索引中。索引为 n 的 BASH_REMATCH 元素是与第 n 个括号子表达式匹配的字符串部分。
+
+    Bash sets BASH_REMATCH in the global scope; declaring it as a local variable will lead to unexpected results.
+
+    Bash 会在全局范围内设置 BASH_REMATCH；将其声明为局部变量会导致意想不到的结果。
+
+    Expressions may be combined using the following operators, listed in decreasing order of precedence:
+
+    可以使用下列运算符组合表达式，这些运算符的优先级依次递减：
+
+    ( expression )
+
+        Returns the value of expression. This may be used to override the normal precedence of operators.
+
+	返回表达式的值。可用于覆盖运算符的正常优先级。
+
+    ! expression
+
+        True if expression is false.
+
+	如果 expression 为假，则为真。
+
+    expression1 && expression2
+
+        True if both expression1 and expression2 are true.
+
+	如果 expression1 和 expression2 都为真，则为真。
+
+    expression1 || expression2
+
+        True if either expression1 or expression2 is true.
+
+	如果 expression1 或 expression2 任一为真，则为真。
+
+    The && and || operators do not evaluate expression2 if the value of expression1 is sufficient to determine the return value of the entire conditional expression.
+
+    如果 expression1 的值足以确定整个条件表达式的返回值，则 && 和 || 操作符不会对表达式 2 进行运算。
