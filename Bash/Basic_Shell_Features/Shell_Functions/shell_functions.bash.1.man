@@ -1,0 +1,97 @@
+3.3 Shell Functions
+
+3.3 Shell 函数
+
+Shell functions are a way to group commands for later execution using a single name for the group. They are executed just like a "regular" command. When the name of a shell function is used as a simple command name, the list of commands associated with that function name is executed. Shell functions are executed in the current shell context; no new process is created to interpret them.
+
+Shell 函数是一种将命令分组以便稍后执行的方法，该分组使用单一名称。它们的执行方式与 “常规” 命令无异。当 shell 函数的名称被用作简单的命令名称时，与该函数名称相关的命令列表就会被执行。shell 函数在当前 shell 环境中执行；不会创建新进程来解析这些函数。
+
+Functions are declared using this syntax:
+
+函数声明语法：
+
+fname () compound-command [ redirections ]
+
+or
+
+function fname [()] compound-command [ redirections ]
+
+This defines a shell function named fname. The reserved word function is optional. If the function reserved word is supplied, the parentheses are optional. The body of the function is the compound command compound-command (see Compound Commands). That command is usually a list enclosed between { and }, but may be any compound command listed above. If the function reserved word is used, but the parentheses are not supplied, the braces are recommended. compound-command is executed whenever fname is specified as the name of a simple command. When the shell is in POSIX mode (see Bash POSIX Mode), fname must be a valid shell name and may not be the same as one of the special builtins (see Special Builtins). In default mode, a function name can be any unquoted shell word that does not contain ‘$’. Any redirections (see Redirections) associated with the shell function are performed when the function is executed. A function definition may be deleted using the -f option to the unset builtin (see Bourne Shell Builtins).
+
+这将定义一个名为 fname 的 shell 函数。保留字 function 是可选的。如果提供了 function 保留字，括号也是可选的。函数的主体是复合命令 compound-command（参阅复合命令）。该命令通常是 { 和 } 之间括起来的一个列表，但也可以是上面列出的任何复合命令。如果使用了 function 保留字，但没有提供括号，则建议使用大括号。只要 fname 被指定为简单命令的名称，就会执行 compound-command。当 shell 处于 POSIX 模式（请参阅 Bash POSIX Mode）时，fname 必须是一个有效的 shell 名称，并且不得与某个特殊内置函数相同（请参阅 Special Builtins）。在默认模式下，函数名可以是任何不包含 ‘$’ 的无引号 shell 单词。与 shell 函数相关的任何重定向（请参阅重定向）都将在执行该函数时执行。可以使用 unset 内置程序的 -f 选项删除函数定义（参见 Bourne Shell 内置程序）。
+
+The exit status of a function definition is zero unless a syntax error occurs or a readonly function with the same name already exists. When executed, the exit status of a function is the exit status of the last command executed in the body.
+
+除非出现语法错误或已存在同名的只读函数，否则函数定义的退出状态为零。函数执行时的退出状态是主体中最后执行的命令的退出状态。
+
+Note that for historical reasons, in the most common usage the curly braces that surround the body of the function must be separated from the body by blanks or newlines. This is because the braces are reserved words and are only recognized as such when they are separated from the command list by whitespace or another shell metacharacter. Also, when using the braces, the list must be terminated by a semicolon, a ‘&’, or a newline.
+
+请注意，由于历史原因，在最常见的用法中，包围函数主体的大括号必须用空格或换行符与主体分隔开来。这是因为大括号是保留字，只有用空白或其他 shell 元字符将其与命令列表分隔开来时，才能被识别为保留字。此外，使用大括号时，列表必须以分号、‘&’ 或换行符结束。
+
+When a function is executed, the arguments to the function become the positional parameters during its execution (see Positional Parameters). The special parameter ‘#’ that expands to the number of positional parameters is updated to reflect the change. Special parameter 0 is unchanged. The first element of the FUNCNAME variable is set to the name of the function while the function is executing.
+
+执行函数时，函数的参数会在执行过程中变成位置参数（请参阅位置参数）。扩展为位置参数个数的特殊参数 ‘#’ 将被更新，以反映这一变化。特殊参数 0 保持不变。函数执行时，FUNCNAME 变量的第一个元素将被设置为函数名称。
+
+All other aspects of the shell execution environment are identical between a function and its caller with these exceptions: the DEBUG and RETURN traps are not inherited unless the function has been given the trace attribute using the declare builtin or the -o functrace option has been enabled with the set builtin, (in which case all functions inherit the DEBUG and RETURN traps), and the ERR trap is not inherited unless the -o errtrace shell option has been enabled. See Bourne Shell Builtins, for the description of the trap builtin.
+
+函数及其调用者之间 shell 执行环境的所有其他方面都是相同的，但有以下例外：除非使用 declare 内置函数或使用 set 内置函数启用了 -o functrace 选项，否则 DEBUG 和 RETURN 陷阱不会被继承（在这种情况下，所有函数都会继承 DEBUG 和 RETURN 陷阱）；除非启用了 -o errtrace shell 选项，否则 ERR 陷阱不会被继承。有关陷阱内置程序的描述，请参阅 Bourne Shell Builtins。
+
+The FUNCNEST variable, if set to a numeric value greater than 0, defines a maximum function nesting level. Function invocations that exceed the limit cause the entire command to abort.
+
+FUNCNEST 变量如果设置为大于 0 的数值，则定义了最大函数嵌套级别。函数调用如果超过上限，整个命令就会中止。
+
+If the builtin command return is executed in a function, the function completes and execution resumes with the next command after the function call. Any command associated with the RETURN trap is executed before execution resumes. When a function completes, the values of the positional parameters and the special parameter ‘#’ are restored to the values they had prior to the function’s execution. If a numeric argument is given to return, that is the function’s return status; otherwise the function’s return status is the exit status of the last command executed before the return.
+
+如果在函数中执行了内置命令 return，函数就会完成，并以函数调用后的下一条命令继续执行。任何与 RETURN 陷阱相关的命令都会在恢复执行前被执行。函数执行完毕后，位置参数和特殊参数 ‘#’ 的值将恢复到函数执行前的值。如果返回时给定了一个数字参数，该参数就是函数的返回状态；否则，函数的返回状态就是返回前执行的最后一条命令的退出状态。
+
+Variables local to the function may be declared with the local builtin (local variables). Ordinarily, variables and their values are shared between a function and its caller. These variables are visible only to the function and the commands it invokes. This is particularly important when a shell function calls other functions.
+
+函数的局部变量可以用 local 内置变量（局部变量）来声明。通常，变量及其值由函数和调用者共享。只有函数及其调用的命令才能看到这些变量。当 shell 函数调用其他函数时，这一点尤为重要。
+
+In the following description, the current scope is a currently- executing function. Previous scopes consist of that function’s caller and so on, back to the "global" scope, where the shell is not executing any shell function. Consequently, a local variable at the current local scope is a variable declared using the local or declare builtins in the function that is currently executing.
+
+在下面的描述中，当前作用域是当前正在执行的函数。之前的作用域包括该函数的调用者，依此类推，直到 shell 不执行任何 shell 函数的 "全局 "作用域。因此，当前局部作用域中的局部变量是指在当前执行的函数中使用 local 或 declare 内置函数声明的变量。
+
+Local variables "shadow" variables with the same name declared at previous scopes. For instance, a local variable declared in a function hides a global variable of the same name: references and assignments refer to the local variable, leaving the global variable unmodified. When the function returns, the global variable is once again visible.
+
+局部变量会 “隐藏” 在先前作用域中声明的同名变量。例如，在函数中声明的局部变量会隐藏同名的全局变量：引用和赋值会引用局部变量，而全局变量不会被修改。当函数返回时，全局变量再次可见。
+
+The shell uses dynamic scoping to control a variable’s visibility within functions. With dynamic scoping, visible variables and their values are a result of the sequence of function calls that caused execution to reach the current function. The value of a variable that a function sees depends on its value within its caller, if any, whether that caller is the "global" scope or another shell function. This is also the value that a local variable declaration "shadows", and the value that is restored when the function returns.
+
+shell 使用动态作用域来控制变量在函数中的可见性。在动态作用域中，可见变量及其值是函数调用序列的结果，而函数调用序列导致执行到达当前函数。函数看到的变量值取决于变量在调用者（如果有的话）中的值，无论调用者是 "全局 "作用域还是另一个 shell 函数。这也是局部变量声明的 "阴影 "值，以及函数返回时恢复的值。
+
+For example, if a variable var is declared as local in function func1, and func1 calls another function func2, references to var made from within func2 will resolve to the local variable var from func1, shadowing any global variable named var.
+
+例如，如果变量 var 在函数 func1 中被声明为局部变量，而函数 func1 调用了另一个函数 func2，那么在函数 func2 中对 var 的引用将解析为来自函数 func1 的局部变量 var，并对任何名为 var 的全局变量产生阴影。
+
+The following script demonstrates this behavior. When executed, the script displays
+
+下面的脚本演示了这种行为。执行时，脚本会显示
+
+In func2, var = func1 local
+
+func1()
+{
+    local var='func1 local'
+    func2
+}
+
+func2()
+{
+    echo "In func2, var = $var"
+}
+
+var=global
+func1
+
+The unset builtin also acts using the same dynamic scope: if a variable is local to the current scope, unset will unset it; otherwise the unset will refer to the variable found in any calling scope as described above. If a variable at the current local scope is unset, it will remain so (appearing as unset) until it is reset in that scope or until the function returns. Once the function returns, any instance of the variable at a previous scope will become visible. If the unset acts on a variable at a previous scope, any instance of a variable with that name that had been shadowed will become visible (see below how localvar_unsetshell option changes this behavior).
+
+unset 内置函数也使用相同的动态作用域：如果变量是当前作用域的局部变量，unset 将取消它的设置；否则，unset 将引用在任何调用作用域中找到的变量，如上所述。如果当前局部作用域中的变量未被设置，它将保持未被设置的状态（显示为 unset），直到在该作用域中被重置或函数返回为止。一旦函数返回，该变量在先前作用域中的任何实例都将变得可见。如果 unset 作用于先前作用域中的变量，则该变量名下任何已被阴影覆盖的变量实例都将变为可见（请参阅下文 localvar_unsetshell 选项如何改变这种行为）。
+
+Function names and definitions may be listed with the -f option to the declare (typeset) builtin command (see Bash Builtin Commands). The -F option to declare or typeset will list the function names only (and optionally the source file and line number, if the extdebug shell option is enabled). Functions may be exported so that child shell processes (those created when executing a separate shell invocation) automatically have them defined with the -f option to the export builtin (see Bourne Shell Builtins).
+
+函数名和定义可以用 declare（typeset）内置命令的 -f 选项列出（参见 Bash 内置命令）。declare 或 typeset 的 -F 选项将只列出函数名（如果启用了 extdebug shell 选项，还可选择列出源文件和行号）。可以导出函数，以便子 shell 进程（在执行单独的 shell 调用时创建的进程）通过导出内置命令的 -f 选项自动定义这些函数（参见 Bourne Shell 内置命令）。
+
+Functions may be recursive. The FUNCNEST variable may be used to limit the depth of the function call stack and restrict the number of function invocations. By default, no limit is placed on the number of recursive calls.
+
+函数可以递归。FUNCNEST 变量可用于限制函数调用堆栈的深度和函数调用的次数。默认情况下，递归调用的次数不受限制。
