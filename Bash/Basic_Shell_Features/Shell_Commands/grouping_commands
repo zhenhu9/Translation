@@ -1,0 +1,31 @@
+3.2.5.3 Grouping Commands
+
+3.2.5.3 分组命令
+
+Bash provides two ways to group a list of commands to be executed as a unit. When commands are grouped, redirections may be applied to the entire command list. For example, the output of all the commands in the list may be redirected to a single stream.
+
+Bash 提供了两种将命令列表分组并作为一个单元执行的方法。当命令被分组后，重定向可以应用于整个命令列表。例如，列表中所有命令的输出都可以重定向到一个数据流。
+
+()
+
+    ( list )
+
+    Placing a list of commands between parentheses forces the shell to create a subshell (see Command Execution Environment), and each of the commands in list is executed in that subshell environment. Since the list is executed in a subshell, variable assignments do not remain in effect after the subshell completes.
+
+    将命令列表置于括号之间会强制 shell 创建一个子壳（请参阅 Command and Executing Envireonment），列表中的每一条命令都会在该子 shell 环境中执行。由于列表在子 shell 中执行，变量赋值在子 shell 完成后不会继续生效。
+
+{}
+
+    { list; }
+
+    Placing a list of commands between curly braces causes the list to be executed in the current shell context. No subshell is created. The semicolon (or newline) following list is required.
+
+    将命令列表置于大括号之间，会导致该列表在当前 shell 环境中执行。不会创建子 shell。列表后的分号（或换行符）是必需的。
+
+In addition to the creation of a subshell, there is a subtle difference between these two constructs due to historical reasons. The braces are reserved words, so they must be separated from the list by blanks or other shell metacharacters. The parentheses are operators, and are recognized as separate tokens by the shell even if they are not separated from the list by whitespace.
+
+除了创建子 shell 外，由于历史原因，这两种结构还有一个微妙的区别。大括号是保留字，因此必须用空格或其它 shell 元字符将其与列表分隔开来。括号是运算符，即使没有用空格与列表分隔，shell 也能将其识别为单个的词元。
+
+The exit status of both of these constructs is the exit status of list.
+
+这些结构的退出状态是列表的退出状态。
