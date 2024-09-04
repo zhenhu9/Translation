@@ -1,0 +1,55 @@
+3.4.2 Special Parameters
+
+3.4.2 特别参数
+
+The shell treats several parameters specially. These parameters may only be referenced; assignment to them is not allowed.
+
+shell 会特别处理几个参数。这些参数只能被引用，不允许赋值。
+
+*
+
+    ($*) Expands to the positional parameters, starting from one. When the expansion is not within double quotes, each positional parameter expands to a separate word. In contexts where it is performed, those words are subject to further word splitting and filename expansion. When the expansion occurs within double quotes, it expands to a single word with the value of each parameter separated by the first character of the IFS special variable. That is, "$*" is equivalent to "$1c$2c…", where c is the first character of the value of the IFS variable. If IFS is unset, the parameters are separated by spaces. If IFS is null, the parameters are joined without intervening separators.
+
+($*) 扩展到位置参数，从 1 开始。当扩展不在双引号内时，每个位置参数会扩展为一个单独的词。在执行扩展的情况下，这些词将被进一步分词和扩展文件名。如果在双引号内扩展，则扩展为一个单词，每个参数的值由 IFS 特殊变量的第一个字符分隔。也就是说，”$*“ 相当于 ”$1c$2c..."，其中 c 是 IFS 变量值的第一个字符。如果 IFS 未设置，参数之间用空格分隔。如果 IFS 为空，则参数连在一起，中间没有分隔符。
+
+@
+
+    ($@) Expands to the positional parameters, starting from one. In contexts where word splitting is performed, this expands each positional parameter to a separate word; if not within double quotes, these words are subject to word splitting. In contexts where word splitting is not performed, this expands to a single word with each positional parameter separated by a space. When the expansion occurs within double quotes, and word splitting is performed, each parameter expands to a separate word. That is, "$@" is equivalent to "$1" "$2" …. If the double-quoted expansion occurs within a word, the expansion of the first parameter is joined with the beginning part of the original word, and the expansion of the last parameter is joined with the last part of the original word. When there are no positional parameters, "$@" and $@ expand to nothing (i.e., they are removed).
+
+($@) 扩展为位置参数，从 1 开始。在执行分词的情况下，会将每个位置参数扩展为一个单独的字；如果不在双引号内，这些字会被分词。在不进行分词的情况下，则扩展为一个词，每个位置参数用空格隔开。如果在双引号内扩展，并且执行了分词，则每个参数都扩展为一个单独的词。也就是说，"$@" 相当于 "$1""$2"...。如果双引号扩展发生在一个单词内，则第一个参数的扩展与原单词的开头部分相连，最后一个参数的扩展与原单词的结尾部分相连。如果没有位置参数，"$@"和 $@ 将不会扩展（即被删除）。
+
+#
+
+    ($#) Expands to the number of positional parameters in decimal.
+
+    ($#) 扩展为十进制的位置参数数量。
+
+?
+
+    ($?) Expands to the exit status of the most recently executed foreground pipeline.
+
+    ($?) 扩展到最近执行的前台管道的退出状态。
+
+-
+
+    ($-, a hyphen.) Expands to the current option flags as specified upon invocation, by the set builtin command, or those set by the shell itself (such as the -i option).
+
+    ($-，连字符。) 扩展为调用时指定的当前选项标志、内置 set 命令或 shell 本身设置的选项标志（如 -i 选项）。
+
+$
+
+    ($$) Expands to the process ID of the shell. In a subshell, it expands to the process ID of the invoking shell, not the subshell.
+
+    ($$) 扩展为 shell 的进程 ID。在子 shell 中，它会扩展为调用 shell 的进程 ID，而不是子 shell。
+
+!
+
+    ($!) Expands to the process ID of the job most recently placed into the background, whether executed as an asynchronous command or using the bg builtin (see Job Control Builtins).
+
+($!) 扩展到最近放入后台的作业的进程 ID，无论是作为异步命令执行还是使用 bg 内置程序（请参阅作业控制内置程序）。
+
+0
+
+    ($0) Expands to the name of the shell or shell script. This is set at shell initialization. If Bash is invoked with a file of commands (see Shell Scripts), $0 is set to the name of that file. If Bash is started with the -c option (see Invoking Bash), then $0 is set to the first argument after the string to be executed, if one is present. Otherwise, it is set to the filename used to invoke Bash, as given by argument zero.
+
+($0) 扩展为 shell 或 shell 脚本的名称。该名称在 shell 初始化时设置。如果 Bash 是通过命令文件调用的（参见 shell 脚本），那么 $0 将被设置为该文件的名称。如果 Bash 是用 -c 选项启动的（参见调用 Bash），那么 $0 会被设置为要执行的字符串后面的第一个参数（如果有的话）。否则，它将被设置为调用 Bash 时使用的文件名，如参数 0 所示。
