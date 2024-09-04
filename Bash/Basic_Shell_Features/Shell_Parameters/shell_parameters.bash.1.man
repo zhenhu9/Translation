@@ -1,0 +1,42 @@
+3.4 Shell Parameters
+
+3.4 Shell 参数
+
+A parameter is an entity that stores values. It can be a name, a number, or one of the special characters listed below. A variable is a parameter denoted by a name. A variable has a value and zero or more attributes. Attributes are assigned using the declare builtin command (see the description of the declare builtin in Bash Builtin Commands).
+
+参数是存储值的实体。它可以是名称、数字或下面列出的特殊字符之一。变量是用名称表示的参数。变量有一个值和零个或多个属性。属性使用 declare 内置命令分配（参见 Bash 内置命令中 declare 内置命令的描述）。
+
+A parameter is set if it has been assigned a value. The null string is a valid value. Once a variable is set, it may be unset only by using the unset builtin command.
+
+如果参数已赋值，则参数已设置。空字符串也是一个有效值。变量一旦被设置，就只能通过使用 unset 内置命令来取消设置。
+
+A variable may be assigned to by a statement of the form
+
+变量可通过以下语句赋值
+
+name=[value]
+
+If value is not given, the variable is assigned the null string. All values undergo tilde expansion, parameter and variable expansion, command substitution, arithmetic expansion, and quote removal (see Shell Parameter Expansion). If the variable has its integer attribute set, then value is evaluated as an arithmetic expression even if the $((…)) expansion is not used (see Arithmetic Expansion). Word splitting and filename expansion are not performed. Assignment statements may also appear as arguments to the alias, declare, typeset, export, readonly, and local builtin commands (declaration commands). When in POSIX mode (see Bash POSIX Mode), these builtins may appear in a command after one or more instances of the command builtin and retain these assignment statement properties.
+
+如果没有给出 value，变量将被赋值为空字符串。所有值都要经过转折号扩展、参数和变量扩展、命令替换、算术扩展和删除引号（请参阅 “Shell 参数扩展”）。如果变量设置了整数属性，那么即使没有使用 $((...)) 扩展，也会将值作为算术表达式进行评估（请参阅算术扩展）。不执行分词和文件名扩展。赋值语句也可以作为别名、声明、排版、导出、只读和本地内置命令（声明命令）的参数。在 POSIX 模式下（参见 Bash POSIX 模式），这些内置命令可以出现在一个或多个内置命令实例之后，并保留这些赋值语句属性。
+
+In the context where an assignment statement is assigning a value to a shell variable or array index (see Arrays), the ‘+=’ operator can be used to append to or add to the variable’s previous value. This includes arguments to builtin commands such as declare that accept assignment statements (declaration commands). When ‘+=’ is applied to a variable for which the integer attribute has been set, value is evaluated as an arithmetic expression and added to the variable’s current value, which is also evaluated. When ‘+=’ is applied to an array variable using compound assignment (see Arrays), the variable’s value is not unset (as it is when using ‘=’), and new values are appended to the array beginning at one greater than the array’s maximum index (for indexed arrays), or added as additional key-value pairs in an associative array. When applied to a string-valued variable, value is expanded and appended to the variable’s value.
+
+在赋值语句为 shell 变量或数组索引赋值的情况下（参见数组），‘+=’ 操作符可用于追加或增加变量的前一个值。这包括诸如 declare 等接受赋值语句（声明命令）的内置命令的参数。当 ‘+=’ 应用于已设置整数属性的变量时，变量值将作为算术表达式进行运算，并添加到变量的当前值中，而变量的当前值也将进行运算。当使用复合赋值（参见数组）将 ‘+=’ 应用于数组变量时，变量的值不会被取消设置（与使用 ‘=’ 时一样），新值会从大于数组最大索引的位置开始添加到数组中（对于索引数组），或者作为额外的键值对添加到关联数组中。当应用到字符串值变量时，value 会展开并追加到变量值中。
+
+A variable can be assigned the nameref attribute using the -n option to the declare or local builtin commands (see Bash Builtin Commands) to create a nameref, or a reference to another variable. This allows variables to be manipulated indirectly. Whenever the nameref variable is referenced, assigned to, unset, or has its attributes modified (other than using or changing the nameref attribute itself), the operation is actually performed on the variable specified by the nameref variable’s value. A nameref is commonly used within shell functions to refer to a variable whose name is passed as an argument to the function. For instance, if a variable name is passed to a shell function as its first argument, running
+
+可以使用 declare 或 local 内置命令（参见 Bash 内置命令）的 -n 选项为变量分配 nameref 属性，以创建 nameref 或对另一个变量的引用。这样就可以间接操作变量。无论何时对 nameref 变量进行引用、赋值、取消设置或修改其属性（使用或更改 nameref 属性本身除外），操作实际上都是在 nameref 变量的值所指定的变量上进行的。在 shell 函数中，nameref 通常用来指代变量名作为参数传递给函数的变量。例如，如果变量名作为第一个参数传递给 shell 函数，运行
+
+declare -n ref=$1
+
+inside the function creates a nameref variable ref whose value is the variable name passed as the first argument. References and assignments to ref, and changes to its attributes, are treated as references, assignments, and attribute modifications to the variable whose name was passed as $1.
+
+函数内部会创建一个 nameref 变量 ref，其值就是作为第一个参数传递的变量名。对 ref 的引用和赋值，以及对其属性的修改，都被视为对名称为 $1 的变量的引用、赋值和属性修改。
+
+If the control variable in a for loop has the nameref attribute, the list of words can be a list of shell variables, and a name reference will be established for each word in the list, in turn, when the loop is executed. Array variables cannot be given the nameref attribute. However, nameref variables can reference array variables and subscripted array variables. Namerefs can be unset using the -n option to the unset builtin (see Bourne Shell Builtins). Otherwise, if unset is executed with the name of a nameref variable as an argument, the variable referenced by the nameref variable will be unset.
+
+如果 for 循环中的控制变量具有 nameref 属性，则单词列表可以是 shell 变量列表，循环执行时将依次为列表中的每个单词建立名称引用。数组变量不能被赋予 nameref 属性。但是，nameref 变量可以引用数组变量和下标数组变量。可以使用 unset 内置程序（参见 Bourne Shell 内置程序）的 -n 选项取消设置 Nameref。否则，如果以 nameref 变量的名称作为参数执行 unset，nameref 变量引用的变量将被取消设置。
+
+    Positional Parameters
+    Special Parameters
