@@ -1,0 +1,15 @@
+3.2.7 GNU Parallel
+
+3.2.7 GNU 并行
+
+There are ways to run commands in parallel that are not built into Bash. GNU Parallel is a tool to do just that.
+
+有一些方法可以并行运行 Bash 中没有内置的命令。GNU Parallel 就是这样一个工具。
+
+GNU Parallel, as its name suggests, can be used to build and run commands in parallel. You may run the same command with different arguments, whether they are filenames, usernames, hostnames, or lines read from files. GNU Parallel provides shorthand references to many of the most common operations (input lines, various portions of the input line, different ways to specify the input source, and so on). Parallel can replace xargs or feed commands from its input sources to several different instances of Bash.
+
+顾名思义，GNU Parallel 可以用来并行编译和运行命令。你可以使用不同的参数运行同一命令，无论它们是文件名、用户名、主机名，还是从文件中读取的行数。GNU Parallel 为许多最常见的操作（输入行、输入行的不同部分、指定输入源的不同方法等）提供了速记参考。Parallel 可以替换 xargs 或将输入源中的命令送入多个不同的 Bash 实例。
+
+For a complete description, refer to the GNU Parallel documentation, which is available at https://www.gnu.org/software/parallel/parallel_tutorial.html.
+
+如需完整说明，请参阅 GNU Parallel 文档，网址为 https://www.gnu.org/software/parallel/parallel_tutorial.html。
