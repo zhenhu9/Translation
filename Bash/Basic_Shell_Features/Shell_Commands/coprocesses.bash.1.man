@@ -1,0 +1,51 @@
+3.2.6 Coprocesses
+
+3.2.6 协同进程
+
+A coprocess is a shell command preceded by the coproc reserved word. A coprocess is executed asynchronously in a subshell, as if the command had been terminated with the ‘&’ control operator, with a two-way pipe established between the executing shell and the coprocess.
+
+协进程是以 coproc 保留字为前缀的 shell 命令。协进程在一个子 shell 中异步执行，就像用 ‘&’ 控制运算符结束命令一样，在执行的 shell 和协进程之间建立一个双向管道。
+
+The syntax for a coprocess is:
+
+协进程的语法是：
+
+coproc [NAME] command [redirections]
+
+This creates a coprocess named NAME. command may be either a simple command (see Simple Commands) or a compound command (see Compound Commands). NAME is a shell variable name. If NAME is not supplied, the default name is COPROC.
+
+此语句创建一个名为 NAME 的协进程。command 可以是简单命令（参阅 Simple Commands）或复合命令（参阅 Compound Commands）。NAME 是 shell 变量名。如果没有提供 NAME，则默认名称为 COPROC。
+
+The recommended form to use for a coprocess is
+
+推荐的协进程格式是：
+
+coproc NAME { command; }
+
+This form is recommended because simple commands result in the coprocess always being named COPROC, and it is simpler to use and more complete than the other compound commands.
+
+推荐使用这种形式，因为简单命令会导致协程始终以 COPROC 命名，而且比其它复合命令更简单易用、更完整。
+
+There are other forms of coprocesses:
+
+写进程的其它格式：
+
+coproc NAME compound-command
+coproc compound-command
+coproc simple-command
+
+If command is a compound command, NAME is optional. The word following coproc determines whether that word is interpreted as a variable name: it is interpreted as NAME if it is not a reserved word that introduces a compound command. If command is a simple command, NAME is not allowed; this is to avoid confusion between NAME and the first word of the simple command.
+
+如果命令是复合命令，NAME 是可选项。coproc 后面的词决定该词是否被解释为变量名：如果它不是引入复合命令的保留字，则被解释为 NAME。如果命令是简单命令，则不允许使用 NAME；这样做是为了避免 NAME 与简单命令的第一个词混淆。
+
+When the coprocess is executed, the shell creates an array variable (see Arrays) named NAME in the context of the executing shell. The standard output of command is connected via a pipe to a file descriptor in the executing shell, and that file descriptor is assigned to NAME[0]. The standard input of command is connected via a pipe to a file descriptor in the executing shell, and that file descriptor is assigned to NAME[1]. This pipe is established before any redirections specified by the command (see Redirections). The file descriptors can be utilized as arguments to shell commands and redirections using standard word expansions. Other than those created to execute command and process substitutions, the file descriptors are not available in subshells.
+
+执行协程时，shell 会在执行 shell 的环境中创建一个名为 NAME 的数组变量（参见数组）。命令的标准输出通过管道连接到执行 shell 中的文件描述符，并将该文件描述符分配给 NAME[0]。命令的标准输入通过管道连接到执行 shell 中的文件描述符，并将该文件描述符分配给 NAME[1]。该管道在命令指定的任何重定向（参阅RRedirections）之前建立。文件描述符可用作 shell 命令和重定向的参数，使用标准词扩展。除了为执行命令和进程替换而创建的文件描述符外，文件描述符在子 shell 中不可用。
+
+The process ID of the shell spawned to execute the coprocess is available as the value of the variable NAME_PID. The wait builtin command may be used to wait for the coprocess to terminate.
+
+为执行协进程而生成的 shell 的进程 ID 可以作为变量 NAME_PID 的值。可以使用内置的 wait 命令来等待协进程结束。
+
+Since the coprocess is created as an asynchronous command, the coproc command always returns success. The return status of a coprocess is the exit status of command.
+
+由于 coprocess 是作为异步命令创建的，因此 coproc 命令总是返回成功。协程的返回状态就是命令的退出状态。
