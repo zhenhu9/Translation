@@ -1,0 +1,11 @@
+7 Job Control
+
+7 作业控制
+
+This chapter discusses what job control is, how it works, and how Bash allows you to access its facilities.
+
+本章将讨论什么是作业控制、作业控制的工作原理，以及 Bash 如何让你使用作业控制功能。
+
+    Job Control Basics
+    Job Control Builtins
+    Job Control Variables
