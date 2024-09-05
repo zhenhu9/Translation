@@ -1,0 +1,18 @@
+6 Bash Features
+
+This chapter describes features unique to Bash.
+
+本章描述了特定于 Bash 的特性。
+
+    Invoking Bash
+    Bash Startup Files
+    Interactive Shells
+    Bash Conditional Expressions
+    Shell Arithmetic
+    Aliases
+    Arrays
+    The Directory Stack
+    Controlling the Prompt
+    The Restricted Shell
+    Bash POSIX Mode
+    Shell Compatibility Mode
