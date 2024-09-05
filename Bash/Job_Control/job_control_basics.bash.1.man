@@ -1,0 +1,53 @@
+7.1 Job Control Basics
+
+7.1 作业控制基础
+
+Job control refers to the ability to selectively stop (suspend) the execution of processes and continue (resume) their execution at a later point. A user typically employs this facility via an interactive interface supplied jointly by the operating system kernel’s terminal driver and Bash.
+
+作业控制指的是有选择地停止（暂停）进程的执行并在稍后继续（恢复）其执行的能力。用户通常通过操作系统内核的终端驱动程序和 Bash 共同提供的交互式界面来使用这一功能。
+
+The shell associates a job with each pipeline. It keeps a table of currently executing jobs, which may be listed with the jobs command. When Bash starts a job asynchronously, it prints a line that looks like:
+
+shell 会为每个管道关联一个作业。shell 会保存一个当前正在执行的作业表，可以使用 jobs 命令列出这些作业。当 Bash 异步启动一个作业时，它会打印出一行类似下面的内容：
+
+[1] 25647
+
+indicating that this job is job number 1 and that the process ID of the last process in the pipeline associated with this job is 25647. All of the processes in a single pipeline are members of the same job. Bash uses the job abstraction as the basis for job control.
+
+表明该作业是作业编号 1，与该作业相关联的管道中最后一个进程的进程 ID 是 25647。一个管道中的所有进程都是同一个作业的成员。Bash 使用作业抽象作为作业控制的基础。
+
+To facilitate the implementation of the user interface to job control, the operating system maintains the notion of a current terminal process group ID. Members of this process group (processes whose process group ID is equal to the current terminal process group ID) receive keyboard-generated signals such as SIGINT. These processes are said to be in the foreground. Background processes are those whose process group ID differs from the terminal’s; such processes are immune to keyboard-generated signals. Only foreground processes are allowed to read from or, if the user so specifies with stty tostop, write to the terminal. Background processes which attempt to read from (write to when stty tostop is in effect) the terminal are sent a SIGTTIN (SIGTTOU) signal by the kernel’s terminal driver, which, unless caught, suspends the process.
+
+为便于执行作业控制的用户界面，操作系统保留了当前终端进程组 ID 的概念。该进程组的成员（进程组 ID 等于当前终端进程组 ID 的进程）会接收键盘生成的信号，如 SIGINT。这些进程被称为前台进程。后台进程是指进程组 ID 与终端进程组 ID 不同的进程；这类进程对键盘生成的信号免疫。只有前台进程才允许从终端读取数据，如果用户用 stty tostop 指定，则允许向终端写入数据。试图从终端读取（当 stty tostop 有效时向终端写入）数据的后台进程会被内核的终端驱动程序发送 SIGTTIN（SIGTTOU）信号，除非被捕获，否则会暂停进程。
+
+If the operating system on which Bash is running supports job control, Bash contains facilities to use it. Typing the suspend character (typically ‘^Z’, Control-Z) while a process is running causes that process to be stopped and returns control to Bash. Typing the delayed suspend character (typically ‘^Y’, Control-Y) causes the process to be stopped when it attempts to read input from the terminal, and control to be returned to Bash. The user then manipulates the state of this job, using the bg command to continue it in the background, the fg command to continue it in the foreground, or the kill command to kill it. A ‘^Z’ takes effect immediately, and has the additional side effect of causing pending output and typeahead to be discarded.
+
+如果运行 Bash 的操作系统支持作业控制，那么 Bash 就包含使用作业控制的功能。当进程正在运行时，键入挂起字符（通常为‘^Z’，Control-Z）会导致进程停止并将控制权返回给 Bash。输入延迟挂起字符（通常为‘^Y’，Control-Y）会导致进程在试图从终端读取输入时停止，并将控制权返回给 Bash。然后，用户可以使用 bg 命令在后台继续执行任务，使用 fg 命令在前台继续执行任务，或使用 kill 命令终止任务。’^Z‘ 命令会立即生效，并有一个额外的副作用，就是导致待处理的输出和之前的输入被丢弃。
+
+There are a number of ways to refer to a job in the shell. The character ‘%’ introduces a job specification (jobspec).
+
+在 shell 中，有多种方法来指代作业。字符 ’%‘ 表示作业声明（jobpec）。
+
+Job number n may be referred to as ‘%n’. The symbols ‘%%’ and ‘%+’ refer to the shell’s notion of the current job, which is the last job stopped while it was in the foreground or started in the background. A single ‘%’ (with no accompanying job specification) also refers to the current job. The previous job may be referenced using ‘%-’. If there is only a single job, ‘%+’ and ‘%-’ can both be used to refer to that job. In output pertaining to jobs (e.g., the output of the jobs command), the current job is always flagged with a ‘+’, and the previous job with a ‘-’.
+
+作业编号 n 可引用为’%n‘。符号 ’%%‘ 和 ’%+‘ 指的是 shell 的当前作业概念，即在前台时停止的最后一个作业或在后台启动的最后一个作业。单个’%‘ （没有附带作业声明）也指当前作业。上一个作业可以使用’%-‘ 来引用。如果只有一个作业，’%+‘ 和 ’%-‘ 都可以用来指代该作业。在与作业相关的输出（如 jobs 命令的输出）中，当前作业总是用 ’+‘ 标记，而上一个作业则用’-‘ 标记。
+
+A job may also be referred to using a prefix of the name used to start it, or using a substring that appears in its command line. For example, ‘%ce’ refers to a stopped job whose command name begins with ‘ce’. Using ‘%?ce’, on the other hand, refers to any job containing the string ‘ce’ in its command line. If the prefix or substring matches more than one job, Bash reports an error.
+
+也可以使用启动作业时所用名称的前缀或命令行中出现的子串来称呼作业。例如，’%ce‘ 指的是命令名称以 ’ce‘ 开头的已停止作业。另一方面，使用"%?ce "指的是命令行中包含 "ce "字符串的任何任务。如果前缀或子串匹配多个作业，Bash 会报错。
+
+Simply naming a job can be used to bring it into the foreground: ‘%1’ is a synonym for ‘fg %1’, bringing job 1 from the background into the foreground. Similarly, ‘%1 &’ resumes job 1 in the background, equivalent to ‘bg %1’
+
+只需指定一个作业，就能将其带入前台：’%1‘ 是 ’fg %1‘ 的同义词，能将工作 1 从后台带入前台。同样，’%1 &‘ 可将作业 1 恢复到后台，相当于 ’bg %1‘。
+
+The shell learns immediately whenever a job changes state. Normally, Bash waits until it is about to print a prompt before reporting changes in a job’s status so as to not interrupt any other output. If the -b option to the set builtin is enabled, Bash reports such changes immediately (see The Set Builtin). Any trap on SIGCHLD is executed for each child process that exits.
+
+当任务状态发生变化时，shell 会立即得知。通常情况下，Bash 会等到要打印提示符时才报告作业的状态变化，以免中断其他输出。如果启用了 set 内置程序的 -b 选项，Bash 会立即报告这些变化（参见 Set 内置程序）。每个退出的子进程都会执行 SIGCHLD 陷阱。
+
+If an attempt to exit Bash is made while jobs are stopped, (or running, if the checkjobs option is enabled – see The Shopt Builtin), the shell prints a warning message, and if the checkjobs option is enabled, lists the jobs and their statuses. The jobs command may then be used to inspect their status. If a second attempt to exit is made without an intervening command, Bash does not print another warning, and any stopped jobs are terminated.
+
+如果在作业停止时（或运行时，如果启用了 checkjobs 选项 -- 参阅 Shopt Builtin）试图退出 Bash，shell 会打印一条警告信息，如果启用了 checkjobs 选项，则会列出作业及其状态。然后，可以使用 jobs 命令查看它们的状态。如果在没有命令干预的情况下再次尝试退出，Bash 不会再打印警告信息，任何停止的作业都会被终止。
+
+When the shell is waiting for a job or process using the wait builtin, and job control is enabled, wait will return when the job changes state. The -f option causes wait to wait until the job or process terminates before returning.
+
+当 shell 正在使用内建 wait 等待作业或进程，并且启用了作业控制时，wait 会在作业改变状态时返回。如果使用 -f 选项，wait 会等到作业或进程结束后才返回。
