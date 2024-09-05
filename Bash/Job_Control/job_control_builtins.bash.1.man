@@ -1,0 +1,93 @@
+7.2 Job Control Builtins
+
+7.2 作业控制内置命令
+
+bg
+
+    bg [jobspec …]
+
+    Resume each suspended job jobspec in the background, as if it had been started with ‘&’. If jobspec is not supplied, the current job is used. The return status is zero unless it is run when job control is not enabled, or, when run with job control enabled, any jobspec was not found or specifies a job that was started without job control.
+
+    在后台恢复每个暂停的作业 jobpec，就像用 ’&‘ 启动一样。如果未提供 jobpec，则使用当前作业。除非在未启用作业控制的情况下运行，或者在启用作业控制的情况下运行，但未找到任何 jobpec 或指定了一个在未启用作业控制的情况下启动的作业，否则返回状态为零。
+
+fg
+
+    fg [jobspec]
+
+    Resume the job jobspec in the foreground and make it the current job. If jobspec is not supplied, the current job is used. The return status is that of the command placed into the foreground, or non-zero if run when job control is disabled or, when run with job control enabled, jobspec does not specify a valid job or jobspec specifies a job that was started without job control.
+
+    恢复前台的 jobpec 作业，并将其作为当前作业。如果未提供 jobpec，则使用当前作业。如果在禁用作业控制的情况下运行，或在启用作业控制的情况下运行，而 jobpec 未指定有效的作业，或 jobpec 指定的作业是在没有作业控制的情况下启动的，则返回状态为进入前台的命令的状态。
+
+jobs
+
+    jobs [-lnprs] [jobspec]
+    jobs -x command [arguments]
+
+    The first form lists the active jobs. The options have the following meanings:
+
+    第一个格式列出了活动的作业。选项含义如下：
+
+    -l	List process IDs in addition to the normal information.
+
+    -l	除正常信息外，还列出进程 ID。
+
+    -n  Display information only about jobs that have changed status since the user was last notified of their status.
+
+    -n	只显示自用户上次收到状态通知以来状态发生变化的任务信息。
+
+    -p  List only the process ID of the job’s process group leader.
+
+    -p	只列出作业进程组的流程 ID。
+
+    -r  Display only running jobs.
+
+    -r	只列出在运行的发作业
+
+    -s  Display only stopped jobs.
+
+    -s	只列出停止的作业。
+
+    If jobspec is given, output is restricted to information about that job. If jobspec is not supplied, the status of all jobs is listed.
+
+如果给出 jobpec，则输出仅限于该作业的信息。如果没有提供 jobpec，则会列出所有作业的状态。
+
+    If the -x option is supplied, jobs replaces any jobspec found in command or arguments with the corresponding process group ID, and executes command, passing it arguments, returning its exit status.
+
+    如果提供 -x 选项，jobs 会用相应的进程组 ID 替换命令或参数中的任何 jobpec，并执行命令、传递参数和返回退出状态。
+
+kill
+
+    kill [-s sigspec] [-n signum] [-sigspec] jobspec or pid
+    kill -l|-L [exit_status]
+
+    Send a signal specified by sigspec or signum to the process named by job specification jobspec or process ID pid. sigspec is either a case-insensitive signal name such as SIGINT (with or without the SIG prefix) or a signal number; signum is a signal number. If sigspec and signum are not present, SIGTERM is used. The -l option lists the signal names. If any arguments are supplied when -l is given, the names of the signals corresponding to the arguments are listed, and the return status is zero. exit_status is a number specifying a signal number or the exit status of a process terminated by a signal. The -L option is equivalent to -l. The return status is zero if at least one signal was successfully sent, or non-zero if an error occurs or an invalid option is encountered.
+
+    将 sigspec 或 signum 指定的信号发送给以作业声明 jobpec 或进程 ID pid 指定的进程。sigspec 是不区分大小写的信号名称，如 SIGINT（带或不带 SIG 前缀），或者是信号编号；signum 是信号编号。如果不存在 sigspec 和 signum，则使用 SIGTERM。-l 选项列出信号名称。exit_status 是一个数字，指定信号号或被信号终止的进程的退出状态。-L 选项等同于 -l。如果至少成功发送了一个信号，则返回状态为零；如果出现错误或遇到无效选项，则返回状态为非零。
+
+wait
+
+    wait [-fn] [-p varname] [jobspec or pid …]
+
+    Wait until the child process specified by each process ID pid or job specification jobspec exits and return the exit status of the last command waited for. If a job spec is given, all processes in the job are waited for. If no arguments are given, wait waits for all running background jobs and the last-executed process substitution, if its process id is the same as $!, and the return status is zero. If the -n option is supplied, wait waits for a single job from the list of pids or jobspecs or, if no arguments are supplied, any job, to complete and returns its exit status. If none of the supplied arguments is a child of the shell, or if no arguments are supplied and the shell has no unwaited-for children, the exit status is 127. If the -p option is supplied, the process or job identifier of the job for which the exit status is returned is assigned to the variable varname named by the option argument. The variable will be unset initially, before any assignment. This is useful only when the -n option is supplied. Supplying the -f option, when job control is enabled, forces wait to wait for each pid or jobspec to terminate before returning its status, instead of returning when it changes status. If neither jobspec nor pid specifies an active child process of the shell, the return status is 127. If wait is interrupted by a signal, the return status will be greater than 128, as described above (see Signals). Otherwise, the return status is the exit status of the last process or job waited for.
+
+    等待每个进程 ID pid 或作业声明 jobspec 指定的子进程退出，并返回等待的最后的命令的退出状态。如果给定了作业声明，则会等待作业中的所有进程。如果没有给出参数，wait 会等待所有正在运行的后台任务和最后执行的进程替代（如果其进程 ID 与 $! 相同，并且返回状态为 0 。） 如果提供了 -n 选项，wait 会等待 pids 或 jobspecs 列表中的单个作业完成，如果没有提供参数，则等待任何作业，并返回其退出状态。如果提供的参数都不是 shell 的子进程，或者没有提供参数且 shell 没有未等待的子进程，则退出状态为 127。如果提供了 -p 选项，返回退出状态的进程或作业的标识符将被分配给由选项参数命名的变量 varname。在赋值之前，该变量将先被取消设置。这只有在提供 -n 选项时才有用。当启用作业控制时，提供 -f 选项会强制 wait 等待每个 pid 或 jobpec 结束后再返回状态，而不是在状态改变时返回。如果 jobpec 和 pid 都没有指定 shell 的活动子进程，则返回状态为 127。如果 wait 被信号中断，返回状态将大于 128，如上所述（见信号）。否则，返回状态将是最后一个进程或任务的退出状态。
+
+disown
+
+    disown [-ar] [-h] [jobspec … | pid … ]
+
+    Without options, remove each jobspec from the table of active jobs. If the -h option is given, the job is not removed from the table, but is marked so that SIGHUP is not sent to the job if the shell receives a SIGHUP. If jobspec is not present, and neither the -a nor the -r option is supplied, the current job is used. If no jobspec is supplied, the -a option means to remove or mark all jobs; the -r option without a jobspec argument restricts operation to running jobs.
+
+    在不带选项的情况下，从活动作业表中删除每个作业规格。如果给定了 -h 选项，作业不会从表中删除，但会被标记，以便在 shell 收到 SIGHUP 时不会向作业发送 SIGHUP。如果没有 jobspec，也没有提供 -a 或 -r 选项，则使用当前作业。如果没有提供 jobpec，-a 选项表示删除或标记所有作业；而不含 jobpec 参数的 -r 选项则将操作限制在运行中的作业上。
+
+suspend
+
+    suspend [-f]
+
+    Suspend the execution of this shell until it receives a SIGCONT signal. A login shell, or a shell without job control enabled, cannot be suspended; the -f option can be used to override this and force the suspension. The return status is 0 unless the shell is a login shell or job control is not enabled and -f is not supplied.
+
+    暂停 shell 的执行，直到收到 SIGCONT 信号。登录 shell 或未启用作业控制的 shell 不能暂停执行；可以使用 -f 选项来覆盖这一点并强制暂停执行。除非 shell 是登录 shell 或未启用作业控制且未提供 -f 选项，否则返回状态为 0。
+
+When job control is not active, the kill and wait builtins do not accept jobspec arguments. They must be supplied process IDs.
+
+当作业控制未激活时，kill 和 wait 内置函数不接受 jobspec 参数。它们必须提供进程 ID。
