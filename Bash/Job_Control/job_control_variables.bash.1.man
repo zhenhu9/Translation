@@ -1,0 +1,9 @@
+7.3 Job Control Variables
+
+作业控制变量
+
+auto_resume
+
+    This variable controls how the shell interacts with the user and job control. If this variable exists then single word simple commands without redirections are treated as candidates for resumption of an existing job. There is no ambiguity allowed; if there is more than one job beginning with the string typed, then the most recently accessed job will be selected. The name of a stopped job, in this context, is the command line used to start it. If this variable is set to the value ‘exact’, the string supplied must match the name of a stopped job exactly; if set to ‘substring’, the string supplied needs to match a substring of the name of a stopped job. The ‘substring’ value provides functionality analogous to the ‘%?’ job ID (see Job Control Basics). If set to any other value, the supplied string must be a prefix of a stopped job’s name; this provides functionality analogous to the ‘%’ job ID.
+
+    该变量控制 shell 与用户和作业控制的交互方式。如果存在该变量，那么不带重定向的单字简单命令将被视为恢复现有作业的候选命令。如果有多个作业以输入的字符串开头，则会选择最近访问过的作业。在这种情况下，停止作业的名称就是用来启动它的命令行。如果将此变量设置为 ’exact‘ 值，则提供的字符串必须与停止的任务名称完全匹配；如果设置为 ’substring‘ 值，则提供的字符串必须与停止的任务名称的子串匹配。子串 "值提供的功能类似于 ’%?‘ 作业 ID（请参阅作业控制基础知识）。如果设置为任何其他值，提供的字符串必须是已停止作业名称的前缀；这提供了类似于 ’%‘ 作业 ID 的功能。
