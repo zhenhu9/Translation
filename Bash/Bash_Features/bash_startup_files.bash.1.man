@@ -1,0 +1,99 @@
+6.2 Bash Startup Files
+
+6.2 Bash 启动文件
+
+This section describes how Bash executes its startup files. If any of the files exist but cannot be read, Bash reports an error. Tildes are expanded in filenames as described above under Tilde Expansion (see Tilde Expansion).
+
+本节介绍 Bash 如何执行其启动文件。如果任何文件存在但无法读取，Bash 会报错。如上文 Tilde Expansion（参见 Tilde Expansion）所述，文件名中的 Tilde 会被扩展。
+
+Interactive shells are described in Interactive Shells.
+
+交互式 shell 在 Interactive Shells 中介绍。
+
+Invoked as an interactive login shell, or with --login
+
+作为交互式登录 shell 调用，或使用 --login
+
+When Bash is invoked as an interactive login shell, or as a non-interactive shell with the --login option, it first reads and executes commands from the file /etc/profile, if that file exists. After reading that file, it looks for ~/.bash_profile, ~/.bash_login, and ~/.profile, in that order, and reads and executes commands from the first one that exists and is readable. The --noprofile option may be used when the shell is started to inhibit this behavior.
+
+当 Bash 作为交互式登录 shell 或使用 --login 选项的非交互式 shell 被调用时，如果存在 /etc/profile 文件，它会首先读取并执行该文件中的命令。读取该文件后，它依次查找 ~/.bash_profile、~/.bash_login 和 ~/.profile，并读取和执行第一个存在且可读的文件中的命令。在启动 shell 时，可以使用 --noprofile 选项来抑制这种行为。
+
+When an interactive login shell exits, or a non-interactive login shell executes the exit builtin command, Bash reads and executes commands from the file ~/.bash_logout, if it exists.
+
+当交互式登录 shell 退出或非交互式登录 shell 执行 exit 内置命令时，Bash 会读取并执行 ~/.bash_logout 文件（如果存在）中的命令。
+
+Invoked as an interactive non-login shell
+
+作为交互式非登录 shell 调用
+
+When an interactive shell that is not a login shell is started, Bash reads and executes commands from ~/.bashrc, if that file exists. This may be inhibited by using the --norc option. The --rcfile file option will force Bash to read and execute commands from file instead of ~/.bashrc.
+
+当启动一个非登录 shell 的交互 shell 时，如果 ~/.bashrc 文件存在，Bash 会读取并执行该文件中的命令。这可以通过使用 --norc 选项来禁止。文件选项 --rcfile 会强制 Bash 从文件而不是 ~/.bashrc 中读取和执行命令。
+
+So, typically, your ~/.bash_profile contains the line
+
+因此，通常情况下，你的 ~/.bash_profile 文件中会包含这样一行内容 
+
+if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
+
+after (or before) any login-specific initializations.
+
+在特定与登录初始化之后（或之前）。
+
+Invoked non-interactively
+
+非交互式调用
+
+When Bash is started non-interactively, to run a shell script, for example, it looks for the variable BASH_ENV in the environment, expands its value if it appears there, and uses the expanded value as the name of a file to read and execute. Bash behaves as if the following command were executed:
+
+当 Bash 以非交互方式启动，例如运行 shell 脚本时，它会在环境中查找变量 BASH_ENV，如果出现则扩展其值，并将扩展后的值用作要读取和执行的文件名。Bash 的行为就像执行以下命令一样：
+
+if [ -n "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+
+but the value of the PATH variable is not used to search for the filename.
+
+但搜索文件名时不会使用 PATH 变量的值。
+
+As noted above, if a non-interactive shell is invoked with the --login option, Bash attempts to read and execute commands from the login shell startup files.
+
+如上所述，如果使用 --login 选项调用非交互式 shell，Bash 会尝试从登录 shell 启动文件中读取并执行命令。
+
+Invoked with name sh
+
+以 sh 名称调用
+
+If Bash is invoked with the name sh, it tries to mimic the startup behavior of historical versions of sh as closely as possible, while conforming to the POSIX standard as well.
+
+如果以 sh 为名调用 Bash，它会尽量模仿历史版本 sh 的启动行为，同时也符合 POSIX 标准。
+
+When invoked as an interactive login shell, or as a non-interactive shell with the --login option, it first attempts to read and execute commands from /etc/profile and ~/.profile, in that order. The --noprofile option may be used to inhibit this behavior. When invoked as an interactive shell with the name sh, Bash looks for the variable ENV, expands its value if it is defined, and uses the expanded value as the name of a file to read and execute. Since a shell invoked as sh does not attempt to read and execute commands from any other startup files, the --rcfile option has no effect. A non-interactive shell invoked with the name sh does not attempt to read any other startup files.
+
+作为交互式登录 shell 或使用 --login 选项的非交互式 shell 调用时，它首先会尝试依次读取并执行 /etc/profile 和 ~/.profile 中的命令。可以使用 --noprofile 选项来抑制这种行为。当以名为 sh 的交互式 shell 调用时，Bash 会查找变量 ENV，如果定义了该变量，则扩展其值，并使用扩展后的值作为要读取和执行的文件名。由于以 sh 方式调用的 shell 不会试图读取和执行任何其他启动文件中的命令，因此 --rcfile 选项没有任何作用。以 sh 名称调用的非交互式 shell 不会尝试读取任何其他启动文件。
+
+When invoked as sh, Bash enters POSIX mode after the startup files are read.
+
+以 sh 方式调用时，Bash 会在读取启动文件后进入 POSIX 模式。
+
+Invoked in POSIX mode
+
+以 POSIX 模式调用
+
+When Bash is started in POSIX mode, as with the --posix command line option, it follows the POSIX standard for startup files. In this mode, interactive shells expand the ENV variable and commands are read and executed from the file whose name is the expanded value. No other startup files are read.
+
+当 Bash 以 POSIX 模式启动时（如使用 --posix 命令行选项），它会遵循 POSIX 启动文件标准。在这种模式下，交互式 shell 会扩展 ENV 变量，并从名称为扩展值的文件中读取和执行命令。不会读取其他启动文件。
+
+Invoked by remote shell daemon
+
+以远程 shell 守护进程调用
+
+Bash attempts to determine when it is being run with its standard input connected to a network connection, as when executed by the historical remote shell daemon, usually rshd, or the secure shell daemon sshd. If Bash determines it is being run non-interactively in this fashion, it reads and executes commands from ~/.bashrc, if that file exists and is readable. It will not do this if invoked as sh. The --norc option may be used to inhibit this behavior, and the --rcfile option may be used to force another file to be read, but neither rshd nor sshd generally invoke the shell with those options or allow them to be specified.
+
+Bash 会尝试确定它是在标准输入连接到网络连接的情况下运行的，比如由历史上的远程 shell 守护进程（通常是 rshd）或安全 shell 守护进程 sshd 执行时。如果 Bash 确定它是以这种方式非交互运行的，它会读取并执行 ~/.bashrc 文件中的命令（如果该文件存在且可读的话）。如果以 sh 方式调用，则不会这样做。可以使用 --norc 选项来抑制这种行为，也可以使用 --rcfile 选项来强制读取另一个文件，但 rshd 和 sshd 通常都不使用这些选项来调用 shell，也不允许指定这些选项。
+
+Invoked with unequal effective and real UID/GIDs
+
+在有效和真实 UID/GID 不相等的情况下调用
+
+If Bash is started with the effective user (group) id not equal to the real user (group) id, and the -p option is not supplied, no startup files are read, shell functions are not inherited from the environment, the SHELLOPTS, BASHOPTS, CDPATH, and GLOBIGNORE variables, if they appear in the environment, are ignored, and the effective user id is set to the real user id. If the -p option is supplied at invocation, the startup behavior is the same, but the effective user id is not reset.
+
+如果在启动 Bash 时，有效用户（组）id 不等于实际用户（组）id，并且没有提供 -p 选项，则不会读取启动文件，shell 函数不会从环境中继承，SHELLOPTS、BASHOPTS、CDPATH 和 GLOBIGNORE 变量（如果它们出现在环境中）会被忽略，并且有效用户id 会被设置为实际用户id。如果在调用时提供 -p 选项，则启动行为相同，但有效用户 ID 不会重置。
