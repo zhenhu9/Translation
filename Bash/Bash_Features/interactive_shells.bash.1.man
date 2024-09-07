@@ -1,0 +1,138 @@
+6.3 Interactive Shells
+
+6.3 交互式 Shells
+
+    What is an Interactive Shell?
+    Is this Shell Interactive?
+    Interactive Shell Behavior
+
+6.3.1 What is an Interactive Shell?
+
+6.3.1 什么是交互式 Shell?
+
+An interactive shell is one started without non-option arguments (unless -s is specified) and without specifying the -c option, whose input and error output are both connected to terminals (as determined by isatty(3)), or one started with the -i option.
+
+交互式 shell 是指启动时没有非选项参数（除非指定了-s），也没有指定-c 选项，其输入和错误输出都连接到终端（由 isatty(3) 决定），或者使用-i 选项启动的 shell。
+
+An interactive shell generally reads from and writes to a user’s terminal.
+
+交互式 shell 通常从用户终端读取数据并写入。
+
+The -s invocation option may be used to set the positional parameters when an interactive shell is started.
+
+在启动交互式 shell 时，可以使用 -s 调用选项来设置位置参数。
+
+6.3.2 Is this Shell Interactive?
+
+6.3.2 这是交互式 Shell 吗？
+
+To determine within a startup script whether or not Bash is running interactively, test the value of the ‘-’ special parameter. It contains i when the shell is interactive. For example:
+
+要在启动脚本中确定 Bash 是否以交互方式运行，可以测试特殊参数 ‘-’ 的值。当 shell 是交互式运行时，它包含 i。例如
+
+    case "$-" in
+    *i*)	echo This shell is interactive ;;
+    *)	echo This shell is not interactive ;;
+    esac
+
+Alternatively, startup scripts may examine the variable PS1; it is unset in non-interactive shells, and set in interactive shells. Thus:
+
+另外，启动脚本可以检查变量 PS1；在非交互式 shell 中，该变量未被设置，而在交互式 shell 中，该变量被设置。因此
+
+    if [ -z "$PS1" ]; then
+            echo This shell is not interactive
+    else
+            echo This shell is interactive
+    fi
+
+6.3.3 Interactive Shell Behavior
+
+6.3.3 交互式 Shell 行为
+
+When the shell is running interactively, it changes its behavior in several ways.
+
+当 shell 以交互方式运行时，它会以多种方式改变自己的行为。
+
+1. Startup files are read and executed as described in Bash Startup Files.
+
+1.  启动文件的读取和执行如 Bash 启动文件中所述。
+
+2. Job Control (see Job Control) is enabled by default. When job control is in effect, Bash ignores the keyboard-generated job control signals SIGTTIN, SIGTTOU, and SIGTSTP.
+
+2. 作业控制（请参阅 “作业控制”）默认已启用。当作业控制生效时，Bash 会忽略键盘生成的作业控制信号 SIGTTIN、SIGTTOU 和 SIGTSTP。
+
+3. Bash expands and displays PS1 before reading the first line of a command, and expands and displays PS2 before reading the second and subsequent lines of a multi-line command. Bash expands and displays PS0 after it reads a command but before executing it. See Controlling the Prompt, for a complete list of prompt string escape sequences.
+
+3. 在读取命令的第一行之前，Bash 会展开并显示 PS1；在读取多行命令的第二行和后续行之前，Bash 会展开并显示 PS2。Bash 在读取命令后、执行命令前展开并显示 PS0。有关提示字符串转义序列的完整列表，请参阅控制提示符。
+
+4. Bash executes the values of the set elements of the PROMPT_COMMAND array variable as commands before printing the primary prompt, $PS1 (see Bash Variables).
+
+4. 在打印主提示符 $PS1 之前，Bash 会将 PROMPT_COMMAND 数组变量的集合元素值作为命令执行（请参阅 Bash 变量）。
+
+5. Readline (see Command Line Editing) is used to read commands from the user’s terminal.
+
+5. Readline（参见命令行编辑）用于从用户终端读取命令。
+
+6. Bash inspects the value of the ignoreeof option to set -o instead of exiting immediately when it receives an EOF on its standard input when reading a command (see The Set Builtin).
+
+6. 当 Bash 在读取命令时收到标准输入的 EOF 时，会检查 set -o ignoreeof 选项的值,而不是立即退出（请参阅 Set Builtin）。
+
+7. Command history (see Bash History Facilities) and history expansion (see History Expansion) are enabled by default. Bash will save the command history to the file named by $HISTFILE when a shell with history enabled exits.
+
+7. 命令历史记录（请参阅 Bash 历史记录工具）和历史记录扩展（请参阅历史记录扩展）默认为启用状态。当启用了历史记录的 shell 退出时，Bash 会将命令历史记录保存到以 $HISTFILE 命名的文件中。
+
+8. Alias expansion (see Aliases) is performed by default.
+
+8. 默认情况下会执行别名扩展（请参阅 "别名"）。
+
+9. In the absence of any traps, Bash ignores SIGTERM (see Signals).
+
+9. 在没有任何陷阱的情况下，Bash 会忽略 SIGTERM（参见 信号）。
+
+10. In the absence of any traps, SIGINT is caught and handled (see Signals). SIGINT will interrupt some shell builtins.
+
+10. 在没有任何陷阱的情况下，SIGINT 会被捕获和处理（参见信号）。SIGINT 会中断某些 shell 内置程序。
+
+11. An interactive login shell sends a SIGHUP to all jobs on exit if the huponexit shell option has been enabled (see Signals).
+
+11. 如果启用了 huponexit shell 选项，交互式登录 shell 会在退出时向所有任务发送 SIGHUP（参见 信号）。
+
+12. The -n invocation option is ignored, and ‘set -n’ has no effect (see The Set Builtin).
+
+12. 调用选项 -n 将被忽略，‘set -n’ 也没有任何作用（参见 Set Builtin）。
+
+13. Bash will check for mail periodically, depending on the values of the MAIL, MAILPATH, and MAILCHECK shell variables (see Bash Variables).
+
+13. Bash 会根据 MAIL、MAILPATH 和 MAILCHECK shell 变量的值定期检查邮件（参见 Bash 变量）。
+
+14. Expansion errors due to references to unbound shell variables after ‘set -u’ has been enabled will not cause the shell to exit (see The Set Builtin).
+
+14. 启用 ‘set -u’ 后，由于引用未绑定的 shell 变量而导致的扩展错误不会导致 shell 退出（请参阅 "内置设置"）。
+
+15. The shell will not exit on expansion errors caused by var being unset or null in ${var:?word} expansions (see Shell Parameter Expansion).
+
+15. 在 ${var:?word} 扩展中因 var 未设置或为空而导致的扩展错误不会导致 shell 退出（请参阅 "Shell 参数扩展"）。
+
+16. Redirection errors encountered by shell builtins will not cause the shell to exit.
+
+16. shell 内置程序遇到的重定向错误不会导致 shell 退出。
+
+17. When running in POSIX mode, a special builtin returning an error status will not cause the shell to exit (see Bash POSIX Mode).
+
+17. 在 POSIX 模式下运行时，返回错误状态的特殊内置程序不会导致 shell 退出（请参阅 Bash POSIX 模式）。
+
+18. A failed exec will not cause the shell to exit (see Bourne Shell Builtins).
+
+18. exec 执行失败不会导致 shell 退出（参阅 Bourne Shell 内置命令）。
+
+19. Parser syntax errors will not cause the shell to exit.
+
+19. 解析器语法错误不会导致 shell 退出。
+
+20. If the cdspell shell option is enabled, the shell will attempt simple spelling correction for directory arguments to the cd builtin (see the description of the cdspell option to the shopt builtin in The Shopt Builtin). The cdspell option is only effective in interactive shells.
+
+20. 如果启用了 cdspell shell 选项，shell 将尝试对 cd 内置程序的目录参数进行简单的拼写校正（参见 The Shopt Builtin 中关于 shopt 内置程序 cdspell 选项的描述）。cdspell 选项仅在交互式 shell 中有效。
+
+21. The shell will check the value of the TMOUT variable and exit if a command is not read within the specified number of seconds after printing $PS1 (see Bash Variables).
+
+21. shell 将检查 TMOUT 变量的值，如果在打印 $PS1 后的指定秒数内未读取命令，则退出（参见 Bash 变量）。
