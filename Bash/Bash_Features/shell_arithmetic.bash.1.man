@@ -1,0 +1,78 @@
+6.5 Shell Arithmetic
+
+6.5 Shell 算术
+
+The shell allows arithmetic expressions to be evaluated, as one of the shell expansions or by using the (( compound command, the let builtin, or the -i option to the declare builtin.
+
+shell 允许对算术表达式进行求值，可以使用 shell 扩展，也可以使用 (( 复合命令、let 内置函数或 declare 内置函数的 -i 选项。
+
+Evaluation is done in fixed-width integers with no check for overflow, though division by 0 is trapped and flagged as an error. The operators and their precedence, associativity, and values are the same as in the C language. The following list of operators is grouped into levels of equal-precedence operators. The levels are listed in order of decreasing precedence.
+
+计算是在固定宽度的整数中进行的，没有溢出检查，但除以 0 会被捕获并标记为错误。运算符及其优先级、关联性和值与 C 语言相同。下面的运算符列表按等优先运算符的级别分组。操作符级别按优先级递减的顺序排列。
+
+id++ id--    variable post-increment and post-decrement
+id++ id--    变量后增和后减
+
+++id --id    variable pre-increment and pre-decrement
+++id --id    变量预增和预减
+
+- +    unary minus and plus
+- +    一元减号和加号
+
+! ~    logical and bitwise negation
+! ~    逻辑否定和位否定
+
+**    exponentiation
+**    指数
+
+* / %    multiplication, division, remainder
+* / %    乘法、除法、余数
+
++ -    addition, subtraction
++ -    加法、减法
+
+<< >>    left and right bitwise shifts
+<< >>    左右位移
+
+<= >= < >    comparison
+<= >= < >    比较
+
+== !=    equality and inequality
+== !=    相等和不相等
+
+&    bitwise AND
+&    按位与
+
+^    bitwise exclusive OR
+^    按位异或
+
+|    bitwise OR
+|    按位或
+
+&&    logical AND
+&&    逻辑与
+
+||    logical OR
+||    逻辑或
+
+expr ? expr : expr    conditional operator
+expr ? expr : expr    条件预算符
+
+= *= /= %= += -= <<= >>= &= ^= |=    assignment
+= *= /= %= += -= <<= >>= &= ^= |=    赋值
+
+expr1 , expr2    comma
+expr1 , expr2    逗号
+
+
+Shell variables are allowed as operands; parameter expansion is performed before the expression is evaluated. Within an expression, shell variables may also be referenced by name without using the parameter expansion syntax. A shell variable that is null or unset evaluates to 0 when referenced by name without using the parameter expansion syntax. The value of a variable is evaluated as an arithmetic expression when it is referenced, or when a variable which has been given the integer attribute using ‘declare -i’ is assigned a value. A null value evaluates to 0. A shell variable need not have its integer attribute turned on to be used in an expression.
+
+shell 变量可以作为操作数；参数扩展在表达式求值之前执行。在表达式中，也可以通过名称引用 shell 变量，而不使用参数扩展语法。空值或未设置的 shell 变量在不使用参数扩展语法的情况下以名称引用时，其值为 0。当引用变量或使用 ‘declare -i’ 为整数属性变量赋值时，变量值将以算术表达式的形式求值。空值求值为 0。在表达式中使用 shell 变量时，不必打开其整数属性。
+
+Integer constants follow the C language definition, without suffixes or character constants. Constants with a leading 0 are interpreted as octal numbers. A leading ‘0x’ or ‘0X’ denotes hexadecimal. Otherwise, numbers take the form [base#]n, where the optional base is a decimal number between 2 and 64 representing the arithmetic base, and n is a number in that base. If base# is omitted, then base 10 is used. When specifying n, if a non-digit is required, the digits greater than 9 are represented by the lowercase letters, the uppercase letters, ‘@’, and ‘_’, in that order. If base is less than or equal to 36, lowercase and uppercase letters may be used interchangeably to represent numbers between 10 and 35.
+
+整数常量遵循 C 语言的定义，没有后缀或字符常量。以 0 开头的常量被解释为八进制数。前导 ‘0x’ 或 ‘0X’ 表示十六进制数。否则，数字的形式为 [base#]n，其中可选的 base 是一个介于 2 和 64 之间的十进制数，代表算术基数，n 是该基数中的一个数字。如果省略基数#，则使用基数 10。在指定 n 时，如果需要非数字，大于 9 的数字依次用小写字母、大写字母、‘@’ 和 ‘_’ 表示。如果基数小于或等于 36，可以交替使用小写字母和大写字母来表示 10 到 35 之间的数字。
+
+Operators are evaluated in order of precedence. Sub-expressions in parentheses are evaluated first and may override the precedence rules above.
+
+运算符按优先顺序运算。括号内的子表达式优先运算，并可优先于上述优先规则。
