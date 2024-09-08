@@ -1,0 +1,97 @@
+6.7 Arrays
+
+6.7 数组
+
+Bash provides one-dimensional indexed and associative array variables. Any variable may be used as an indexed array; the declare builtin will explicitly declare an array. There is no maximum limit on the size of an array, nor any requirement that members be indexed or assigned contiguously. Indexed arrays are referenced using integers (including arithmetic expressions (see Shell Arithmetic)) and are zero-based; associative arrays use arbitrary strings. Unless otherwise noted, indexed array indices must be non-negative integers.
+
+Bash 提供了一维索引和关联数组变量。任何变量都可以用作索引数组；declare 内置函数将显式地声明一个数组。数组的大小没有最大限制，也不要求成员必须连续索引或赋值。索引数组使用整数（包括算术表达式（参见 Shell 算术））引用，并以零为基础；关联数组使用任意字符串。除非另有说明，索引数组的索引必须是非负整数。
+
+An indexed array is created automatically if any variable is assigned to using the syntax
+
+如果使用语法为任何变量赋值，索引数组就会自动创建。
+
+name[subscript]=value
+
+The subscript is treated as an arithmetic expression that must evaluate to a number. To explicitly declare an array, use
+
+下标被视为算术表达式，必须求值为一个数字。要明确声明一个数组，请使用
+
+declare -a name
+
+The syntax
+
+语法
+
+declare -a name[subscript]
+
+is also accepted; the subscript is ignored.
+
+同样接受；忽略下标。
+
+Associative arrays are created using
+
+关联数组用一下方式创建
+
+declare -A name
+
+Attributes may be specified for an array variable using the declare and readonly builtins. Each attribute applies to all members of an array.
+
+可以使用 declare 和 readonly 内置函数为数组变量指定属性。每个属性都适用于数组的所有成员。
+
+Arrays are assigned to using compound assignments of the form
+
+数组的赋值采用复合赋值的形式，即
+
+name=(value1 value2 … )
+
+where each value may be of the form [subscript]=string. Indexed array assignments do not require anything but string. When assigning to indexed arrays, if the optional subscript is supplied, that index is assigned to; otherwise the index of the element assigned is the last index assigned to by the statement plus one. Indexing starts at zero.
+
+其中每个值的形式可以是 [下标]=字符串。索引数组赋值除字符串外不需要其它任何值。在对索引数组赋值时，如果提供了可选的下标，就会对该索引进行赋值；否则，赋值元素的索引就是语句最后赋值的索引加一。索引从 0 开始。
+
+Each value in the list undergoes all the shell expansions described above (see Shell Expansions).
+
+列表中的每个值都会进行上述的 Shell 扩展（请参阅 Shell 扩展）。
+
+When assigning to an associative array, the words in a compound assignment may be either assignment statements, for which the subscript is required, or a list of words that is interpreted as a sequence of alternating keys and values: name=(key1 value1 key2 value2 … ). These are treated identically to name=( [key1]=value1 [key2]=value2 … ). The first word in the list determines how the remaining words are interpreted; all assignments in a list must be of the same type. When using key/value pairs, the keys may not be missing or empty; a final missing value is treated like the empty string.
+
+对关联数组赋值时，复合赋值中的词既可以是赋值语句（需要下标），也可以是词列表（解释为键和值的交替序列）：name=(key1 value1 key2 value2 ... )。这些处理方法与 name=( [key1]=value1 [key2]=value2 ... ) 相同。列表中的第一个词决定了如何解释其余词；列表中的所有赋值必须是同一类型。使用键/值对时，键不得缺失或为空；最后缺失的值将被视为空字符串。
+
+This syntax is also accepted by the declare builtin. Individual array elements may be assigned to using the name[subscript]=value syntax introduced above.
+
+declare 内置程序也接受这种语法。单个数组元素可以使用上面介绍的 name[subscript]=value 语法赋值。
+
+When assigning to an indexed array, if name is subscripted by a negative number, that number is interpreted as relative to one greater than the maximum index of name, so negative indices count back from the end of the array, and an index of -1 references the last element.
+
+在向索引数组赋值时，如果 name 的下标为负数，则该负数会被解释为相对于大于 name 最大索引的数值，因此负数索引会从数组的末尾开始往回数，而索引为 -1 的数组会引用最后一个元素。
+
+The ‘+=’ operator will append to an array variable when assigning using the compound assignment syntax; see Shell Parameters above.
+
+使用复合赋值语法赋值时，‘+=’ 操作符将追加到数组变量中；请参阅上文的 Shell 参数。
+
+Any element of an array may be referenced using ${name[subscript]}. The braces are required to avoid conflicts with the shell’s filename expansion operators. If the subscript is ‘@’ or ‘*’, the word expands to all members of the array name. These subscripts differ only when the word appears within double quotes. If the word is double-quoted, ${name[*]} expands to a single word with the value of each array member separated by the first character of the IFS variable, and ${name[@]} expands each element of name to a separate word. When there are no array members, ${name[@]} expands to nothing. If the double-quoted expansion occurs within a word, the expansion of the first parameter is joined with the beginning part of the original word, and the expansion of the last parameter is joined with the last part of the original word. This is analogous to the expansion of the special parameters ‘@’ and ‘*’. ${#name[subscript]} expands to the length of ${name[subscript]}. If subscript is ‘@’ or ‘*’, the expansion is the number of elements in the array. If the subscript used to reference an element of an indexed array evaluates to a number less than zero, it is interpreted as relative to one greater than the maximum index of the array, so negative indices count back from the end of the array, and an index of -1 refers to the last element.
+
+数组中的任何元素都可以用 ${name[subscript]} 来引用。为了避免与 shell 的文件名扩展运算符冲突，需要使用大括号。如果下标是 ‘@’ 或 ‘*’，则会扩展到数组名称的所有成员。只有当词出现在双引号中时，这些下标才会有所不同。如果词出现在双引号里，${name[*]} 将扩展为单个词，每个数组成员的值由 IFS 变量的第一个字符分隔，而 ${name[@]} 则将 name 的每个元素扩展为单独的词。如果没有数组元素，${name[@]} 将不会展开。如果双引号扩展发生在一个词内，则第一个参数的扩展与原词的开头部分相连，最后一个参数的扩展与原词的结尾部分相连。这与特殊参数 ‘@’ 和 ‘*’ 的扩展类似。${#name[subscript]} 扩展为 ${name[subscript]} 的长度。如果下标为 ‘@’ 或 ‘*’，则扩展值为数组中的元素个数。如果用于引用索引数组元素的下标值小于零，则会被解释为相对于数组最大索引值的一个较大值，因此负索引值从数组末尾开始向后计数，而索引值为-1 时则指向最后一个元素。
+
+Referencing an array variable without a subscript is equivalent to referencing with a subscript of 0. Any reference to a variable using a valid subscript is legal, and bash will create an array if necessary.
+
+引用数组变量时不带下标，相当于引用下标为 0 的变量。使用有效的下标引用变量是合法的，bash 会在必要时创建一个数组。
+
+An array variable is considered set if a subscript has been assigned a value. The null string is a valid value.
+
+如果一个数组变量的下标被赋值，则该变量被视为已设置。空字符串是一个有效值。
+
+It is possible to obtain the keys (indices) of an array as well as the values. ${!name[@]} and ${!name[*]} expand to the indices assigned in array variable name. The treatment when in double quotes is similar to the expansion of the special parameters ‘@’ and ‘*’ within double quotes.
+
+可以获取数组的键（索引）和值。${!name[@]} 和 ${!name[*]} 扩展到数组变量名中指定的索引。在双引号中的处理类似于在双引号中扩展特殊参数 ‘@’ 和 ‘*’。
+
+The unset builtin is used to destroy arrays. unset name[subscript] destroys the array element at index subscript. Negative subscripts to indexed arrays are interpreted as described above. Unsetting the last element of an array variable does not unset the variable. unset name, where name is an array, removes the entire array. unset name[subscript] behaves differently depending on the array type when given a subscript of ‘*’ or ‘@’. When name is an associative array, it removes the element with key ‘*’ or ‘@’. If name is an indexed array, unset removes all of the elements, but does not remove the array itself.
+
+unset 内置函数用于销毁数组。unset name[subscript] 用于销毁下标为 sbuscript 的数组元素。索引数组的负下标解释如上所述。销毁数组的数组的最后一个元素，并不会销毁该变量。unset name 其中 name 是一个数组。unset name[下标] 当下标为 ‘*’ 或 ‘@’ 时，行为因数组类型而异，。如果 name 是关联数组，它会移除键为 ‘*’ 或‘@’ 的元素。如果 name 是索引数组，unset 会删除所有元素，但不会删除数组本身。
+
+When using a variable name with a subscript as an argument to a command, such as with unset, without using the word expansion syntax described above, the argument is subject to the shell’s filename expansion. If filename expansion is not desired, the argument should be quoted.
+
+在使用带下标的变量名作为命令参数时（如 unset），如果不使用上述词扩展语法，参数将受 shell 的文件名扩展影响。如果不需要文件名扩展，则应为参数加上引号。
+
+The declare, local, and readonly builtins each accept a -a option to specify an indexed array and a -A option to specify an associative array. If both options are supplied, -A takes precedence. The read builtin accepts a -a option to assign a list of words read from the standard input to an array, and can read values from the standard input into individual array elements. The set and declare builtins display array values in a way that allows them to be reused as input.
+
+declar、local 和 readonly 内置函数都接受一个 -a 选项来指定一个索引数组，以及一个 -A 选项来指定一个关联数组。如果同时提供这两个选项，-A 优先。read 内置函数接受一个 -a 选项，用于将从标准输入中读取的词列表分配给一个数组，还可以将标准输入中的值读入单个数组元素。set 和 declare 内置程序显示数组值的方式允许它们作为输入重复使用。
