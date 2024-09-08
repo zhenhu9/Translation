@@ -1,0 +1,31 @@
+6.6 Aliases
+
+6.6 别名
+
+Aliases allow a string to be substituted for a word when it is used as the first word of a simple command. The shell maintains a list of aliases that may be set and unset with the alias and unalias builtin commands.
+
+当一个字符串被用作简单命令的第一个词时，别名可以替代该词。shell 会维护一个别名列表，可以使用内置的 alias 和 unalias 命令设置或取消别名。
+
+The first word of each simple command, if unquoted, is checked to see if it has an alias. If so, that word is replaced by the text of the alias. The characters ‘/’, ‘$’, ‘`’, ‘=’ and any of the shell metacharacters or quoting characters listed above may not appear in an alias name. The replacement text may contain any valid shell input, including shell metacharacters. The first word of the replacement text is tested for aliases, but a word that is identical to an alias being expanded is not expanded a second time. This means that one may alias ls to "ls -F", for instance, and Bash does not try to recursively expand the replacement text. If the last character of the alias value is a blank, then the next command word following the alias is also checked for alias expansion.
+
+如果每条简单命令的第一个词未加引号，则检查该词是否有别名。如果有，则用别名文本替换该字。字符 ‘/’、‘$’、‘`’、‘=’ 以及上述任何 shell 元字符或引号字符都不能出现在别名中。替换文本可以包含任何有效的 shell 输入，包括 shell 元字符。替换文本的第一个词会进行别名测试，但与正在扩展的别名相同的单词不会进行第二次扩展。这意味着可以将 ls 别名为 "ls -F"，例如，Bash 不会尝试递归扩展替换文本。如果别名值的最后一个字符是空白，那么在别名之后的下一个命令字也会被检查以进行别名扩展。
+
+Aliases are created and listed with the alias command, and removed with the unalias command.
+
+使用 alias 命令创建和列出别名，使用 unalias 命令删除别名。
+
+There is no mechanism for using arguments in the replacement text, as in csh. If arguments are needed, use a shell function (see Shell Functions).
+
+没有像 csh 那样在替换文本中使用参数的机制。如果需要参数，请使用 shell 函数（请参阅 shell 函数）。
+
+Aliases are not expanded when the shell is not interactive, unless the expand_aliases shell option is set using shopt (see The Shopt Builtin).
+
+除非使用 shopt 设置了 expand_aliases shell 选项（参见 Shopt Builtin），否则在 shell 非交互状态下不会扩展别名。
+
+The rules concerning the definition and use of aliases are somewhat confusing. Bash always reads at least one complete line of input, and all lines that make up a compound command, before executing any of the commands on that line or the compound command. Aliases are expanded when a command is read, not when it is executed. Therefore, an alias definition appearing on the same line as another command does not take effect until the next line of input is read. The commands following the alias definition on that line are not affected by the new alias. This behavior is also an issue when functions are executed. Aliases are expanded when a function definition is read, not when the function is executed, because a function definition is itself a command. As a consequence, aliases defined in a function are not available until after that function is executed. To be safe, always put alias definitions on a separate line, and do not use alias in compound commands.
+
+关于别名的定义和使用规则有些混乱。Bash 总是先读取至少一行完整的输入，以及组成复合命令的所有行，然后再执行该行或复合命令中的任何命令。别名是在读取命令时展开的，而不是在执行命令时。因此，与其他命令出现在同一行的别名定义在读取下一行输入之前不会生效。该行别名定义后面的命令不受新别名的影响。执行函数时也会出现这种情况。别名是在读取函数定义时扩展的，而不是在执行函数时，因为函数定义本身就是一条命令。因此，在函数中定义的别名只有在函数执行后才能使用。为了安全起见，请始终将别名定义放在单独一行中，并且不要在复合命令中使用别名。
+
+For almost every purpose, shell functions are preferred over aliases.
+
+几乎在所有情况下，shell 函数都比别名更受欢迎。
