@@ -1,3 +1,17 @@
+6.8 The Directory Stack
+
+6.8 目录堆栈
+
+The directory stack is a list of recently-visited directories. The pushd builtin adds directories to the stack as it changes the current directory, and the popd builtin removes specified directories from the stack and changes the current directory to the directory removed. The dirs builtin displays the contents of the directory stack. The current directory is always the "top" of the directory stack.
+
+目录堆栈是最近访问过的目录列表。pushd 内置函数在更改当前目录时将目录添加到堆栈中，而 popd 内置函数则从堆栈中删除指定目录，并将当前目录更改为删除的目录。dirs 内置程序会显示目录堆栈的内容。当前目录始终是目录栈的 "顶层"。
+
+The contents of the directory stack are also visible as the value of the DIRSTACK shell variable.
+
+目录堆栈的内容也可以通过 DIRSTACK shell 变量的值看到。
+
+    Directory Stack Builtins
+
 6.8.1 Directory Stack Builtins
 
 6.8.1 目录堆栈内置程序
