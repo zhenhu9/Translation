@@ -1,0 +1,109 @@
+6.8.1 Directory Stack Builtins
+
+6.8.1 目录堆栈内置程序
+
+dirs
+
+    dirs [-clpv] [+N | -N]
+
+    Display the list of currently remembered directories. Directories are added to the list with the pushd command; the popd command removes directories from the list. The current directory is always the first directory in the stack.
+
+    显示当前记忆的目录列表。使用 pushd 命令可将目录添加到列表中；使用 popd 命令可将目录从列表中删除。当前目录总是堆栈中的第一个目录。
+
+    -c        Clears the directory stack by deleting all of the elements.
+    -c        删除目录栈中的所有内容，从而清除目录栈。
+
+    -l        Produces a listing using full pathnames; the default listing format uses a tilde to denote the home directory.
+    -l        使用全路径名生成列表；默认的列表格式使用斜线表示主目录。
+
+    -p        Causes dirs to print the directory stack with one entry per line.
+    -p        使 dirs 以每行一个条目的方式打印目录栈。
+
+    -v        Causes dirs to print the directory stack with one entry per line, prefixing each entry with its index in the stack.
+    -v        命令 dirs 打印目录堆栈，每行一个条目，并在每个条目前加上其在堆栈中的索引。
+
+    +N        Displays the Nth directory (counting from the left of the list printed by dirs when invoked without options), starting with zero.
+    +N        显示第 N 个目录（在不带选项的情况下，从 dirs 打印的列表左边开始计算），从 0 开始。
+
+    -N        Displays the Nth directory (counting from the right of the list printed by dirs when invoked without options), starting with zero.
+    -N        显示第 N 个目录（在不带选项的情况下，从 dirs 打印的列表右侧开始计算），从 0 开始。
+
+popd
+
+    popd [-n] [+N | -N]
+
+    Removes elements from the directory stack. The elements are numbered from 0 starting at the first directory listed by dirs; that is, popd is equivalent to popd +0.
+
+    从目录堆栈中删除元素。元素从 0 开始编号，从 dirs 列出的第一个目录开始；也就是说，popd 相当于 popd +0。
+
+    When no arguments are given, popd removes the top directory from the stack and changes to the new top directory.
+
+    如果没有给定参数，popd 会删除堆栈中的顶层目录，并更改为新的顶层目录。
+
+    Arguments, if supplied, have the following meanings:
+
+    如果提供参数，其含义如下：
+
+    -n        Suppresses the normal change of directory when removing directories from the stack, so that only the stack is manipulated.
+
+    -n        从堆栈中删除目录时，抑制正常的目录更改，因此只对堆栈进行操作。
+
+    +N        Removes the Nth directory (counting from the left of the list printed by dirs), starting with zero, from the stack.
+
+    +N        从堆栈中删除第 N 个目录（从 dirs 打印的列表左边开始计算），从 0 开始。
+
+    -N        Removes the Nth directory (counting from the right of the list printed by dirs), starting with zero, from the stack.
+
+    -N        从堆栈中删除第 N 个目录（从 dirs 打印的列表右侧开始计算），从 0 开始。
+
+    If the top element of the directory stack is modified, and the -n option was not supplied, popd uses the cd builtin to change to the directory at the top of the stack. If the cd fails, popd returns a non-zero value.
+
+    如果修改了目录栈的顶层元素，且未提供 -n 选项，则 popd 会使用内置的 cd 更改为目录栈顶层的目录。如果 cd 失败，popd 返回一个非零值。
+
+    Otherwise, popd returns an unsuccessful status if an invalid option is encountered, the directory stack is empty, or a non-existent directory stack entry is specified.
+
+    否则，如果遇到无效选项、目录栈为空、或指定了不存在的目录栈条目，popd 将返回不成功状态。
+
+    If the popd command is successful, Bash runs dirs to show the final contents of the directory stack, and the return status is 0.
+
+    如果 popd 命令成功执行，Bash 会运行 dirs 显示目录栈的最终内容，返回状态为 0。
+
+pushd
+
+    pushd [-n] [+N | -N | dir]
+
+    Adds a directory to the top of the directory stack, or rotates the stack, making the new top of the stack the current working directory. With no arguments, pushd exchanges the top two elements of the directory stack.
+
+    向目录栈顶部添加一个目录，或旋转目录栈，使新的目录栈顶部成为当前工作目录。在没有参数的情况下，pushd 会交换目录栈顶部的两个元素。
+
+    Arguments, if supplied, have the following meanings:
+
+    如果提供参数，其含义如下：
+
+    -n        Suppresses the normal change of directory when rotating or adding directories to the stack, so that only the stack is manipulated.
+
+    -n        在旋转或添加目录到堆栈时，抑制正常的目录更改，因此只对堆栈进行操作。
+
+    +N        Brings the Nth directory (counting from the left of the list printed by dirs, starting with zero) to the top of the list by rotating the stack.
+
+    +N        通过旋转堆栈，将第 N 个目录（从 dirs 打印的列表左侧开始计算，从 0 开始）移到列表顶部。
+
+    -N        Brings the Nth directory (counting from the right of the list printed by dirs, starting with zero) to the top of the list by rotating the stack.
+
+    -N        通过旋转堆栈，将第 N 个目录（从 dirs 打印的列表右侧开始计算，从 0 开始）移至列表顶部。
+
+    dir        Makes dir be the top of the stack.
+
+    dir        将 dir 置于堆栈顶部。
+
+    After the stack has been modified, if the -n option was not supplied, pushd uses the cd builtin to change to the directory at the top of the stack. If the cd fails, pushd returns a non-zero value.
+
+    修改堆栈后，如果没有提供 -n 选项，pushd 会使用内置的 cd 更改为堆栈顶部的目录。如果 cd 失败，pushd 返回一个非零值。
+
+    Otherwise, if no arguments are supplied, pushd returns 0 unless the directory stack is empty. When rotating the directory stack, pushd returns 0 unless the directory stack is empty or a non-existent directory stack element is specified.
+
+    否则，如果没有提供参数，除非目录栈为空，否则 pushd 返回 0。旋转目录栈时，除非目录栈为空或指定了不存在的目录栈元素，否则 pushd 返回 0。
+
+    If the pushd command is successful, Bash runs dirs to show the final contents of the directory stack.
+
+    如果 pushd 命令成功执行，Bash 会运行 dirs 显示目录栈的最终内容。
