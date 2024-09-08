@@ -1,0 +1,102 @@
+6.9 Controlling the Prompt
+
+6.9 控制提示符
+
+Bash examines the value of the array variable PROMPT_COMMAND just before printing each primary prompt. If any elements in PROMPT_COMMAND are set and non-null, Bash executes each value, in numeric order, just as if it had been typed on the command line.
+
+Bash 会在打印每个主提示之前检查数组变量 PROMPT_COMMAND 的值。如果 PROMPT_COMMAND 中的任何元素被设置且非空，Bash 将按照数字顺序执行每个值，就像在命令行中输入一样。
+
+In addition, the following table describes the special characters which can appear in the prompt variables PS0, PS1, PS2, and PS4:
+
+此外，下表描述了可以出现在提示变量 PS0、PS1、PS2 和 PS4 中的特殊字符：
+
+\a    A bell character.
+\a    响铃字符。
+
+\d    The date, in "Weekday Month Date" format (e.g., "Tue May 26").
+\d    日期，格式为 "Weekday Month Date"（例如，"Tue May 26"）。
+
+\D{format}    The format is passed to strftime(3) and the result is inserted into the prompt string; an empty format results in a locale-specific time representation. The braces are required.
+\D{format}    将 format 传递给 strftime(3)，并将结果插入提示字符串；如果格式为空，则使用特定于本地的时间表示法。大括号是必需的。
+
+\e    An escape character.
+\e    转译字符。
+
+\h    The hostname, up to the first ‘.’.
+\h    主机名，直至地一个 ‘.’。
+
+\H    The hostname.
+\H    主机名。
+
+\j    The number of jobs currently managed by the shell.
+\j    当前由 Shell 管理的作业数量。
+
+\l    The basename of the shell’s terminal device name.
+\l    Shell 的终端设备名称。
+
+\n    A newline.
+\n    换行符。
+
+\r    A carriage return.
+\r    回车符。
+
+\s    The name of the shell, the basename of $0 (the portion following the final slash).
+\s    Shell 的名称，即 $0 的名称（最后的斜杠之后的发部分）。
+
+\t    The time, in 24-hour HH:MM:SS format.
+\t    时间，以 24 小时 HH:MM:SS 格式。
+
+\T    The time, in 12-hour HH:MM:SS format.
+\T    时间，以 12 小时 HH:MM:SS 格式。
+
+\@    The time, in 12-hour am/pm format.
+\@    时间，以 12 小时 am/pm 格式。
+
+\A    The time, in 24-hour HH:MM format.
+\A    时间，以 24 小时 HH:MM 格式。
+
+\u    The username of the current user.
+\u    当前用户的用户名。
+
+\v    The version of Bash (e.g., 2.00)
+\v    Bash 的版本（例如，2.00）
+
+\V    The release of Bash, version + patchlevel (e.g., 2.00.0)
+\V    Bash 的发行版，加补丁级别（例如，2.00.0）
+
+\w    The value of the PWD shell variable ($PWD), with $HOME abbreviated with a tilde (uses the $PROMPT_DIRTRIM variable).
+\w    PWD shell 变量（$PWD）的值，$HOME 用斜线缩写（使用 $PROMPT_DIRTRIM 变量）。
+
+\W    The basename of $PWD, with $HOME abbreviated with a tilde.
+\W    $PWD 的基名，其中 $HOME 用斜线缩写。
+
+\!    The history number of this command.
+\!    命令的发历史编号。
+
+\#    The command number of this command.
+\#    命令的命令编号。
+
+\$    If the effective uid is 0, #, otherwise $.
+\$    如果有效 uid 是 0，则为 #，否则为 $。
+
+\nnn    The character whose ASCII code is the octal value nnn.
+\nnn    ASCII 码为八进制数值 nnn 的字符。
+
+\\    A backslash.
+\\    反斜线。
+
+\[    Begin a sequence of non-printing characters. This could be used to embed a terminal control sequence into the prompt.
+\[    开始一个非打印字符序列。这可以用来在提示符中嵌入终端控制序列。
+
+
+\]    End a sequence of non-printing characters.
+\]    结束一串非打印字符。
+
+
+The command number and the history number are usually different: the history number of a command is its position in the history list, which may include commands restored from the history file (see Bash History Facilities), while the command number is the position in the sequence of commands executed during the current shell session.
+
+命令编号和历史编号通常是不同的：命令的历史编号是它在历史列表中的位置，其中可能包括从历史文件中恢复的命令（参见 Bash 历史工具），而命令编号是在当前 shell 会话中执行的命令序列中的位置。
+
+After the string is decoded, it is expanded via parameter expansion, command substitution, arithmetic expansion, and quote removal, subject to the value of the promptvars shell option (see The Shopt Builtin). This can have unwanted side effects if escaped portions of the string appear within command substitution or contain characters special to word expansion.
+
+字符串解码后，将通过参数扩展、命令替换、算术扩展和移除引号等方式进行扩展，具体取决于 shell 选项 promptvars 的值（参见 Shopt Builtin）。如果字符串的转义部分出现在命令替换中，或包含单词扩展的特殊字符，这可能会产生不必要的副作用。
