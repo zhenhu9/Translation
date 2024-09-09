@@ -1,0 +1,65 @@
+6.10 The Restricted Shell
+
+6.10 受限 Shell
+
+If Bash is started with the name rbash, or the --restricted or -r option is supplied at invocation, the shell becomes restricted. A restricted shell is used to set up an environment more controlled than the standard shell. A restricted shell behaves identically to bash with the exception that the following are disallowed or not performed:
+
+如果 Bash 以 rbash 名称启动，或者在调用时提供了 --restricted 或 -r 选项，那么 shell 就会变成受限 shell。受限 shell 用于设置比标准 shell 更受控制的环境。受限 shell 的行为与 bash 相同，但不允许或不执行以下操作：
+
+- Changing directories with the cd builtin.
+- 使用内置的 cd 命令更改目录。
+
+- Setting or unsetting the values of the SHELL, PATH, HISTFILE, ENV, or BASH_ENV variables.
+- 设置或取消设置 SHELL、PATH、HISTFILE、ENV 或 BASH_ENV 变量的值。
+
+- Specifying command names containing slashes.
+- 指定包含斜线的命令名称。
+
+- Specifying a filename containing a slash as an argument to the . builtin command.
+- 指定包含斜线的文件名作为 .builtin 命令的参数。
+
+- Specifying a filename containing a slash as an argument to the history builtin command.
+- 将包含斜线的文件名指定为历史内置命令的参数。
+
+- Specifying a filename containing a slash as an argument to the -p option to the hash builtin command.
+- 将包含斜线的文件名指定为哈希内置命令 -p 选项的参数。
+
+- Importing function definitions from the shell environment at startup.
+- 启动时从 shell 环境导入函数定义。
+
+- Parsing the value of SHELLOPTS from the shell environment at startup.
+- 启动时从 shell 环境导入函数定义。
+
+- Redirecting output using the ‘>’, ‘>|’, ‘<>’, ‘>&’, ‘&>’, and ‘>>’ redirection operators.
+- 使用 ‘>’、‘>|’、‘<>’、‘>&’、‘&>’ 和 ‘>>’ 重定向操作符重定向输出。
+
+- Using the exec builtin to replace the shell with another command.
+- 使用 exec 内置命令用其他命令替换 shell。
+
+- Adding or deleting builtin commands with the -f and -d options to the enable builtin.
+- 使用 -f 和 -d 选项添加或删除启用内置命令。
+
+- Using the enable builtin command to enable disabled shell builtins.
+- 使用 enable 内置命令启用已禁用的 shell 内置命令。
+
+- Specifying the -p option to the command builtin.
+-  在内置命令中指定 -p 选项。
+
+- Turning off restricted mode with ‘set +r’ or ‘shopt -u restricted_shell’.
+- 使用 “set +r” 或 “shopt -u restricted_shell” 关闭受限模式。
+
+These restrictions are enforced after any startup files are read.
+
+这些限制会在读取任何启动文件后执行。
+
+When a command that is found to be a shell script is executed (see Shell Scripts), rbash turns off any restrictions in the shell spawned to execute the script.
+
+当执行发现是 shell 脚本的命令时（请参阅 "shell 脚本"），rbash 会关闭为执行脚本而生成的 shell 中的任何限制。
+
+The restricted shell mode is only one component of a useful restricted environment. It should be accompanied by setting PATH to a value that allows execution of only a few verified commands (commands that allow shell escapes are particularly vulnerable), changing the current directory to a non-writable directory other than $HOME after login, not allowing the restricted shell to execute shell scripts, and cleaning the environment of variables that cause some commands to modify their behavior (e.g., VISUAL or PAGER).
+
+受限 shell 模式只是有用的受限环境的一个组成部分。与此同时，还应将 PATH 设置为只允许执行少数已验证命令的值（允许 shell 转义的命令尤其容易受到攻击），登录后将当前目录更改为 $HOME 以外的不可写目录，不允许受限 shell 执行 shell 脚本，并清除环境中导致某些命令修改其行为的变量（如 VISUAL 或 PAGER）。
+
+Modern systems provide more secure ways to implement a restricted environment, such as jails, zones, or containers.
+
+现代系统提供了更安全的方法来实现受限环境，如 jails、zone 或 containers。
