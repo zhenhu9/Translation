@@ -1,0 +1,10 @@
+5 Shell Variables
+
+5 Shell 变量
+
+This chapter describes the shell variables that Bash uses. Bash automatically assigns default values to a number of variables.
+
+本章介绍 Bash 使用的 shell 变量。Bash 会自动为一些变量分配默认值。
+
+    Bourne Shell Variables
+    Bash Variables
