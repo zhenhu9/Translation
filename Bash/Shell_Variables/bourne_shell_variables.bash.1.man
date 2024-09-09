@@ -1,0 +1,38 @@
+5.1 Bourne Shell Variables
+
+5.1 Bourne Shell 变量
+
+Bash uses certain shell variables in the same way as the Bourne shell. In some cases, Bash assigns a default value to the variable.
+
+Bash 使用某些 shell 变量的方式与 Bourne shell 相同。在某些情况下，Bash 会为变量指定一个默认值。
+
+CDPATH    A colon-separated list of directories used as a search path for the cd builtin command.
+CDPATH    以冒号分隔的目录列表，用作 cd 内置命令的搜索路径。
+
+
+HOME    The current user’s home directory; the default for the cd builtin command. The value of this variable is also used by tilde expansion (see Tilde Expansion).
+HOME    当前用户的主目录；cd 内置命令的默认值。该变量的值也用于 tilde 扩展（请参阅 Tilde 扩展）。
+
+IFS    A list of characters that separate fields; used when the shell splits words as part of expansion.
+IFS    分隔字段的字符列表；在 shell 作为扩展的一部分拆分单词时使用。
+
+MAIL    If this parameter is set to a filename or directory name and the MAILPATH variable is not set, Bash informs the user of the arrival of mail in the specified file or Maildir-format directory.
+MAIL    如果该参数设置为文件名或目录名，且 MAILPATH 变量未设置，则 Bash 会通知用户指定文件或 Maildir 格式目录中的邮件已到达。
+
+MAILPATH    A colon-separated list of filenames which the shell periodically checks for new mail. Each list entry can specify the message that is printed when new mail arrives in the mail file by separating the filename from the message with a ‘?’. When used in the text of the message, $_ expands to the name of the current mail file.
+MAILPATH    以冒号分隔的文件名列表，用于 shell 定期检查是否有新邮件。每个列表条目都可以指定新邮件到达邮件文件时打印的信息，方法是在文件名和信息之间用 “?” 在邮件文本中使用时，$_ 会展开为当前邮件文件的名称。
+
+OPTARG    The value of the last option argument processed by the getopts builtin.
+OPTARG    getopts 内置函数处理的最后一个选项参数的值。
+
+OPTIND    The index of the last option argument processed by the getopts builtin.
+OPTIND    getopts 内置函数处理的最后一个选项参数的索引。
+
+PATH    A colon-separated list of directories in which the shell looks for commands. A zero-length (null) directory name in the value of PATH indicates the current directory. A null directory name may appear as two adjacent colons, or as an initial or trailing colon.
+PATH    以冒号分隔的目录列表，shell 会在其中查找命令。PATH 值中的零长度（空）目录名表示当前目录。空目录名可以是两个相邻的冒号，也可以是首冒号或尾冒号。
+
+PS1    The primary prompt string. The default value is ‘\s-\v\$ ’. See Controlling the Prompt, for the complete list of escape sequences that are expanded before PS1 is displayed.
+PS1    主要提示字符串。默认值为 “\s-\v\$”。有关 PS1 显示前展开的转义序列的完整列表，请参阅控制提示符。
+
+PS2    The secondary prompt string. The default value is ‘> ’. PS2 is expanded in the same way as PS1 before being displayed.
+PS2    辅助提示字符串。默认值为 “>”。PS2 在显示前的展开方式与 PS1 相同。
