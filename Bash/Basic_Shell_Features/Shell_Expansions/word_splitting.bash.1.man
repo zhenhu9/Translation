@@ -1,0 +1,19 @@
+3.5.7 Word Splitting
+
+3.5.7 分词
+
+The shell scans the results of parameter expansion, command substitution, and arithmetic expansion that did not occur within double quotes for word splitting.
+
+shell 会扫描不在双引号内的参数扩展、命令替换和算术扩展的结果，以进行分词。
+
+The shell treats each character of $IFS as a delimiter, and splits the results of the other expansions into words using these characters as field terminators. If IFS is unset, or its value is exactly <space><tab><newline>, the default, then sequences of <space>, <tab>, and <newline> at the beginning and end of the results of the previous expansions are ignored, and any sequence of IFS characters not at the beginning or end serves to delimit words. If IFS has a value other than the default, then sequences of the whitespace characters space, tab, and newline are ignored at the beginning and end of the word, as long as the whitespace character is in the value of IFS (an IFS whitespace character). Any character in IFS that is not IFS whitespace, along with any adjacent IFS whitespace characters, delimits a field. A sequence of IFS whitespace characters is also treated as a delimiter. If the value of IFS is null, no word splitting occurs.
+
+shell 会将 $IFS 中的每个字符都视为分隔符，并使用这些字符作为字段结束符，将其他扩展结果进行分词。如果 IFS 未设置，或者其值正好是 <space><tab><newline>（默认值），那么前面扩展结果开头和结尾的 <space>、<tab> 和 <newline> 序列将被忽略，任何不在开头或结尾的 IFS 字符序列都将作为字的分隔符。如果 IFS 的值不是默认值，那么只要空白字符在 IFS 的值中（IFS 空白字符），单词开头和结尾的空白字符空格、制表符和换行符序列就会被忽略。IFS 中任何不属于 IFS 空白的字符，以及任何相邻的 IFS 空白字符，都是一个字段的分隔符。IFS 空白字符序列也被视为分隔符。如果 IFS 的值为空，则不进行分词。
+
+Explicit null arguments ("" or '') are retained and passed to commands as empty strings. Unquoted implicit null arguments, resulting from the expansion of parameters that have no values, are removed. If a parameter with no value is expanded within double quotes, a null argument results and is retained and passed to a command as an empty string. When a quoted null argument appears as part of a word whose expansion is non-null, the null argument is removed. That is, the word -d'' becomes -d after word splitting and null argument removal.
+
+显式空参数（"" 或 ''）将被保留并作为空字符串传递给命令。未加引号的隐式空参数（由无值参数的扩展产生）将被删除。如果没有值的参数在双引号内展开，则会产生空参数，并作为空字符串保留和传递给命令。当带引号的空参数作为扩展为非空参数的单词的一部分出现时，空参数将被删除。也就是说，词 -d'' 在分词和删除空参数后会变成-d。
+
+Note that if no expansion occurs, no splitting is performed.
+
+需要注意的是，如果没有扩展，则不执行分词。
