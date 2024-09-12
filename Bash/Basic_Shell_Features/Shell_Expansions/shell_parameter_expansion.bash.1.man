@@ -1,0 +1,364 @@
+3.5.3 Shell Parameter Expansion
+
+3.5.3 Shell 参数扩展
+
+The ‘$’ character introduces parameter expansion, command substitution, or arithmetic expansion. The parameter name or symbol to be expanded may be enclosed in braces, which are optional but serve to protect the variable to be expanded from characters immediately following it which could be interpreted as part of the name.
+
+’$‘ 字符引入参数扩展、命令替换或算术扩展。要扩展的参数名或符号可以用大括号括起来，大括号是可选的，但可以保护要扩展的变量，防止紧跟其后的字符被解释为变量名的一部分。
+
+When braces are used, the matching ending brace is the first ‘}’ not escaped by a backslash or within a quoted string, and not within an embedded arithmetic expansion, command substitution, or parameter expansion.
+
+使用大括号时，匹配的结尾大括号是第一个未用反斜线转义的，或者是引号字符串中的，不是嵌入式算术扩展、命令替换或参数扩展中的 ’}‘。
+
+The basic form of parameter expansion is ${parameter}. The value of parameter is substituted. The parameter is a shell parameter as described above (see Shell Parameters) or an array reference (see Arrays). The braces are required when parameter is a positional parameter with more than one digit, or when parameter is followed by a character that is not to be interpreted as part of its name.
+
+参数扩展的基本形式是 ${parameter}。参数的值将被替换。参数可以是上文所述的 Shell 参数（参阅 Shell 参数），也可以是数组引用（参阅数组）。如果参数是一个有多个数字的位置参数，或者参数后面有一个不能作为参数名称解释的字符，则需要使用大括号。
+
+If the first character of parameter is an exclamation point (!), and parameter is not a nameref, it introduces a level of indirection. Bash uses the value formed by expanding the rest of parameter as the new parameter; this is then expanded and that value is used in the rest of the expansion, rather than the expansion of the original parameter. This is known as indirect expansion. The value is subject to tilde expansion, parameter expansion, command substitution, and arithmetic expansion. If parameter is a nameref, this expands to the name of the variable referenced by parameter instead of performing the complete indirect expansion. The exceptions to this are the expansions of ${!prefix*} and ${!name[@]} described below. The exclamation point must immediately follow the left brace in order to introduce indirection.
+
+如果参数的第一个字符是感叹号（!），并且参数不是一个命名符，那么它就引入了一个间接层次。Bash 使用参数其余部分扩展后形成的值作为新参数，然后对其进行扩展，并在其余扩展中使用该值，而不是对原始参数进行扩展。这被称为间接扩展。该值受 tilde 扩展、参数扩展、命令替换和算术扩展的影响。如果参数是一个命名引用（nameref），则会扩展为参数引用的变量名，而不是执行完整的间接扩展。下文描述的 ${!prefix*} 和 ${!name[@]} 的扩展除外。感叹号必须紧跟在左括号之后，以便引入间接扩展。
+
+In each of the cases below, word is subject to tilde expansion, parameter expansion, command substitution, and arithmetic expansion.
+
+在下面的每种情况下，word 都会受到 tilde 扩展、参数扩展、命令替换和算术扩展的影响。
+
+When not performing substring expansion, using the form described below (e.g., ‘:-’), Bash tests for a parameter that is unset or null. Omitting the colon results in a test only for a parameter that is unset. Put another way, if the colon is included, the operator tests for both parameter’s existence and that its value is not null; if the colon is omitted, the operator tests only for existence.
+
+在不执行子串扩展时，使用下面描述的形式（例如 ’:-‘），Bash 将对未设置或为空的参数进行测试。省略冒号的结果是只测试未设置的参数。换句话说，如果包含冒号，运算符既测试参数是否存在，也测试参数值是否为空；如果省略冒号，运算符只测试参数是否存在。
+
+${parameter:-word}
+
+    If parameter is unset or null, the expansion of word is substituted. Otherwise, the value of parameter is substituted.
+
+    如果参数未设置或为空，则替换为 word 的扩展。否则，将替换参数的值。
+
+    $ v=123
+    $ echo ${v-unset}
+    123
+
+${parameter:=word}
+
+    If parameter is unset or null, the expansion of word is assigned to parameter. The value of parameter is then substituted. Positional parameters and special parameters may not be assigned to in this way.
+
+    如果参数未设置或为空，则会将 word 的扩展赋值给参数。然后替换参数的值。位置参数和特殊参数不能以这种方式赋值。
+
+    $ var=
+    $ : ${var:=DEFAULT}
+    $ echo $var
+    DEFAULT
+
+${parameter:?word}
+
+    If parameter is null or unset, the expansion of word (or a message to that effect if word is not present) is written to the standard error and the shell, if it is not interactive, exits. Otherwise, the value of parameter is substituted.
+
+    如果参数为空或未设置，则 word 的扩展信息（如果没有 word，则相关信息）将写入标准错误，如果 shell 不是交互式的，则退出 shell。否则，将替换参数值。
+
+    $ var=
+    $ : ${var:?var is unset or null}
+    bash: var: var is unset or null
+
+${parameter:+word}
+
+    If parameter is null or unset, nothing is substituted, otherwise the expansion of word is substituted.
+
+    如果参数为空或未设置，则不替换任何内容，否则替换 word 的扩展内容。
+
+    $ var=123
+    $ echo ${var:+var is set and not null}
+    var is set and not null
+
+${parameter:offset}
+${parameter:offset:length}
+
+    This is referred to as Substring Expansion. It expands to up to length characters of the value of parameter starting at the character specified by offset. If parameter is ‘@’ or ‘*’, an indexed array subscripted by ‘@’ or ‘*’, or an associative array name, the results differ as described below. If length is omitted, it expands to the substring of the value of parameter starting at the character specified by offset and extending to the end of the value. length and offset are arithmetic expressions (see Shell Arithmetic).
+
+    这被称为子串扩展。它从偏移量指定的字符开始，最多扩展参数值长度的字符。如果参数为 ’@‘ 或 ’*‘、以 ’@‘ 或 ’*‘ 为下标的索引数组或关联数组名，则结果如下所述。如果省略 length，则扩展为参数值的子串，从偏移量指定的字符开始，一直延伸到参数值的末尾。
+
+    If offset evaluates to a number less than zero, the value is used as an offset in characters from the end of the value of parameter. If length evaluates to a number less than zero, it is interpreted as an offset in characters from the end of the value of parameter rather than a number of characters, and the expansion is the characters between offset and that result. Note that a negative offset must be separated from the colon by at least one space to avoid being confused with the ‘:-’ expansion.
+
+    如果偏移量的值小于零，则该值将用作从参数值末尾开始的字符偏移量。如果 length 的值小于零，它将被解释为从参数值末尾开始的字符偏移量，而不是字符数，扩展值是偏移量和结果之间的字符数。请注意，负偏移量必须与冒号至少隔开一个空格，以免与 ’:-‘ 扩展混淆。
+
+    Here are some examples illustrating substring expansion on parameters and subscripted arrays:
+
+    下面是一些示例，说明参数和下标数组的子串扩展：
+
+    $ string=01234567890abcdefgh
+    $ echo ${string:7}
+    7890abcdefgh
+    $ echo ${string:7:0}
+
+    $ echo ${string:7:2}
+    78
+    $ echo ${string:7:-2}
+    7890abcdef
+    $ echo ${string: -7}
+    bcdefgh
+    $ echo ${string: -7:0}
+
+    $ echo ${string: -7:2}
+    bc
+    $ echo ${string: -7:-2}
+    bcdef
+    $ set -- 01234567890abcdefgh
+    $ echo ${1:7}
+    7890abcdefgh
+    $ echo ${1:7:0}
+
+    $ echo ${1:7:2}
+    78
+    $ echo ${1:7:-2}
+    7890abcdef
+    $ echo ${1: -7}
+    bcdefgh
+    $ echo ${1: -7:0}
+
+    $ echo ${1: -7:2}
+    bc
+    $ echo ${1: -7:-2}
+    bcdef
+    $ array[0]=01234567890abcdefgh
+    $ echo ${array[0]:7}
+    7890abcdefgh
+    $ echo ${array[0]:7:0}
+
+    $ echo ${array[0]:7:2}
+    78
+    $ echo ${array[0]:7:-2}
+    7890abcdef
+    $ echo ${array[0]: -7}
+    bcdefgh
+    $ echo ${array[0]: -7:0}
+
+    $ echo ${array[0]: -7:2}
+    bc
+    $ echo ${array[0]: -7:-2}
+    bcdef
+
+    If parameter is ‘@’ or ‘*’, the result is length positional parameters beginning at offset. A negative offset is taken relative to one greater than the greatest positional parameter, so an offset of -1 evaluates to the last positional parameter. It is an expansion error if length evaluates to a number less than zero.
+
+    如果参数为 ’@‘ 或 ’*‘，则结果为从偏移量开始的长度位置参数。负偏移量是相对于大于最大位置参数的偏移量而言的，因此偏移量为-1 时，计算结果为最后一个位置参数。如果 length 的值小于零，则是扩展错误。
+
+    The following examples illustrate substring expansion using positional parameters:
+
+    下面的示例说明了使用位置参数进行子串扩展的情况：
+
+    $ set -- 1 2 3 4 5 6 7 8 9 0 a b c d e f g h
+    $ echo ${@:7}
+    7 8 9 0 a b c d e f g h
+    $ echo ${@:7:0}
+
+    $ echo ${@:7:2}
+    7 8
+    $ echo ${@:7:-2}
+    bash: -2: substring expression < 0
+    $ echo ${@: -7:2}
+    b c
+    $ echo ${@:0}
+    ./bash 1 2 3 4 5 6 7 8 9 0 a b c d e f g h
+    $ echo ${@:0:2}
+    ./bash 1
+    $ echo ${@: -7:0}
+
+    If parameter is an indexed array name subscripted by ‘@’ or ‘*’, the result is the length members of the array beginning with ${parameter[offset]}. A negative offset is taken relative to one greater than the maximum index of the specified array. It is an expansion error if length evaluates to a number less than zero.
+
+    如果参数是下标为 ’@‘ 或 ’*‘ 的索引数组名，结果是以 ${parameter[offset]} 开始的数组的长度。负偏移量是相对于指定数组的最大索引而言的。如果 length 的值小于零，则是扩展错误。
+
+    These examples show how you can use substring expansion with indexed arrays:
+
+    这些示例展示了如何使用索引数组进行子串扩展：
+
+    $ array=(0 1 2 3 4 5 6 7 8 9 0 a b c d e f g h)
+    $ echo ${array[@]:7}
+    7 8 9 0 a b c d e f g h
+    $ echo ${array[@]:7:2}
+    7 8
+    $ echo ${array[@]: -7:2}
+    b c
+    $ echo ${array[@]: -7:-2}
+    bash: -2: substring expression < 0
+    $ echo ${array[@]:0}
+    0 1 2 3 4 5 6 7 8 9 0 a b c d e f g h
+    $ echo ${array[@]:0:2}
+    0 1
+    $ echo ${array[@]: -7:0}
+
+    Substring expansion applied to an associative array produces undefined results.
+
+    对关联数组进行子串扩展会产生未定义的结果。
+
+    Substring indexing is zero-based unless the positional parameters are used, in which case the indexing starts at 1 by default. If offset is 0, and the positional parameters are used, $0 is prefixed to the list.
+
+    除非使用位置参数，否则子串索引以 0 为基础，在这种情况下，索引默认从 1 开始。如果偏移量为 0，并且使用了位置参数，那么 $0 将作为前缀出现在列表中。
+
+${!prefix*}
+${!prefix@}
+
+    Expands to the names of variables whose names begin with prefix, separated by the first character of the IFS special variable. When ‘@’ is used and the expansion appears within double quotes, each variable name expands to a separate word.
+
+    扩展到名称以前缀开头的变量名称，以 IFS 特殊变量的第一个字符分隔。当使用 ’@‘ 且扩展名出现在双引号内时，每个变量名都会扩展为一个单独的词。
+
+${!name[@]}
+${!name[*]}
+
+    If name is an array variable, expands to the list of array indices (keys) assigned in name. If name is not an array, expands to 0 if name is set and null otherwise. When ‘@’ is used and the expansion appears within double quotes, each key expands to a separate word.
+
+    如果 name 是一个数组变量，则展开为 name 中分配的数组索引（键）列表。如果 name 不是数组变量，则在 name 已设置的情况下展开为 0，否则为空。如果使用了 ’@‘，且扩展出现在双引号内，则每个键都会扩展为一个单独的单词。
+
+${#parameter}
+
+    The length in characters of the expanded value of parameter is substituted. If parameter is ‘*’ or ‘@’, the value substituted is the number of positional parameters. If parameter is an array name subscripted by ‘*’ or ‘@’, the value substituted is the number of elements in the array. If parameter is an indexed array name subscripted by a negative number, that number is interpreted as relative to one greater than the maximum index of parameter, so negative indices count back from the end of the array, and an index of -1 references the last element.
+
+    以字符为单位的参数扩展值长度。如果参数为 ’*‘ 或 ’@‘，则替换值为位置参数的个数。如果参数是下标为 ’*‘ 或 ’@‘ 的数组名称，则替换值为数组中的元素个数。如果参数是一个下标为负数的索引数组名称，该数字将被解释为相对于大于参数最大索引的数字，因此负数索引从数组的末尾开始计数，索引为 -1 时将引用最后一个元素。
+
+${parameter#word}
+${parameter##word}
+
+    The word is expanded to produce a pattern and matched according to the rules described below (see Pattern Matching). If the pattern matches the beginning of the expanded value of parameter, then the result of the expansion is the expanded value of parameter with the shortest matching pattern (the ‘#’ case) or the longest matching pattern (the ‘##’ case) deleted. If parameter is ‘@’ or ‘*’, the pattern removal operation is applied to each positional parameter in turn, and the expansion is the resultant list. If parameter is an array variable subscripted with ‘@’ or ‘*’, the pattern removal operation is applied to each member of the array in turn, and the expansion is the resultant list.
+
+    词扩展后会产生一个模式，并根据下面描述的规则进行匹配（请参阅模式匹配）。如果模式与参数扩展值的开头相匹配，那么扩展的结果就是参数的扩展值，同时删除最短的匹配模式（’#‘ 情况）或最长的匹配模式（’##‘ 情况）。如果参数为 ’@‘ 或 ’*‘，则依次对每个位置参数执行模式删除操作，扩展结果为列表。如果参数是下标为 ’@‘ 或 ’*‘ 的数组变量，则模式删除操作将依次应用于数组中的每个成员，展开后就是结果列表。
+
+${parameter%word}
+${parameter%%word}
+
+    The word is expanded to produce a pattern and matched according to the rules described below (see Pattern Matching). If the pattern matches a trailing portion of the expanded value of parameter, then the result of the expansion is the value of parameter with the shortest matching pattern (the ‘%’ case) or the longest matching pattern (the ‘%%’ case) deleted. If parameter is ‘@’ or ‘*’, the pattern removal operation is applied to each positional parameter in turn, and the expansion is the resultant list. If parameter is an array variable subscripted with ‘@’ or ‘*’, the pattern removal operation is applied to each member of the array in turn, and the expansion is the resultant list.
+
+    词扩展后会产生一个模式，并根据下面描述的规则进行匹配（请参阅模式匹配）。如果模式匹配参数扩展值的尾部，则扩展结果是删除最短匹配模式（’%‘ 情况）或最长匹配模式（’%%‘ 情况）的参数值。如果参数为 ’@‘ 或 ’*‘，则依次对每个位置参数执行模式删除操作，扩展结果为列表。如果参数是下标为 ’@‘ 或 ’*‘ 的数组变量，则模式删除操作将依次应用于数组中的每个成员，展开后就是结果列表。
+
+${parameter/pattern/string}
+${parameter//pattern/string}
+${parameter/#pattern/string}
+${parameter/%pattern/string}
+
+    The pattern is expanded to produce a pattern just as in filename expansion. Parameter is expanded and the longest match of pattern against its value is replaced with string. string undergoes tilde expansion, parameter and variable expansion, arithmetic expansion, command and process substitution, and quote removal. The match is performed according to the rules described below (see Pattern Matching).
+
+    与文件名扩展一样，模式也会进行扩展以产生一个模式。字符串会经过波浪号扩展、参数和变量扩展、算术扩展、命令和进程替换以及去除引用。匹配是根据下面描述的规则进行的（参阅模式匹配）。
+
+    In the first form above, only the first match is replaced. If there are two slashes separating parameter and pattern (the second form above), all matches of pattern are replaced with string. If pattern is preceded by ‘#’ (the third form above), it must match at the beginning of the expanded value of parameter. If pattern is preceded by ‘%’ (the fourth form above), it must match at the end of the expanded value of parameter. If the expansion of string is null, matches of pattern are deleted. If string is null, matches of pattern are deleted and the ‘/’ following pattern may be omitted.
+
+    在上述第一种形式中，只有第一个匹配项被替换。如果参数和模式之间有两个斜线隔开（上述第二种形式），模式的所有匹配内容都会被字符串替换。如果模式前面有 ’#‘ （上述第三种形式），则必须匹配参数扩展值的开头。如果模式前面有 ’%‘（上述第四种形式），则必须在参数扩展值的末尾匹配。如果字符串的扩展值为空，则删除与模式匹配的内容。如果字符串为空，则删除与模式匹配的内容，并且可以省略模式后面的 ’/‘。
+
+    If the patsub_replacement shell option is enabled using shopt, any unquoted instances of ‘&’ in string are replaced with the matching portion of pattern. This is intended to duplicate a common sed idiom.
+
+    如果使用 shopt 启用了 patsub_replacement shell 选项，字符串中任何未加引号的 ’&‘ 都会被替换为模式的匹配部分。这样做的目的是复制常用的 sed 习惯用法。
+
+    Quoting any part of string inhibits replacement in the expansion of the quoted portion, including replacement strings stored in shell variables. Backslash will escape ‘&’ in string; the backslash is removed in order to permit a literal ‘&’ in the replacement string. Users should take care if string is double-quoted to avoid unwanted interactions between the backslash and double-quoting, since backslash has special meaning within double quotes. Pattern substitution performs the check for unquoted ‘&’ after expanding string, so users should ensure to properly quote any occurrences of ‘&’ they want to be taken literally in the replacement and ensure any instances of ‘&’ they want to be replaced are unquoted.
+
+    对字符串的任何部分加引号，都会在扩展引号部分时禁止替换，包括存储在 shell 变量中的替换字符串。反斜线将转义字符串中的 ’&‘；为了在替换字符串中使用字面 ’&‘，反斜线会被删除。如果字符串是双引号，用户应注意避免反斜杠和双引号之间不必要的交互，因为反斜杠在双引号中具有特殊含义。模式替换会在扩展字符串后对未加引号的 ’&‘ 进行检查，因此用户应确保在替换中正确加引任何希望按字面意思理解的 ’&‘，并确保任何希望被替换的 ’&‘ 都未加引号。
+
+    For instance,
+
+    例如，
+
+    var=abcdef
+    rep='& '
+    echo ${var/abc/& }
+    echo "${var/abc/& }"
+    echo ${var/abc/$rep}
+    echo "${var/abc/$rep}"
+
+    will display four lines of "abc def", while
+
+    将显示四行 “abc def”，
+
+    var=abcdef
+    rep='& '
+    echo ${var/abc/\& }
+    echo "${var/abc/\& }"
+    echo ${var/abc/"& "}
+    echo ${var/abc/"$rep"}
+
+    will display four lines of "& def". Like the pattern removal operators, double quotes surrounding the replacement string quote the expanded characters, while double quotes enclosing the entire parameter substitution do not, since the expansion is performed in a context that doesn’t take any enclosing double quotes into account.
+
+    将显示四行 “& def”。与模式删除操作符一样，替换字符串周围的双引号会对扩展后的字符加引号，而整个参数替换周围的双引号则不会，因为扩展是在不考虑任何双引号的情况下进行的。
+
+    Since backslash can escape ‘&’, it can also escape a backslash in the replacement string. This means that ‘\\’ will insert a literal backslash into the replacement, so these two echo commands
+
+    由于反斜杠可以转义 ’&‘，它也可以转义替换字符串中的反斜杠。这意味着 ’\\‘ 将在替换字符串中插入一个反斜线，因此这两个 echo 命令
+
+    var=abcdef
+    rep='\\&xyz'
+    echo ${var/abc/\\&xyz}
+    echo ${var/abc/$rep}
+
+    will both output ‘\abcxyzdef’.
+
+    都将输出 ’\abcxyzdef‘。
+
+    It should rarely be necessary to enclose only string in double quotes.
+
+    很少需要用双引号来括起字符串。
+
+    If the nocasematch shell option (see the description of shopt in The Shopt Builtin) is enabled, the match is performed without regard to the case of alphabetic characters. If parameter is ‘@’ or ‘*’, the substitution operation is applied to each positional parameter in turn, and the expansion is the resultant list. If parameter is an array variable subscripted with ‘@’ or ‘*’, the substitution operation is applied to each member of the array in turn, and the expansion is the resultant list.
+
+    如果启用了 nocasematch shell 选项（参见 The Shopt Builtin 中关于 shopt 的描述），匹配时将不考虑字母字符的大小写。如果参数为 ’@‘ 或 ’*‘，替换操作将依次应用于每个位置参数，扩展结果为列表。如果参数是下标为 ’@‘ 或 ’*‘ 的数组变量，则替换操作依次应用于数组中的每个成员，扩展结果为结果列表。
+
+${parameter^pattern}
+${parameter^^pattern}
+${parameter,pattern}
+${parameter,,pattern}
+
+    This expansion modifies the case of alphabetic characters in parameter. The pattern is expanded to produce a pattern just as in filename expansion. Each character in the expanded value of parameter is tested against pattern, and, if it matches the pattern, its case is converted. The pattern should not attempt to match more than one character.
+
+    这种扩展会修改参数中字母字符的大小写。与文件名扩展一样，该模式也会被扩展为一个模式。参数扩展值中的每个字符都要根据模式进行测试，如果与模式匹配，则转换其大小写。模式不应试图匹配多个字符。
+
+    The ‘^’ operator converts lowercase letters matching pattern to uppercase; the ‘,’ operator converts matching uppercase letters to lowercase. The ‘^^’ and ‘,,’ expansions convert each matched character in the expanded value; the ‘^’ and ‘,’ expansions match and convert only the first character in the expanded value. If pattern is omitted, it is treated like a ‘?’, which matches every character.
+
+    ’^‘ 操作符将匹配模式的小写字母转换为大写字母；’,‘ 操作符将匹配的大写字母转换为小写字母。’^^‘ 和 ’,,‘扩展会转换扩展值中的每个匹配字符；’^‘ 和 ’,‘ 扩展只匹配和转换扩展值中的第一个字符。如果省略 pattern，则将其视为 ’?‘
+
+    If parameter is ‘@’ or ‘*’, the case modification operation is applied to each positional parameter in turn, and the expansion is the resultant list. If parameter is an array variable subscripted with ‘@’ or ‘*’, the case modification operation is applied to each member of the array in turn, and the expansion is the resultant list.
+
+    如果参数为 ’@‘ 或 ’*‘，则依次对每个位置参数执行大小写修改操作，并扩展结果列表。如果参数是下标为 ’@‘ 或 ’*‘ 的数组变量，则依次对数组中的每个成员进行大小写修改操作，扩展结果为结果列表。
+
+${parameter@operator}
+
+    The expansion is either a transformation of the value of parameter or information about parameter itself, depending on the value of operator. Each operator is a single letter:
+
+    扩展要么是参数值的转换，要么是参数本身的信息，具体取决于运算符的值。每个运算符都是一个字母：
+
+    U        The expansion is a string that is the value of parameter with lowercase alphabetic characters converted to uppercase.
+
+    U	     扩展是一个字符串，是将小写字母转换为大写字母的参数值。
+
+    u        The expansion is a string that is the value of parameter with the first character converted to uppercase, if it is alphabetic.
+
+    u        扩展名为参数值的字符串，如果第一个字符是字母，则将其转换为大写。
+
+    L        The expansion is a string that is the value of parameter with uppercase alphabetic characters converted to lowercase.
+
+    L        扩展名为参数值的字符串，将大写字母转换为小写字母。
+
+    Q        The expansion is a string that is the value of parameter quoted in a format that can be reused as input.
+
+    Q        扩展是一个字符串，是以可作为输入重复使用的格式引用的参数值。
+
+    E        The expansion is a string that is the value of parameter with backslash escape sequences expanded as with the $'…' quoting mechanism.
+
+    E        扩展名为参数值的字符串，使用反斜杠转义序列扩展，如使用 $'...' 引用机制。
+
+    P        The expansion is a string that is the result of expanding the value of parameter as if it were a prompt string (see Controlling the Prompt).
+
+    P        扩展字符串，是对参数值进行扩展后的结果，如同提示字符串（参见控制提示符）。
+
+    A        The expansion is a string in the form of an assignment statement or declare command that, if evaluated, will recreate parameter with its attributes and value.
+
+    A        扩展是赋值语句或声明命令形式的字符串，如果求值，将重新生成参数及其属性和值。
+
+    K        Produces a possibly-quoted version of the value of parameter, except that it prints the values of indexed and associative arrays as a sequence of quoted key-value pairs (see Arrays).
+
+    K        生成参数值的可能带引号版本，但它会将索引数组和关联数组的值打印为带引号的键值对序列（请参阅数组）。
+
+    a        The expansion is a string consisting of flag values representing parameter’s attributes.
+
+    a        扩展是一个字符串，由代表参数属性的标志值组成。
+
+    k        Like the ‘K’ transformation, but expands the keys and values of indexed and associative arrays to separate words after word splitting.
+
+    k        与 ’K‘ 转换类似，但会在分词后将索引数组和关联数组的键值和值扩展为单独的单词。
+
+    If parameter is ‘@’ or ‘*’, the operation is applied to each positional parameter in turn, and the expansion is the resultant list. If parameter is an array variable subscripted with ‘@’ or ‘*’, the operation is applied to each member of the array in turn, and the expansion is the resultant list.
+
+    如果参数为 ’@‘ 或 ’*‘，则操作依次应用于每个位置参数，展开后即为结果列表。如果参数是下标为 ’@‘ 或 ’*‘ 的数组变量，则操作依次应用于数组中的每个成员，展开后就是结果列表。
+
+    The result of the expansion is subject to word splitting and filename expansion as described below.
+
+    如下所述，扩展结果将进行分词和文件名扩展。
