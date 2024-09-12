@@ -1,0 +1,23 @@
+3.5.6 Process Substitution
+
+3.5.6 进程替换
+
+Process substitution allows a process’s input or output to be referred to using a filename. It takes the form of
+
+进程替换允许使用文件名来引用进程的输入或输出。其形式为
+
+<(list)
+
+or
+
+或
+
+>(list)
+
+The process list is run asynchronously, and its input or output appears as a filename. This filename is passed as an argument to the current command as the result of the expansion. If the >(list) form is used, writing to the file will provide input for list. If the <(list) form is used, the file passed as an argument should be read to obtain the output of list. Note that no space may appear between the < or > and the left parenthesis, otherwise the construct would be interpreted as a redirection. Process substitution is supported on systems that support named pipes (FIFOs) or the /dev/fd method of naming open files.
+
+进程列表以异步方式运行，其输入或输出以文件名体现。该文件名作为扩展结果的参数传递给当前命令。如果使用 >(list) 形式，写入文件将为 list 提供输入。如果使用 <(list) 形式，则应读取作为参数传递的文件，以获得 list 的输出。请注意，< 或 > 与左括号之间不能有空格，否则该结构将被解释为重定向。支持命名管道（FIFO）或 /dev/fd 命名打开文件的系统支持进程替换。
+
+When available, process substitution is performed simultaneously with parameter and variable expansion, command substitution, and arithmetic expansion.
+
+如果支持，进程替换将与参数和变量扩展、命令替换和算术扩展同时进行。
