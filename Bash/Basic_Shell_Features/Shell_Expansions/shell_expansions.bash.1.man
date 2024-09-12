@@ -1,0 +1,45 @@
+3.5 Shell Expansions
+
+3.5 Shell 扩展
+
+Expansion is performed on the command line after it has been split into tokens. There are seven kinds of expansion performed:
+
+扩展是在命令行被拆分成词元后进行的。共有七种扩展方式：
+
+    brace expansion
+    tilde expansion
+    parameter and variable expansion
+    command substitution
+    arithmetic expansion
+    word splitting
+    filename expansion
+
+The order of expansions is: brace expansion; tilde expansion, parameter and variable expansion, arithmetic expansion, and command substitution (done in a left-to-right fashion); word splitting; and filename expansion.
+
+扩展的顺序是：括号扩展、斜杠扩展、参数和变量扩展、算术扩展和命令替换（以从左到右的方式进行）、词拆分和文件名扩展。
+
+On systems that can support it, there is an additional expansion available: process substitution. This is performed at the same time as tilde, parameter, variable, and arithmetic expansion and command substitution.
+
+在支持扩展的系统中，还可以使用额外的扩展：进程替换。它与 tilde、参数、变量、算术扩展和命令替换同时进行。
+
+After these expansions are performed, quote characters present in the original word are removed unless they have been quoted themselves (quote removal).
+
+执行这些扩展后，原词中的引用字符将被删除，除非它们本身已被引用（引号删除）。
+
+Only brace expansion, word splitting, and filename expansion can increase the number of words of the expansion; other expansions expand a single word to a single word. The only exceptions to this are the expansions of "$@" and $* (see Special Parameters), and "${name[@]}" and ${name[*]} (see Arrays).
+
+只有括号扩展、词拆分和文件名扩展可以增加扩展的字数，其他扩展都是将单个词扩展为单个词。唯一的例外是 “$@” 和 $*（参阅特殊参数）以及 “${name[@]}” 和 ${name[*]}（参见数组）的扩展。
+
+After all expansions, quote removal (see Quote Removal) is performed.
+
+在所有扩展后，将执行引用移除（请参阅引用移除）。
+
+    Brace Expansion
+    Tilde Expansion
+    Shell Parameter Expansion
+    Command Substitution
+    Arithmetic Expansion
+    Process Substitution
+    Word Splitting
+    Filename Expansion
+    Quote Removal
