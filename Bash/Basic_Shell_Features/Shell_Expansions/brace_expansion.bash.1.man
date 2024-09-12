@@ -1,0 +1,42 @@
+3.5.1 Brace Expansion
+
+3.5.1 花括号扩展
+
+Brace expansion is a mechanism by which arbitrary strings may be generated. This mechanism is similar to filename expansion (see Filename Expansion), but the filenames generated need not exist. Patterns to be brace expanded take the form of an optional preamble, followed by either a series of comma-separated strings or a sequence expression between a pair of braces, followed by an optional postscript. The preamble is prefixed to each string contained within the braces, and the postscript is then appended to each resulting string, expanding left to right.
+
+花括号扩展是一种可以生成任意字符串的机制。这种机制类似于文件名扩展（参见文件名扩展），但生成的文件名不一定存在。要进行括号扩展的模式形式包括一个可选的前导码，然后是一系列逗号分隔的字符串或一对括号之间的序列表达式，最后是一个可选的后导码。前导码成为大括号中包含的每个字符串的前缀，然后后导码被添加到每个结果字符串后，从左到右依次展开。
+
+Brace expansions may be nested. The results of each expanded string are not sorted; left to right order is preserved. For example,
+
+花括号扩展可以嵌套。每个扩展字符串的结果不会排序，而是保留从左到右的顺序。例如，
+
+bash$ echo a{d,c,b}e
+ade ace abe
+
+A sequence expression takes the form {x..y[..incr]}, where x and y are either integers or letters, and incr, an optional increment, is an integer. When integers are supplied, the expression expands to each number between x and y, inclusive. Supplied integers may be prefixed with ‘0’ to force each term to have the same width. When either x or y begins with a zero, the shell attempts to force all generated terms to contain the same number of digits, zero-padding where necessary. When letters are supplied, the expression expands to each character lexicographically between x and y, inclusive, using the default C locale. Note that both x and y must be of the same type (integer or letter). When the increment is supplied, it is used as the difference between each term. The default increment is 1 or -1 as appropriate.
+
+序列表达式的形式为 {x..y[..incr]}，其中 x 和 y 可以是整数或字母，incr（可选的增量）是整数。如果提供的是整数，表达式将扩展到 x 和 y 之间的每个数字，包括 x 和 y。所提供的整数可以用 ’0‘ 作为前缀，以强制每个项具有相同的宽度。当 x 或 y 以 0 开头时，shell 会尝试强制所有生成的项包含相同的位数，必要时进行零填充。如果提供的是字母，表达式将使用默认的 C 语言环境，按 x 和 y 之间的顺序扩展到每个字符。注意 x 和 y 必须是同一类型（整数或字母）。如果提供增量，它将用作每个项之间的差值。默认增量为 1 或-1。
+
+Brace expansion is performed before any other expansions, and any characters special to other expansions are preserved in the result. It is strictly textual. Bash does not apply any syntactic interpretation to the context of the expansion or the text between the braces.
+
+Brace 扩展在任何其他扩展之前执行，结果中保留其他扩展的任何特殊字符。它是严格的文本扩展。Bash 不会对扩展的上下文或大括号之间的文本进行任何语法解释。
+
+A correctly-formed brace expansion must contain unquoted opening and closing braces, and at least one unquoted comma or a valid sequence expression. Any incorrectly formed brace expansion is left unchanged.
+
+一个格式正确的花括号扩展必须包含无引号的开头和结尾括号，以及至少一个无引号的逗号或一个有效的序列表达式。任何错误的花括号扩展都将保持不变。
+
+A { or ‘,’ may be quoted with a backslash to prevent its being considered part of a brace expression. To avoid conflicts with parameter expansion, the string ‘${’ is not considered eligible for brace expansion, and inhibits brace expansion until the closing ‘}’.
+
+{ 或 ’,‘ 可以用反斜线引用，以防止被视为花括号表达式的一部分。为避免与参数扩展冲突，字符串 ’${‘ 不符合括号扩展的条件，并禁止括号扩展，直到结尾的 ’}‘ 为止。
+
+This construct is typically used as shorthand when the common prefix of the strings to be generated is longer than in the above example:
+
+当要生成的字符串的公共前缀比上述示例中的长时，这种结构通常作为缩写使用：
+
+mkdir /usr/local/src/bash/{old,new,dist,bugs}
+
+or
+
+或
+
+chown root /usr/{ucb/{ex,edit},lib/{ex?.?*,how_ex}}
