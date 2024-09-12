@@ -1,0 +1,63 @@
+3.5.2 Tilde Expansion
+
+3.5.2 波浪号扩展
+
+If a word begins with an unquoted tilde character (‘~’), all of the characters up to the first unquoted slash (or all characters, if there is no unquoted slash) are considered a tilde-prefix. If none of the characters in the tilde-prefix are quoted, the characters in the tilde-prefix following the tilde are treated as a possible login name. If this login name is the null string, the tilde is replaced with the value of the HOME shell variable. If HOME is unset, the home directory of the user executing the shell is substituted instead. Otherwise, the tilde-prefix is replaced with the home directory associated with the specified login name.
+
+如果一个单词以未加引号的波浪号字符（’~‘）开头，则第一个未加引号的波浪号之前的所有字符（如果没有未加引号的斜线，则所有字符）都被视为 tilde 前缀。如果 tilde 前缀中的所有字符都没有加引号，那么 tilde 前缀中在 tilde 后的字符将被视为可能的登录名。如果登录名为空字符串，则会用 shell 变量 HOME 的值替换 tilde。如果 HOME 未设置，执行 shell 的用户的主目录将被替换。否则，将用与指定登录名相关联的主目录替换自举前缀。
+
+If the tilde-prefix is ‘~+’, the value of the shell variable PWD replaces the tilde-prefix. If the tilde-prefix is ‘~-’, the value of the shell variable OLDPWD, if it is set, is substituted.
+
+如果 tilde 前缀为’~+‘，shell 变量 PWD 的值将取代 tilde 前缀。如果 tilde 前缀为 ’~-‘，shell 变量 OLDPWD（如果已设置）的值将被替换。
+
+If the characters following the tilde in the tilde-prefix consist of a number N, optionally prefixed by a ‘+’ or a ‘-’, the tilde-prefix is replaced with the corresponding element from the directory stack, as it would be displayed by the dirs builtin invoked with the characters following tilde in the tilde-prefix as an argument (see The Directory Stack). If the tilde-prefix, sans the tilde, consists of a number without a leading ‘+’ or ‘-’, ‘+’ is assumed.
+
+如果 tilde 前缀中 tilde 后面的字符由数字 N（可选前缀为 ’+‘ 或 ’-‘）组成，则 tilde 前缀将被替换为目录堆栈中的相应元素，正如将 tilde 前缀中 tilde 后面的字符作为参数调用 dirs 内置程序所显示的那样（参见目录堆栈）。如果 tilde 前缀（不含转折号）是一个数字，且不带前导 ’+‘ 或 ’-‘，则假定为 ’+‘。
+ 
+If the login name is invalid, or the tilde expansion fails, the word is left unchanged.
+
+如果登录名无效，或波浪号扩展失败，则该单词保持不变。
+
+Each variable assignment is checked for unquoted tilde-prefixes immediately following a ‘:’ or the first ‘=’. In these cases, tilde expansion is also performed. Consequently, one may use filenames with tildes in assignments to PATH, MAILPATH, and CDPATH, and the shell assigns the expanded value.
+
+每个变量赋值都会检查紧跟在 ’:‘ 或第一个 ’=‘ 之后的未引用波浪号前缀。在这种情况下，也会执行波浪号扩展。因此，在给 PATH、MAILPATH 和 CDPATH 赋值时，可以使用带有波浪号的文件名，shell 会分配扩展后的值。
+
+The following table shows how Bash treats unquoted tilde-prefixes:
+
+下表显示了 Bash 如何处理未引用的前缀：
+
+~    The value of $HOME
+
+~    $HOME 的值。
+
+~/foo    $HOME/foo
+
+~/foo    $HOME/foo
+
+~fred/foo    The subdirectory foo of the home directory of the user fred
+
+~fred/foo    用户 fred 的家目录下的子目录 foo
+
+~+/foo    $PWD/foo
+
+~+/foo    $PWD/foo
+
+~-/foo    ${OLDPWD-'~-'}/foo
+
+~-/foo    ${OLDPWD-'~-'}/foo
+
+~N    The string that would be displayed by ‘dirs +N’
+
+~N    ’dirs +N‘ 显示的字符串
+
+~+N    The string that would be displayed by ‘dirs +N’
+
+~N    ’dirs +N‘ 显示的字符串
+
+~-N    The string that would be displayed by ‘dirs -N’
+
+~N    ’dirs -N‘ 显示的字符串
+
+Bash also performs tilde expansion on words satisfying the conditions of variable assignments (see Shell Parameters) when they appear as arguments to simple commands. Bash does not do this, except for the declaration commands listed above, when in POSIX mode.
+
+当词作为简单命令的参数出现时，Bash 也会对满足变量赋值条件（参阅 Shell 参数）的词执行 tilde 扩展。在 POSIX 模式下，除了上面列出的声明命令外，Bash 不会这样做。
