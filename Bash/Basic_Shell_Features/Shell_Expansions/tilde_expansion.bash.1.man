@@ -13,7 +13,7 @@ If the tilde-prefix is ‘~+’, the value of the shell variable PWD replaces th
 If the characters following the tilde in the tilde-prefix consist of a number N, optionally prefixed by a ‘+’ or a ‘-’, the tilde-prefix is replaced with the corresponding element from the directory stack, as it would be displayed by the dirs builtin invoked with the characters following tilde in the tilde-prefix as an argument (see The Directory Stack). If the tilde-prefix, sans the tilde, consists of a number without a leading ‘+’ or ‘-’, ‘+’ is assumed.
 
 如果 tilde 前缀中 tilde 后面的字符由数字 N（可选前缀为 ’+‘ 或 ’-‘）组成，则 tilde 前缀将被替换为目录堆栈中的相应元素，正如将 tilde 前缀中 tilde 后面的字符作为参数调用 dirs 内置程序所显示的那样（参见目录堆栈）。如果 tilde 前缀（不含转折号）是一个数字，且不带前导 ’+‘ 或 ’-‘，则假定为 ’+‘。
- 
+
 If the login name is invalid, or the tilde expansion fails, the word is left unchanged.
 
 如果登录名无效，或波浪号扩展失败，则该单词保持不变。
