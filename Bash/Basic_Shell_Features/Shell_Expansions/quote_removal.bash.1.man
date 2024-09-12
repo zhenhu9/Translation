@@ -1,0 +1,7 @@
+3.5.9 Quote Removal
+
+3.5.9 应用移除
+
+After the preceding expansions, all unquoted occurrences of the characters ‘\’, ‘'’, and ‘"’ that did not result from one of the above expansions are removed.
+
+在前面的扩展之后，所有未引述的字符’\‘、’'‘ 和 ’"‘，只要不是上述扩展的结果，都将被删除。
