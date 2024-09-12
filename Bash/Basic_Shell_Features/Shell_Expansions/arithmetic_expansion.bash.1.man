@@ -1,0 +1,17 @@
+3.5.5 Arithmetic Expansion
+
+3.5.5 算术扩展
+
+Arithmetic expansion allows the evaluation of an arithmetic expression and the substitution of the result. The format for arithmetic expansion is:
+
+算术展开允许对算术表达式进行求值并替换结果。算术扩展的格式为：
+
+$(( expression ))
+
+The expression undergoes the same expansions as if it were within double quotes, but double quote characters in expression are not treated specially and are removed. All tokens in the expression undergo parameter and variable expansion, command substitution, and quote removal. The result is treated as the arithmetic expression to be evaluated. Arithmetic expansions may be nested.
+
+表达式的扩展进行同样的扩展就好像在双引号内一样，但表达式中的双引号字符不会被特殊处理，而是会被移除。表达式中的所有词元都要进行参数和变量扩展、命令替换和引用移除。其结果将被视为待求值的算术表达式。算术扩展可以嵌套。
+
+The evaluation is performed according to the rules listed below (see Shell Arithmetic). If the expression is invalid, Bash prints a message indicating failure to the standard error and no substitution occurs.
+
+运算将根据下面列出的规则进行（参阅 Shell 算术）。如果表达式无效，Bash 会在标准错误中打印一条失败信息，并且不会进行替换。
