@@ -1,0 +1,25 @@
+3.5.8 Filename Expansion
+
+3.5.8 文件名扩展
+
+After word splitting, unless the -f option has been set (see The Set Builtin), Bash scans each word for the characters ‘*’, ‘?’, and ‘[’. If one of these characters appears, and is not quoted, then the word is regarded as a pattern, and replaced with an alphabetically sorted list of filenames matching the pattern (see Pattern Matching). If no matching filenames are found, and the shell option nullglob is disabled, the word is left unchanged. If the nullglob option is set, and no matches are found, the word is removed. If the failglob shell option is set, and no matches are found, an error message is printed and the command is not executed. If the shell option nocaseglob is enabled, the match is performed without regard to the case of alphabetic characters.
+
+分词后，除非设置了 -f 选项（参阅 Set Builtin），否则 Bash 会扫描每个词以查找字符 ’*‘、’?‘"和 ’[‘。如果出现了这些字符中的一个，并且没有加引号，那么该单词将被视为一个模式，并替换为按字母顺序排列的与该模式匹配的文件名列表（请参阅模式匹配）。如果没有找到匹配的文件名，且 shell 选项 nullglob 被禁用，则该单词保持不变。如果设置了 nullglob 选项，但没有找到匹配的文件名，则删除该单词。如果设置了 shell 选项 failglob，但没有找到匹配词，则会打印一条错误信息，并且不执行命令。如果启用了 shell 选项 nocaseglob，则匹配时不考虑字母字符的大小写。
+
+When a pattern is used for filename expansion, the character ‘.’ at the start of a filename or immediately following a slash must be matched explicitly, unless the shell option dotglob is set. In order to match the filenames ‘.’ and ‘..’, the pattern must begin with ‘.’ (for example, ‘.?’), even if dotglob is set. If the globskipdots shell option is enabled, the filenames ‘.’ and ‘..’ are never matched, even if the pattern begins with a ‘.’. When not matching filenames, the ‘.’ character is not treated specially.
+
+当使用模式进行文件名扩展时，除非设置了 shell 选项 dotglob，否则必须明确匹配文件名开头或斜线后的字符’.‘。为了匹配文件名 ’.‘ 和 ’..‘，模式必须以 ’.‘ 开头（例如 ’.?‘），即使设置了 dotglob 也是如此。如果启用 globskipdots shell 选项，文件名 ’.‘ 和 ’..‘ 将永远不会匹配，即使模式以 ’.‘ 开头。在不匹配文件名时，’.‘ 字符不会被特殊处理。
+
+When matching a filename, the slash character must always be matched explicitly by a slash in the pattern, but in other matching contexts it can be matched by a special pattern character as described below (see Pattern Matching).
+
+在匹配文件名时，斜线字符必须始终与模式中的斜线明确匹配，但在其他匹配上下文中，斜线字符可以与下文所述的特殊模式字符匹配（参阅模式匹配）。
+
+See the description of shopt in The Shopt Builtin, for a description of the nocaseglob, nullglob, globskipdots, failglob, and dotglob options.
+
+有关 nocaseglob、nullglob、globskipdots、failglob 和 dotglob 选项的描述，请参阅 Shopt Builtin 中 shopt 的描述。
+
+The GLOBIGNORE shell variable may be used to restrict the set of file names matching a pattern. If GLOBIGNORE is set, each matching file name that also matches one of the patterns in GLOBIGNORE is removed from the list of matches. If the nocaseglob option is set, the matching against the patterns in GLOBIGNORE is performed without regard to case. The filenames . and .. are always ignored when GLOBIGNORE is set and not null. However, setting GLOBIGNORE to a non-null value has the effect of enabling the dotglob shell option, so all other filenames beginning with a ‘.’ will match. To get the old behavior of ignoring filenames beginning with a ‘.’, make ‘.*’ one of the patterns in GLOBIGNORE. The dotglob option is disabled when GLOBIGNORE is unset.
+
+GLOBIGNORE shell 变量可用于限制与模式匹配的文件名集合。如果设置了 GLOBIGNORE，则会从匹配列表中删除与 GLOBIGNORE 中的模式匹配的文件名。如果设置了 nocaseglob 选项，则在与 GLOBIGNORE 中的模式匹配时将不考虑大小写。当设置 GLOBIGNORE 时，文件名.和.总是被忽略，而不是空值。不过，如果将 GLOBIGNORE 设置为非空值，就会启用 dotglob shell 选项，因此所有其他以 ’.‘ 开头的文件名都会匹配。要想恢复到以前忽略以 ’.‘ 开头的文件名的状态，可以将 ’.‘ 作为 GLOBIGNORE 的模式之一。未设置 GLOBIGNORE 时，dotglob 选项将被禁用。
+
+    Pattern Matching
