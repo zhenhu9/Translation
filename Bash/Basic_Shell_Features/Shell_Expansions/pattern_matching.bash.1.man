@@ -1,0 +1,77 @@
+3.5.8.1 Pattern Matching
+
+3.5.8.1 模式匹配
+
+Any character that appears in a pattern, other than the special pattern characters described below, matches itself. The NUL character may not occur in a pattern. A backslash escapes the following character; the escaping backslash is discarded when matching. The special pattern characters must be quoted if they are to be matched literally.
+
+除下文所述的特殊模式字符外，模式中出现的任何字符都会与自身匹配。模式中不能出现 NUL 字符。反斜线会转义后面的字符；匹配时，转义的反斜线会被丢弃。如果要按字面意思匹配特殊模式字符，必须加引号。
+
+The special pattern characters have the following meanings:
+
+特殊模式字符的含义如下：
+
+*    Matches any string, including the null string. When the globstar shell option is enabled, and ‘*’ is used in a filename expansion context, two adjacent ‘*’s used as a single pattern will match all files and zero or more directories and subdirectories. If followed by a ‘/’, two adjacent ‘*’s will match only directories and subdirectories.
+
+*    匹配任何字符串，包括空字符串。启用 globstar shell 选项并在文件名扩展上下文中使用 ’*‘ 时，两个相邻的 ’*‘ 作为一个模式将匹配所有文件以及零个或多个目录和子目录。如果后跟一个 ’/‘，两个相邻的 ’*‘ 将只匹配目录和子目录。
+
+?    Matches any single character.
+
+?    匹配任何单个字符。
+
+[…]    Matches any one of the enclosed characters. A pair of characters separated by a hyphen denotes a range expression; any character that falls between those two characters, inclusive, using the current locale’s collating sequence and character set, is matched. If the first character following the ‘[’ is a ‘!’ or a ‘^’ then any character not enclosed is matched. A ‘-’ may be matched by including it as the first or last character in the set. A ‘]’ may be matched by including it as the first character in the set. The sorting order of characters in range expressions, and the characters included in the range, are determined by the current locale and the values of the LC_COLLATE and LC_ALL shell variables, if set.
+
+[…]    匹配括号中的任意一个字符。用连字符分隔的一对字符表示范围表达式；使用当前本地语言环境的校对序列和字符集，这两个字符之间的任何字符都会被匹配。如果 ’[‘ 后面的第一个字符是’!‘ 或 ’^‘，那么任何未包含在内的字符都会被匹配。’-‘ 可以作为字符集的第一个或最后一个字符进行匹配。’]‘ 可以作为集合中的第一个字符进行匹配。取值范围表达式中字符的排序顺序以及取值范围中包含的字符由当前的本地语言以及 LC_COLLATE 和 LC_ALL shell 变量（如果已设置）的值决定。
+
+    For example, in the default C locale, ‘[a-dx-z]’ is equivalent to ‘[abcdxyz]’. Many locales sort characters in dictionary order, and in these locales ‘[a-dx-z]’ is typically not equivalent to ‘[abcdxyz]’; it might be equivalent to ‘[aBbCcDdxYyZz]’, for example. To obtain the traditional interpretation of ranges in bracket expressions, you can force the use of the C locale by setting the LC_COLLATE or LC_ALL environment variable to the value ‘C’, or enable the globasciiranges shell option.
+
+    例如，在默认的 C 语言本地语言环境中，‘[a-dx-z]’ 等同于 ‘[abcdxyz]’。许多本地语言环境按照字典顺序排列字符，在这些本地语言环境中，‘[a-dx-z]’ 通常不等同于 ‘[abcdxyz]’；例如，它可能等同于 ‘[aBbCcDdxYyZz]’。要在括号表达式中获得范围的传统解释，可以通过将 LC_COLLATE 或 LC_ALL 环境变量设置为 ‘C’ 来强制使用 C 语言，或者启用 globasciiranges shell 选项。
+
+    Within ‘[’ and ‘]’, character classes can be specified using the syntax [:class:], where class is one of the following classes defined in the POSIX standard:
+
+    在 ’[‘ 和 ’]‘ 中，可以使用语法 [:class:] 指定字符类，其中 class 是 POSIX 标准中定义的下列类之一：
+
+    alnum   alpha   ascii   blank   cntrl   digit   graph   lower
+    print   punct   space   upper   word    xdigit
+
+    A character class matches any character belonging to that class. The word character class matches letters, digits, and the character ‘_’.
+
+    字符类匹配属于该类的任何字符。单词字符类匹配字母、数字和字符 ’_‘。
+
+    Within ‘[’ and ‘]’, an equivalence class can be specified using the syntax [=c=], which matches all characters with the same collation weight (as defined by the current locale) as the character c.
+
+    在 ’[‘ 和 ’]‘ 中，可以使用语法 [=c=] 指定等价类，它匹配与字符 c 具有相同校对权重（由当前本地语言环境定义）的所有字符。
+
+    Within ‘[’ and ‘]’, the syntax [.symbol.] matches the collating symbol symbol.
+
+    在 ’[‘ 和 ’]‘ 中，语法 [.symbol.] 匹配校对符号 symbol。
+
+If the extglob shell option is enabled using the shopt builtin, the shell recognizes several extended pattern matching operators. In the following description, a pattern-list is a list of one or more patterns separated by a ‘|’. When matching filenames, the dotglob shell option determines the set of filenames that are tested, as described above. Composite patterns may be formed using one or more of the following sub-patterns:
+
+如果使用 shopt 内置程序启用了 extglob shell 选项，shell 就能识别多种扩展模式匹配操作符。在下面的描述中，模式列表是由一个或多个模式组成的列表，以 ’|‘ 分隔。如上所述，在匹配文件名时，dotglob shell 选项将决定测试的文件名集。复合模式可以由以下一个或多个子模式组成：
+
+?(pattern-list)    Matches zero or one occurrence of the given patterns.
+?(pattern-list)    匹配给定模式的零次或一次出现。
+
+*(pattern-list)    Matches zero or more occurrences of the given patterns.
+*(pattern-list)    匹配给定模式的零次或多次出现。
+
++(pattern-list)    Matches one or more occurrences of the given patterns.
++(pattern-list)    匹配给定模式的一次或多次出现。
+
+@(pattern-list)    Matches one of the given patterns.
+@(pattern-list)    匹配给定模式之一。
+
+!(pattern-list)    Matches anything except one of the given patterns.
+!(pattern-list)    匹配给定模式之外的任何内容。
+
+The extglob option changes the behavior of the parser, since the parentheses are normally treated as operators with syntactic meaning. To ensure that extended matching patterns are parsed correctly, make sure that extglob is enabled before parsing constructs containing the patterns, including shell functions and command substitutions.
+
+extglob 选项会改变解析器的行为，因为括号通常被视为具有语法意义的运算符。为确保正确解析扩展匹配模式，在解析包含模式的结构体（包括 shell 函数和命令替换）之前，请确保启用了 extglob 选项。
+
+When matching filenames, the dotglob shell option determines the set of filenames that are tested: when dotglob is enabled, the set of filenames includes all files beginning with ‘.’, but the filenames ‘.’ and ‘..’ must be matched by a pattern or sub-pattern that begins with a dot; when it is disabled, the set does not include any filenames beginning with “.” unless the pattern or sub-pattern begins with a ‘.’. As above, ‘.’ only has a special meaning when matching filenames.
+
+在匹配文件名时，dotglob shell 选项决定测试的文件名集合：启用 dotglob 时，文件名集合包括所有以 ’.‘ 开头的文件，但文件名 ’.‘ 和 ’..‘ 必须与以点开头的模式或子模式匹配；禁用 dotglob 时，文件名集合不包括任何以 ’.‘ 开头的文件，除非模式或子模式以 ’.‘ 开头。如上所述，’.‘ 只有在匹配文件名时才有特殊含义。
+
+Complicated extended pattern matching against long strings is slow, especially when the patterns contain alternations and the strings contain multiple matches. Using separate matches against shorter strings, or using arrays of strings instead of a single long string, may be faster.
+
+对长字符串进行复杂的扩展模式匹配速度很慢，尤其是当模式包含交替和字符串包含多个匹配项时。对较短的字符串使用单独的匹配，或使用字符串数组而不是单个长字符串，可能会更快。
