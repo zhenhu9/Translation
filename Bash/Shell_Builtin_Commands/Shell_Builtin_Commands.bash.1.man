@@ -1,45 +1,28 @@
 4 Shell Builtin Commands
-************************
-
-Builtin commands are contained within the shell itself.  When the name
-of a builtin command is used as the first word of a simple command
-(*note Simple Commands::), the shell executes the command directly,
-without invoking another program.  Builtin commands are necessary to
-implement functionality impossible or inconvenient to obtain with
-separate utilities.
-
-   This section briefly describes the builtins which Bash inherits from
-the Bourne Shell, as well as the builtin commands which are unique to or
-have been extended in Bash.
-
-   Several builtin commands are described in other chapters: builtin
-commands which provide the Bash interface to the job control facilities
-(*note Job Control Builtins::), the directory stack (*note Directory
-Stack Builtins::), the command history (*note Bash History Builtins::),
-and the programmable completion facilities (*note Programmable
-Completion Builtins::).
-
-   Many of the builtins have been extended by POSIX or Bash.
-
-   Unless otherwise noted, each builtin command documented as accepting
-options preceded by '-' accepts '--' to signify the end of the options.
-The ':', 'true', 'false', and 'test'/'[' builtins do not accept options
-and do not treat '--' specially.  The 'exit', 'logout', 'return',
-'break', 'continue', 'let', and 'shift' builtins accept and process
-arguments beginning with '-' without requiring '--'.  Other builtins
-that accept arguments but are not specified as accepting options
-interpret arguments beginning with '-' as invalid options and require
-'--' to prevent this interpretation.
 
 4 Shell 内置命令
-************************
 
-内置命令包含在 shell 本身内。 当内置命令的名称作为一个简单命令的地一个词（查看简单命令），shell 直接执行该命令而不用调用其它程序。内置命令在实现不可能或不方便获得单独的实用工具时非常有必要。
+Builtin commands are contained within the shell itself. When the name of a builtin command is used as the first word of a simple command (see Simple Commands), the shell executes the command directly, without invoking another program. Builtin commands are necessary to implement functionality impossible or inconvenient to obtain with separate utilities.
 
-    本章节简述了从 Bourne Shell 继承的内置命令，它们要么是独特的要么是一在 Bash 中扩展。
+内置命令包含在 shell 本身中。当内置命令的名称作为简单命令（参阅简单命令）的第一个词时，shell 会直接执行该命令，而不会调用其他程序。内置命令是必需的，以实现单独实用程序无法或不便实现的功能。
 
-    一些内置命令在其它章节中介绍：内置命令提供了对作业控制设施（查看作业控制内置命令::），目录栈（查看目录栈内置命令::），命令历史（查看 Bash 历史内置命令::），以及可编程补全设施（查看可编程补全内置命令::）。
+This section briefly describes the builtins which Bash inherits from the Bourne Shell, as well as the builtin commands which are unique to or have been extended in Bash.
 
-    许多命令已经被 POSIX 或 Bash 扩展。
+本节简要介绍了 Bash 继承自 Bourne Shell 的内置命令，以及 Bash 独有或扩展的内置命令。
 
-    除非另有提及，每个内置命令都被记录为接受具有前置 ‘-’ 的选项，接受 ‘--’ 选项表示最后的选项。‘:’、‘true’、‘false’ 以及 ‘test [’ 内置命令不接受并且不特别对待 ’--‘。’exit‘、’logout‘、’break‘、’continue‘、’let‘、 以及 ’shift‘ 内置命令接受并处理以 ’-‘ 开头的选项，而不需要 ’--‘ 选项。接受参数但未特别指出视以 ’-‘ 开头的选项为无效选项的其它内置命令需要 ’--‘ 选项来禁止此解析。
+Several builtin commands are described in other chapters: builtin commands which provide the Bash interface to the job control facilities (see Job Control Builtins), the directory stack (see Directory Stack Builtins), the command history (see Bash History Builtins), and the programmable completion facilities (see Programmable Completion Builtins).
+
+一些内置命令将在其他章节中介绍：为Bash提供作业控制功能接口的内置命令（参阅作业控制内置命令）、目录堆栈（参阅目录堆栈内置命令）、命令历史（参阅 Bash 历史内置命令）以及可编程补全功能（参阅可编程补全内置命令）。
+
+Many of the builtins have been extended by POSIX or Bash.
+
+许多内置命令已由 POSIX 或 Bash 扩展。
+
+Unless otherwise noted, each builtin command documented as accepting options preceded by ‘-’ accepts ‘--’ to signify the end of the options. The :, true, false, and test/[ builtins do not accept options and do not treat ‘--’ specially. The exit, logout, return, break, continue, let, and shift builtins accept and process arguments beginning with ‘-’ without requiring ‘--’. Other builtins that accept arguments but are not specified as accepting options interpret arguments beginning with ‘-’ as invalid options and require ‘--’ to prevent this interpretation.
+
+除非另有说明，每条内置命令都接受以 ’-‘ 开头的选项，并接受 ’--‘ 表示选项结束。:、true、false 和 test/[ 内置命令不接受选项，也不特殊处理 ’--‘。exit、logout、return、break、continue、let 和 shift 内置函数接受并处理以’-‘ 开头的参数，而不需要 ’--‘。其他接受参数但未指定接受选项的内置程序会将以 ’-‘ 开头的参数解释为无效选项，并要求使用 ’--‘ 以防止这种解释。
+
+    Bourne Shell Builtins
+    Bash Builtin Commands
+    Modifying Shell Behavior
+    Special Builtins
