@@ -1,7 +1,0 @@
-': (a colon)'
-          : [ARGUMENTS]
-
-     Do nothing beyond expanding ARGUMENTS and performing redirections.
-     The return status is zero.
-
-     没有效果； 除扩展 arguments 和执行任何指定的重定向之外，该命令不执行任何操作。 返回零退出代码。
