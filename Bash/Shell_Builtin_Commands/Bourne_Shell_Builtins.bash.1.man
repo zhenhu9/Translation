@@ -1,0 +1,370 @@
+4.1 Bourne Shell Builtins
+
+4.1 Bourne Shell 内置命令
+
+The following shell builtin commands are inherited from the Bourne Shell. These commands are implemented as specified by the POSIX standard.
+
+以下 shell 内置命令继承自 Bourne Shell。这些命令按照 POSIX 标准的规定实现。
+
+: (a colon)
+
+    : [arguments]
+
+    Do nothing beyond expanding arguments and performing redirections. The return status is zero.
+
+: （一个冒号）
+
+    : [arguments]
+
+    什么都不做，除了扩展参数和执行重定向。返回状态是零。
+
+. (a period)
+
+    . filename [arguments]
+
+    Read and execute commands from the filename argument in the current shell context. If filename does not contain a slash, the PATH variable is used to find filename, but filename does not need to be executable. When Bash is not in POSIX mode, it searches the current directory if filename is not found in $PATH. If any arguments are supplied, they become the positional parameters when filename is executed. Otherwise the positional parameters are unchanged. If the -T option is enabled, . inherits any trap on DEBUG; if it is not, any DEBUG trap string is saved and restored around the call to ., and . unsets the DEBUG trap while it executes. If -T is not set, and the sourced file changes the DEBUG trap, the new value is retained when . completes. The return status is the exit status of the last command executed, or zero if no commands are executed. If filename is not found, or cannot be read, the return status is non-zero. This builtin is equivalent to source.
+
+. （一个点）
+
+    . filename [arguments]
+
+    在当前 shell 环境中读取并执行文件名参数中的命令。如果文件名不包含斜线，则使用 PATH 变量查找文件名，但文件名不需要是可执行的。当 Bash 不在 POSIX 模式下时，如果在 $PATH 中找不到 filename，它就会搜索当前目录。如果提供了任何参数，在执行 filename 时它们将成为位置参数。否则，位置参数保持不变。如果启用了 -T 选项，. 将继承任何 DEBUG 陷阱；如果没有启用 -T 选项，任何 DEBUG 陷阱字符串将在调用 . 时保存和恢复，. 将在执行时取消设置 DEBUG 陷阱。如果未设置 -T，而源文件更改了 DEBUG 陷阱，那么当 . 完成时，新值将被保留。返回状态是最后执行命令的退出状态，如果没有执行命令，则为零。如果找不到文件名或无法读取文件名，则返回状态为非零。该内置函数等同于 source。
+
+break
+
+    break [n]
+
+    Exit from a for, while, until, or select loop. If n is supplied, the nth enclosing loop is exited. n must be greater than or equal to 1. The return status is zero unless n is not greater than or equal to 1.
+
+break
+
+    break [n]
+
+退出 for、while、until 或 select 循环。如果提供了 n，则退出嵌套 nth 的循环。n 必须大于或等于 1。除非 n 不大于或等于 1，否则返回状态为 0。
+
+cd
+
+    cd [-L|[-P [-e]] [-@] [directory]
+
+    Change the current working directory to directory. If directory is not supplied, the value of the HOME shell variable is used. If the shell variable CDPATH exists, it is used as a search path: each directory name in CDPATH is searched for directory, with alternative directory names in CDPATH separated by a colon (‘:’). If directory begins with a slash, CDPATH is not used.
+
+    The -P option means to not follow symbolic links: symbolic links are resolved while cd is traversing directory and before processing an instance of ‘..’ in directory.
+
+    By default, or when the -L option is supplied, symbolic links in directory are resolved after cd processes an instance of ‘..’ in directory.
+
+    If ‘..’ appears in directory, it is processed by removing the immediately preceding pathname component, back to a slash or the beginning of directory.
+
+    If the -e option is supplied with -P and the current working directory cannot be successfully determined after a successful directory change, cd will return an unsuccessful status.
+
+    On systems that support it, the -@ option presents the extended attributes associated with a file as a directory.
+
+    If directory is ‘-’, it is converted to $OLDPWD before the directory change is attempted.
+
+    If a non-empty directory name from CDPATH is used, or if ‘-’ is the first argument, and the directory change is successful, the absolute pathname of the new working directory is written to the standard output.
+
+    If the directory change is successful, cd sets the value of the PWD environment variable to the new directory name, and sets the OLDPWD environment variable to the value of the current working directory before the change.
+
+    The return status is zero if the directory is successfully changed, non-zero otherwise.
+
+cd
+
+    cd [-L|[-P [-e]] [-@] [directory]
+
+    将当前工作目录更改为 directory。如果没有提供 directory，则使用 shell 变量 HOME 的值。如果 shell 变量 CDPATH 存在，则将其用作搜索路径：搜索 CDPATH 中的每个目录名，并用冒号（‘:’）分隔 CDPATH 中的其他目录名。如果目录以斜线开头，则不使用 CDPATH。
+
+    -P 选项表示不跟踪符号链接：符号链接会在 cd 遍历 directory 时和处理目录中的 ‘..’ 实例之前解析。
+
+    默认情况下，或在提供 -L 选项时，目录中的符号链接将在 cd 处理目录中的 ‘..’ 实例后解析。
+    如果目录中出现 ‘..’，则会通过删除紧随其后的路径名组件进行处理，直至删除斜线或目录开头。
+
+    如果 -e 选项与 -P 一起提供，并且在成功更改目录后无法确定当前工作目录，cd 将返回不成功状态。
+
+    在支持该选项的系统上，-@ 选项会将与文件相关的扩展属性显示为目录。
+
+    如果目录为 ‘-’，则在尝试目录更改前将其转换为 $OLDPWD。
+
+    如果使用的是 CDPATH 中的非空目录名，或者第一个参数是 ‘-’，并且目录更改成功，那么新工作目录的绝对路径名将写入标准输出。
+
+    如果目录更改成功，cd 会将 PWD 环境变量的值设置为新目录名，并将 OLDPWD 环境变量的值设置为更改前当前工作目录的值。
+
+    如果目录更改成功，返回状态为 0，否则为非 0。
+
+continue
+
+    continue [n]
+
+    Resume the next iteration of an enclosing for, while, until, or select loop. If n is supplied, the execution of the nth enclosing loop is resumed. n must be greater than or equal to 1. The return status is zero unless n is not greater than or equal to 1.
+
+continue
+
+    continue [n]
+
+    继续 for、while、until 或 select 循环的下一次迭代。如果提供了 n，则继续 nth 嵌套的循环。n 必须大于或等于 1。除非 n 不大于或等于 1，否则返回状态为 0。
+
+eval
+
+    eval [arguments]
+
+    The arguments are concatenated together into a single command, which is then read and executed, and its exit status returned as the exit status of eval. If there are no arguments or only empty arguments, the return status is zero.
+
+eval
+
+    eval [arguments]
+
+    参数被串联成一条命令，然后被读取和执行，其退出状态作为 eval 的退出状态返回。如果没有参数或只有空参数，则返回状态为零。
+
+exec
+
+    exec [-cl] [-a name] [command [arguments]]
+
+    If command is supplied, it replaces the shell without creating a new process. If the -l option is supplied, the shell places a dash at the beginning of the zeroth argument passed to command. This is what the login program does. The -c option causes command to be executed with an empty environment. If -a is supplied, the shell passes name as the zeroth argument to command. If command cannot be executed for some reason, a non-interactive shell exits, unless the execfail shell option is enabled. In that case, it returns failure. An interactive shell returns failure if the file cannot be executed. A subshell exits unconditionally if exec fails. If no command is specified, redirections may be used to affect the current shell environment. If there are no redirection errors, the return status is zero; otherwise the return status is non-zero.
+
+exec
+
+    exec [-cl] [-a name] [command [arguments]]
+
+    如果提供了 command 选项，shell 会在不创建新进程的情况下替换 shell。如果提供 -l 选项，shell 会在 command 传递的第零个参数开头加上破折号。这就是登录程序的作用。-c 选项会使命令在空环境下执行。如果提供 -a，shell 会将 name 作为命令的第零个参数。如果由于某种原因命令无法执行，除非启用 execfail shell 选项，否则会退出非交互式 shell。在这种情况下，shell 会返回失败。如果文件无法执行，交互式 shell 将返回失败。如果 exec 失败，子 shell 会无条件退出。如果没有指定命令，重定向可能会影响当前的 shell 环境。如果没有重定向错误，返回状态为 0；否则返回状态为非 0。
+
+exit
+
+    exit [n]
+
+    Exit the shell, returning a status of n to the shell’s parent. If n is omitted, the exit status is that of the last command executed. Any trap on EXIT is executed before the shell terminates.
+
+exit
+
+    exit [n]
+
+    退出 shell，向 shell 的父进程返回 n 状态。如果省略 n，则退出状态为最后执行的命令的状态。退出时的任何陷阱都会在 shell 终止前执行。
+
+export
+
+    export [-fn] [-p] [name[=value]]
+
+    Mark each name to be passed to child processes in the environment. If the -f option is supplied, the names refer to shell functions; otherwise the names refer to shell variables. The -n option means to no longer mark each name for export. If no names are supplied, or if the -p option is given, a list of names of all exported variables is displayed. The -p option displays output in a form that may be reused as input. If a variable name is followed by =value, the value of the variable is set to value.
+
+    The return status is zero unless an invalid option is supplied, one of the names is not a valid shell variable name, or -f is supplied with a name that is not a shell function.
+getopts
+
+    getopts optstring name [arg …]
+
+    getopts is used by shell scripts to parse positional parameters. optstring contains the option characters to be recognized; if a character is followed by a colon, the option is expected to have an argument, which should be separated from it by whitespace. The colon (‘:’) and question mark (‘?’) may not be used as option characters. Each time it is invoked, getopts places the next option in the shell variable name, initializing name if it does not exist, and the index of the next argument to be processed into the variable OPTIND. OPTIND is initialized to 1 each time the shell or a shell script is invoked. When an option requires an argument, getopts places that argument into the variable OPTARG. The shell does not reset OPTIND automatically; it must be manually reset between multiple calls to getopts within the same shell invocation if a new set of parameters is to be used.
+
+    When the end of options is encountered, getopts exits with a return value greater than zero. OPTIND is set to the index of the first non-option argument, and name is set to ‘?’.
+
+    getopts normally parses the positional parameters, but if more arguments are supplied as arg values, getopts parses those instead.
+
+    getopts can report errors in two ways. If the first character of optstring is a colon, silent error reporting is used. In normal operation, diagnostic messages are printed when invalid options or missing option arguments are encountered. If the variable OPTERR is set to 0, no error messages will be displayed, even if the first character of optstring is not a colon.
+
+    If an invalid option is seen, getopts places ‘?’ into name and, if not silent, prints an error message and unsets OPTARG. If getopts is silent, the option character found is placed in OPTARG and no diagnostic message is printed.
+
+    If a required argument is not found, and getopts is not silent, a question mark (‘?’) is placed in name, OPTARG is unset, and a diagnostic message is printed. If getopts is silent, then a colon (‘:’) is placed in name and OPTARG is set to the option character found.
+hash
+
+    hash [-r] [-p filename] [-dt] [name]
+
+    Each time hash is invoked, it remembers the full pathnames of the commands specified as name arguments, so they need not be searched for on subsequent invocations. The commands are found by searching through the directories listed in $PATH. Any previously-remembered pathname is discarded. The -p option inhibits the path search, and filename is used as the location of name. The -r option causes the shell to forget all remembered locations. The -d option causes the shell to forget the remembered location of each name. If the -t option is supplied, the full pathname to which each name corresponds is printed. If multiple name arguments are supplied with -t, the name is printed before the hashed full pathname. The -l option causes output to be displayed in a format that may be reused as input. If no arguments are given, or if only -l is supplied, information about remembered commands is printed. The return status is zero unless a name is not found or an invalid option is supplied.
+pwd
+
+    pwd [-LP]
+
+    Print the absolute pathname of the current working directory. If the -P option is supplied, the pathname printed will not contain symbolic links. If the -L option is supplied, the pathname printed may contain symbolic links. The return status is zero unless an error is encountered while determining the name of the current directory or an invalid option is supplied.
+readonly
+
+    readonly [-aAf] [-p] [name[=value]] …
+
+    Mark each name as readonly. The values of these names may not be changed by subsequent assignment. If the -f option is supplied, each name refers to a shell function. The -a option means each name refers to an indexed array variable; the -A option means each name refers to an associative array variable. If both options are supplied, -A takes precedence. If no name arguments are given, or if the -p option is supplied, a list of all readonly names is printed. The other options may be used to restrict the output to a subset of the set of readonly names. The -p option causes output to be displayed in a format that may be reused as input. If a variable name is followed by =value, the value of the variable is set to value. The return status is zero unless an invalid option is supplied, one of the name arguments is not a valid shell variable or function name, or the -f option is supplied with a name that is not a shell function.
+return
+
+    return [n]
+
+    Cause a shell function to stop executing and return the value n to its caller. If n is not supplied, the return value is the exit status of the last command executed in the function. If return is executed by a trap handler, the last command used to determine the status is the last command executed before the trap handler. If return is executed during a DEBUG trap, the last command used to determine the status is the last command executed by the trap handler before return was invoked. return may also be used to terminate execution of a script being executed with the . (source) builtin, returning either n or the exit status of the last command executed within the script as the exit status of the script. If n is supplied, the return value is its least significant 8 bits. Any command associated with the RETURN trap is executed before execution resumes after the function or script. The return status is non-zero if return is supplied a non-numeric argument or is used outside a function and not during the execution of a script by . or source.
+shift
+
+    shift [n]
+
+    Shift the positional parameters to the left by n. The positional parameters from n+1 … $# are renamed to $1 … $#-n. Parameters represented by the numbers $# down to $#-n+1 are unset. n must be a non-negative number less than or equal to $#. If n is zero or greater than $#, the positional parameters are not changed. If n is not supplied, it is assumed to be 1. The return status is zero unless n is greater than $# or less than zero, non-zero otherwise.
+
+shift
+
+    shift [n]
+
+    将位置参数向左移动 n。位置参数从 n+1 ... $# 重命名为 $1 ... $#-n。n 必须是小于或等于 $# 的非负数。如果 n 为零或大于 $#，位置参数不会改变。如果没有提供 n，则假定为 1。除非 n 大于 $#，返回状态为 0，或小于 0，则为非 0。
+
+test
+[
+
+    test expr
+
+    Evaluate a conditional expression expr and return a status of 0 (true) or 1 (false). Each operator and operand must be a separate argument. Expressions are composed of the primaries described below in Bash Conditional Expressions. test does not accept any options, nor does it accept and ignore an argument of -- as signifying the end of options.
+
+    When the [ form is used, the last argument to the command must be a ].
+
+    Expressions may be combined using the following operators, listed in decreasing order of precedence. The evaluation depends on the number of arguments; see below. Operator precedence is used when there are five or more arguments.
+
+    ! expr
+
+        True if expr is false.
+    ( expr )
+
+        Returns the value of expr. This may be used to override the normal precedence of operators.
+    expr1 -a expr2
+
+        True if both expr1 and expr2 are true.
+    expr1 -o expr2
+
+        True if either expr1 or expr2 is true. 
+
+    The test and [ builtins evaluate conditional expressions using a set of rules based on the number of arguments.
+
+    0 arguments
+
+        The expression is false.
+    1 argument
+
+        The expression is true if, and only if, the argument is not null.
+    2 arguments
+
+        If the first argument is ‘!’, the expression is true if and only if the second argument is null. If the first argument is one of the unary conditional operators (see Bash Conditional Expressions), the expression is true if the unary test is true. If the first argument is not a valid unary operator, the expression is false.
+    3 arguments
+
+        The following conditions are applied in the order listed.
+
+            If the second argument is one of the binary conditional operators (see Bash Conditional Expressions), the result of the expression is the result of the binary test using the first and third arguments as operands. The ‘-a’ and ‘-o’ operators are considered binary operators when there are three arguments.
+            If the first argument is ‘!’, the value is the negation of the two-argument test using the second and third arguments.
+            If the first argument is exactly ‘(’ and the third argument is exactly ‘)’, the result is the one-argument test of the second argument.
+            Otherwise, the expression is false. 
+
+    4 arguments
+
+        The following conditions are applied in the order listed.
+
+            If the first argument is ‘!’, the result is the negation of the three-argument expression composed of the remaining arguments.
+            If the first argument is exactly ‘(’ and the fourth argument is exactly ‘)’, the result is the two-argument test of the second and third arguments.
+            Otherwise, the expression is parsed and evaluated according to precedence using the rules listed above. 
+
+    5 or more arguments
+
+        The expression is parsed and evaluated according to precedence using the rules listed above. 
+
+    When used with test or ‘[’, the ‘<’ and ‘>’ operators sort lexicographically using ASCII ordering.
+
+test
+[
+
+    test expr
+
+    计算条件表达式 expr，并返回 0（真）或 1（假）的状态。每个操作符和操作数必须是独立的参数。test 不接受任何选项，也不接受并忽略 -- 参数，其表示选项结束。
+
+    当使用 [ 形式时，命令的最后一个参数必须是 ]。
+
+    可以使用下列运算符组合表达式，这些运算符的优先级依次递减。运算的结果取决于参数的数量；请参阅下文。有五个或五个以上参数时，使用运算符优先。
+
+    !expr    如果 expr 为假，则为 true。
+    ( expr )    返回 expr 的值。 它可以用来覆盖运算符的正常优先级。
+    expr1 -a expr2    如果 expr1 和 expr2 均为真，则为真。
+    expr1 -o expr2    如果 expr1 和 expr2 其中一个为真，则为真。
+
+    test 和 [ 内置函数根据参数个数使用一系列规则对条件表达式进行计算。
+
+    0 arguments    表达式为假。
+    1 arguments    仅当参数不为空时，表达式为真。
+    2 arguments
+
+    如果第一个参数为 ‘!’，则表达式为真，前提是且仅当第二个参数为空。如果第一个参数是一元条件操作符之一（请参阅 Bash 条件表达式），则如果一元测试为真，表达式为真。如果第一个参数不是有效的一元运算符，则表达式为假。
+
+    3 arguments
+
+        以下条件按所列顺序应用。
+
+        1. 如果第二个参数是二元条件运算符之一（请参阅 Bash 条件表达式），则表达式的结果就是使用第一和第三个参数作为操作数进行二元测试的结果。当有三个参数时，‘-a’ 和 ‘-o’ 运算符被视为二元运算符。
+
+        2. 如果第一个参数是 ‘！’，则其值是使用第二个和第三个参数进行的双参数测试的否定值。
+
+        3. 如果第一个参数正好是 ‘(’，第三个参数正好是 ‘)’，那么结果就是对第二个参数的单参数测试。
+
+        4. 否则，表达式为假。
+
+    4 arguments
+
+        以下条件按所列顺序应用。
+
+        1. 如果第一个参数是 ‘！’，结果是由其余参数组成的三参数表达式的否定。
+
+        2. 如果第一个参数正好是 ’(‘，第四个参数正好是 ’)‘，则结果是对第二和第三个参数的双参数测试。
+
+        3. 否则，将根据上述规则按照优先级对表达式进行解析和计算。
+
+    5 or more arguments
+
+        表达式将根据上述规则按照优先级进行解析和评估。
+
+    当与 test 或 ’[‘ 一起使用时，’<‘ 和 ’>‘ 运算符将使用 ASCII 顺序按词典排序。
+
+times
+
+    times
+
+    Print out the user and system times used by the shell and its children. The return status is zero.
+
+times
+
+    times
+
+    打印 shell 及其子系统使用的用户和系统时间。返回状态为零。
+
+trap
+
+    trap [-lp] [arg] [sigspec …]
+
+    The commands in arg are to be read and executed when the shell receives signal sigspec. If arg is absent (and there is a single sigspec) or equal to ‘-’, each specified signal’s disposition is reset to the value it had when the shell was started. If arg is the null string, then the signal specified by each sigspec is ignored by the shell and commands it invokes. If arg is not present and -p has been supplied, the shell displays the trap commands associated with each sigspec. If no arguments are supplied, or only -p is given, trap prints the list of commands associated with each signal number in a form that may be reused as shell input. The -l option causes the shell to print a list of signal names and their corresponding numbers. Each sigspec is either a signal name or a signal number. Signal names are case insensitive and the SIG prefix is optional.
+
+    If a sigspec is 0 or EXIT, arg is executed when the shell exits. If a sigspec is DEBUG, the command arg is executed before every simple command, for command, case command, select command, every arithmetic for command, and before the first command executes in a shell function. Refer to the description of the extdebug option to the shopt builtin (see The Shopt Builtin) for details of its effect on the DEBUG trap. If a sigspec is RETURN, the command arg is executed each time a shell function or a script executed with the . or source builtins finishes executing.
+
+    If a sigspec is ERR, the command arg is executed whenever a pipeline (which may consist of a single simple command), a list, or a compound command returns a non-zero exit status, subject to the following conditions. The ERR trap is not executed if the failed command is part of the command list immediately following an until or while keyword, part of the test following the if or elif reserved words, part of a command executed in a && or || list except the command following the final && or ||, any command in a pipeline but the last, or if the command’s return status is being inverted using !. These are the same conditions obeyed by the errexit (-e) option.
+
+    Signals ignored upon entry to the shell cannot be trapped or reset. Trapped signals that are not being ignored are reset to their original values in a subshell or subshell environment when one is created.
+
+    The return status is zero unless a sigspec does not specify a valid signal.
+
+trap
+
+    trap [-lp] [arg] [sigspec …]
+
+    当 shell 收到信号 sigspec 时，将读取并执行 arg 中的命令。如果 arg 不存在（只有一个 sigspec）或等于 ‘-’，则每个指定信号的处置将重置为 shell 启动时的值。如果 arg 为空字符串，则 shell 及其调用的命令将忽略每个 sigspec 指定的信号。如果 arg 不存在且提供了 -p，则 shell 会显示与每个 sigspec 相关的陷阱命令。如果没有提供参数，或只提供了 -p，trap 会以可作为 shell 输入重复使用的形式打印与每个信号编号相关的命令列表。-l 选项会使shell打印信号名称及其对应编号的列表。每个 sigspec 要么是信号名，要么是信号号。信号名称不区分大小写，SIG 前缀为可选项。
+
+    如果 sigspec 为 0 或 EXIT，则 arg 会在 shell 退出时执行。如果 sigspec 为 DEBUG，命令 arg 会在每条简单命令、for 命令、case 命令、select 命令、每条算术 for 命令以及 shell 函数中第一条命令执行前被执行。关于 extdebug 选项对 DEBUG 陷阱的影响，请参阅 shopt 内置程序的 extdebug 选项说明（参见 Shopt 内置程序）。如果 sigspec 为 RETURN，则每次使用 . 或 source 内置程序执行 shell 函数或脚本结束时，都会执行 arg 命令。
+
+    如果 sigspec 为 ERR，只要管道（可能由单条简单命令组成）、列表或复合命令返回非零退出状态，命令 arg 就会被执行，但须符合以下条件。如果失败的命令是紧跟在 until 或 while 关键字之后的命令列表的一部分，是 if 或 elif 保留字之后的测试的一部分，是 && 或 || 列表中执行的命令（最后的 && 或 || 之后的命令除外）的一部分，是管道中除最后一条命令之外的任何命令，或者命令的返回状态正在使用 ! 进行反转，ERR 陷阱不会被执行。这些条件与 errexit (-e) 选项所遵循的条件相同。
+
+    进入 shell 时被忽略的信号不能被捕获或重置。未被忽略的被捕获信号将在创建子 shell 或子 shell 境时重置为原始值。
+
+    除非 sigspec 未指定有效信号，否则返回状态为零。
+
+umask
+
+    umask [-p] [-S] [mode]
+
+    Set the shell process’s file creation mask to mode. If mode begins with a digit, it is interpreted as an octal number; if not, it is interpreted as a symbolic mode mask similar to that accepted by the chmod command. If mode is omitted, the current value of the mask is printed. If the -S option is supplied without a mode argument, the mask is printed in a symbolic format. If the -p option is supplied, and mode is omitted, the output is in a form that may be reused as input. The return status is zero if the mode is successfully changed or if no mode argument is supplied, and non-zero otherwise.
+
+    Note that when the mode is interpreted as an octal number, each number of the umask is subtracted from 7. Thus, a umask of 022 results in permissions of 755.
+
+umask
+
+    umask [-p] [-S] [mode]
+
+    将 shell 进程的文件创建掩码设置为 mode。如果 mode 以数字开头，则解释为八进制数；如果不是，则解释为符号模式掩码，类似于 chmod 命令接受的模式掩码。如果省略了 mode，则会打印屏蔽的当前值。如果提供了 -S 选项，但没有模式参数，掩码将以符号格式打印。如果提供了 -p 选项，且省略了 mode，则输出为可作为输入重复使用的格式。如果成功更改模式或未提供模式参数，返回状态为 0，否则为非 0。
+
+    请注意，当模式被解释为八进制数时，umask 的每个数字都要从 7 减去。因此，umask 为 022 时，权限为 755。
+
+unset
+
+    unset [-fnv] [name]
+
+    Remove each variable or function name. If the -v option is given, each name refers to a shell variable and that variable is removed. If the -f option is given, the names refer to shell functions, and the function definition is removed. If the -n option is supplied, and name is a variable with the nameref attribute, name will be unset rather than the variable it references. -n has no effect if the -f option is supplied. If no options are supplied, each name refers to a variable; if there is no variable by that name, a function with that name, if any, is unset. Readonly variables and functions may not be unset. Some shell variables lose their special behavior if they are unset; such behavior is noted in the description of the individual variables. The return status is zero unless a name is readonly or may not be unset. 
+
+unset
+
+    unset [-fnv] [name]
+
+    删除每个变量或函数名称。如果给出 -v 选项，则每个名称都指向一个 shell 变量，该变量将被删除。如果给出 -f 选项，名称指的是 shell 函数，函数定义将被删除。如果提供了 -n 选项，且 name 是一个带有 nameref 属性的变量，则 name 将被取消设置，而不是其引用的变量。如果提供了 -f 选项，-n 将不起作用。如果没有提供任何选项，每个 name 都会指向一个变量；如果没有该变量名的变量，则会取消设置该变量名的函数（如果有的话）。只读变量和函数不能被取消设置。某些 shell 变量在取消设置后会失去其特殊行为；这些行为会在个别变量的说明中指出。除非某个变量名是只读的或不可取消设置，否则返回状态为零。
